@@ -3,10 +3,10 @@
 ################################################################################
 
 /NL.Framework.DAL/obj
-/NL.Framework.DAL/bin/Debug
+/NL.Framework.DAL/bin
 /NL.Framework.IBLL/obj
 /NL.Framework.IDAL/obj
-/NL.Framework.Model/bin/Debug
+/NL.Framework.Model/bin
 /NL.Framework.Model/obj
 /NL.Framework.Web/bin
 /NL.Framework.Web/obj
