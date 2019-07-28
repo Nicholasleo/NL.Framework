@@ -8,6 +8,7 @@
 //***********************************************************
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,9 @@ namespace NL.Framework.Model.System
         /// <summary>
         /// 登录名
         /// </summary>
+        [Required]
+        [Display(Name ="用户名")]
+        [StringLength(20, MinimumLength = 4)]
         public string UserCode { get; set; }
         /// <summary>
         /// 用户名称
@@ -30,6 +34,12 @@ namespace NL.Framework.Model.System
         /// <summary>
         /// 用户密码
         /// </summary>
+        [Required]
+
+        [DataType(DataType.Password)]
+        [StringLength(16, MinimumLength = 4,ErrorMessage ="用户密码只能是4-14位")]
+
+        [Display(Name = "密码")]
         public string UserPwd { get; set; }
         /// <summary>
         /// 用户性别

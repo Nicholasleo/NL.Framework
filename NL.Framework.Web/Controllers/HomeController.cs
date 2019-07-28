@@ -1,4 +1,5 @@
 ﻿using NL.Framework.DAL;
+using NL.Framework.IDAL;
 using NL.Framework.Model;
 using NL.Framework.Model.System;
 using System;
@@ -11,144 +12,61 @@ namespace NL.Framework.Web.Controllers
 {
     public class HomeController : Controller
     {
+        private IDbContext _context;
+
+        public HomeController(IDbContext db)
+        {
+            _context = db;
+        }
         public ActionResult Index()
         {
-            using (var db = new NLFrameContext())
-            {
-                UserModel user = new UserModel {
-                    UserName = "NicholasLeo",
-                    UserCode = "1001",
-                    UserPwd = "123456",
-                    CreatePerson = "NicholasLeo",
-                    CreateTime = DateTime.Now.Date
-                };
-                db.Users.Add(user);
-                int i = db.SaveChanges();
-                if (i > 0)
-                {
-                    Console.WriteLine(i);
-                }
-            }
-                ViewBag.Title = "测试";
+            UserModel user = _context.GetEntity<UserModel>(t=>t.UserName.Equals("NicholasLeo"));
+            user.UserAge = 20;
+            user.QQ = "461183790";
+            user.ModifyTime = DateTime.Now;
+            user.LastLoginTime = DateTime.Now;
+            //Console.WriteLine(_context.Insert(user)); 
+            _context.Update<UserModel>(user);
+
+            ViewBag.Title = "测试";
             ViewBag.SystemName = "NLFrame";
             ViewBag.UserName = "NicholasLeo";
-             HomeModel model = new HomeModel();
-            List<TopMenu> topList = new List<TopMenu> {
-                new TopMenu{
-                    Name="Top1"
-                    ,Url="home"
-                    ,Code="Top1"
-                    ,Childs=new List<Menu>{
-                        new Menu{
-                            Name = "TC1",
-                            Code = "TC1",
-                            Url = "ddd"
-                        },
-                        new Menu{
-                            Name = "TC2",
-                            Code = "TC2",
-                            Url = "ddd"
-                        },
-                        new Menu{
-                            Name = "TC3",
-                            Code = "TC3",
-                            Url = "ddd"
-                        }
-                    }
-                },
-                 new TopMenu{
-                    Name="Top2"
-                    ,Url="home"
-                    ,Childs=new List<Menu>{
-                        new Menu{
-                            Name = "TC1",
-                            Code = "TC1",
-                            Url = "ddd"
-                        },
-                        new Menu{
-                            Name = "TC2",
-                            Code = "TC2",
-                            Url = "ddd"
-                        },
-                        new Menu{
-                            Name = "TC3",
-                            Code = "TC3",
-                            Url = "ddd"
-                        }
-                    }
-                }
-            };
-            List<NvaMenu> nvaList = new List<NvaMenu> {
-                new NvaMenu{
-                    Name="NVA1"
-                    ,Url="home",
-                    HasChild = true
-                    ,Childs=new List<Menu>{
-                        new Menu{
-                            Name = "TC1",
-                            Code = "TC1",
-                            Url = "ddd"
-                        },
-                        new Menu{
-                            Name = "TC2",
-                            Code = "TC1",
-                            Url = "ddd"
-                        },
-                        new Menu{
-                            Name = "TC3",
-                            Code = "TC1",
-                            Url = "ddd"
-                        }
-                    }
-                },
-                 new NvaMenu{
-                    Name="NVA2"
-                    ,Url="home",
-                    HasChild = true
-                    ,Childs=new List<Menu>{
-                        new Menu{
-                            Name = "TC1",
-                            Code = "TC1",
-                            Url = "ddd"
-                        },
-                        new Menu{
-                            Name = "TC2",
-                            Code = "TC1",
-                            Url = "ddd"
-                        },
-                        new Menu{
-                            Name = "TC3",
-                            Code = "TC1",
-                            Url = "ddd"
-                        }
-                    }
-                },
-                 new NvaMenu{
-                    Name="NVA3"
-                    ,Url="home",
-                    HasChild = false
-                    ,Childs=new List<Menu>{
-                        new Menu{
-                            Name = "TC1",
-                            Code = "TC1",
-                            Url = "ddd"
-                        },
-                        new Menu{
-                            Code = "TC1",
-                            Name = "TC2",
-                            Url = "ddd"
-                        },
-                        new Menu{
-                            Name = "TC3",
-                            Code = "TC1",
-                            Url = "ddd"
-                        }
-                    }
-                }
-            };
-            model.NvaMenuLists = nvaList;
-            model.TopMenuLists = topList;
-            return View(model);
+            //系统菜单模型
+            List<NvaMenus> menuList = new List<NvaMenus>();
+            Guid fid = Guid.NewGuid();
+            NvaMenus nva = new NvaMenus();
+            nva.MenuName = "系统管理菜单";
+            nva.MenuUrl = "";
+            nva.MenuIcon = "layui-icon-set";
+            nva.Fid = fid;
+            List<MenuModel> childMenus = new List<MenuModel>();
+            MenuModel menu = new MenuModel();
+            menu.Fid = Guid.NewGuid();
+            menu.MenuParentId = fid;
+            menu.MenuName = "用户管理";
+            menu.MenuUrl = "/Login/Index";
+            childMenus.Add(menu);
+            menu = new MenuModel();
+            menu.Fid = Guid.NewGuid();
+            menu.MenuParentId = fid;
+            menu.MenuName = "角色管理";
+            menu.MenuUrl = "/System/Role";
+            childMenus.Add(menu);
+            menu = new MenuModel();
+            menu.Fid = Guid.NewGuid();
+            menu.MenuParentId = fid;
+            menu.MenuName = "菜单管理";
+            menu.MenuUrl = "/System/Menu";
+            childMenus.Add(menu);
+            menu = new MenuModel();
+            menu.Fid = Guid.NewGuid();
+            menu.MenuParentId = fid;
+            menu.MenuName = "权限管理";
+            menu.MenuUrl = "/System/Right";
+            childMenus.Add(menu);
+            nva.ChildMenus = childMenus;
+            menuList.Add(nva);
+            return View(menuList);
         }
 
         public ActionResult About()

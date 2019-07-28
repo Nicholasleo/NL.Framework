@@ -45,6 +45,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.9.3.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.9.3\lib\net45\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Mvc5.4.0.2\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -52,9 +58,47 @@
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Extensions.Configuration, Version=1.0.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.1.0.2\lib\netstandard1.1\Microsoft.Extensions.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=1.0.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Abstractions.1.0.2\lib\netstandard1.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.1.0\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives, Version=1.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Primitives.1.0.1\lib\netstandard1.0\Microsoft.Extensions.Primitives.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.4.1.0\lib\net462\System.IO.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Linq, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.4.1.0\lib\net463\System.Linq.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.4.1.0\lib\net462\System.Runtime.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Extensions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.Extensions.4.1.0\lib\net462\System.Runtime.Extensions.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.4.1.0\lib\net462\System.Runtime.InteropServices.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -123,11 +167,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\AutofacConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Filters\NLFrameActionFilterAttribute.cs" />
+    <Compile Include="Filters\NLFrameAuthorizeAttribute.cs" />
+    <Compile Include="Filters\NLFrameAuthenticationAttribute.cs" />
+    <Compile Include="Filters\NLFrameHandleErrorAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -142,112 +191,355 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Scripts\layui\css\admin.css" />
-    <Content Include="Scripts\layui\css\layui.css" />
-    <Content Include="Scripts\layui\css\layui.mobile.css" />
-    <Content Include="Scripts\layui\css\modules\code.css" />
-    <Content Include="Scripts\layui\css\modules\laydate\default\laydate.css" />
-    <Content Include="Scripts\layui\css\modules\layer\default\icon-ext.png" />
-    <Content Include="Scripts\layui\css\modules\layer\default\icon.png" />
-    <Content Include="Scripts\layui\css\modules\layer\default\layer.css" />
-    <Content Include="Scripts\layui\css\modules\layer\default\loading-0.gif" />
-    <Content Include="Scripts\layui\css\modules\layer\default\loading-1.gif" />
-    <Content Include="Scripts\layui\css\modules\layer\default\loading-2.gif" />
-    <Content Include="Scripts\layui\font\iconfont.svg" />
-    <Content Include="Scripts\layui\images\face\0.gif" />
-    <Content Include="Scripts\layui\images\face\1.gif" />
-    <Content Include="Scripts\layui\images\face\10.gif" />
-    <Content Include="Scripts\layui\images\face\11.gif" />
-    <Content Include="Scripts\layui\images\face\12.gif" />
-    <Content Include="Scripts\layui\images\face\13.gif" />
-    <Content Include="Scripts\layui\images\face\14.gif" />
-    <Content Include="Scripts\layui\images\face\15.gif" />
-    <Content Include="Scripts\layui\images\face\16.gif" />
-    <Content Include="Scripts\layui\images\face\17.gif" />
-    <Content Include="Scripts\layui\images\face\18.gif" />
-    <Content Include="Scripts\layui\images\face\19.gif" />
-    <Content Include="Scripts\layui\images\face\2.gif" />
-    <Content Include="Scripts\layui\images\face\20.gif" />
-    <Content Include="Scripts\layui\images\face\21.gif" />
-    <Content Include="Scripts\layui\images\face\22.gif" />
-    <Content Include="Scripts\layui\images\face\23.gif" />
-    <Content Include="Scripts\layui\images\face\24.gif" />
-    <Content Include="Scripts\layui\images\face\25.gif" />
-    <Content Include="Scripts\layui\images\face\26.gif" />
-    <Content Include="Scripts\layui\images\face\27.gif" />
-    <Content Include="Scripts\layui\images\face\28.gif" />
-    <Content Include="Scripts\layui\images\face\29.gif" />
-    <Content Include="Scripts\layui\images\face\3.gif" />
-    <Content Include="Scripts\layui\images\face\30.gif" />
-    <Content Include="Scripts\layui\images\face\31.gif" />
-    <Content Include="Scripts\layui\images\face\32.gif" />
-    <Content Include="Scripts\layui\images\face\33.gif" />
-    <Content Include="Scripts\layui\images\face\34.gif" />
-    <Content Include="Scripts\layui\images\face\35.gif" />
-    <Content Include="Scripts\layui\images\face\36.gif" />
-    <Content Include="Scripts\layui\images\face\37.gif" />
-    <Content Include="Scripts\layui\images\face\38.gif" />
-    <Content Include="Scripts\layui\images\face\39.gif" />
-    <Content Include="Scripts\layui\images\face\4.gif" />
-    <Content Include="Scripts\layui\images\face\40.gif" />
-    <Content Include="Scripts\layui\images\face\41.gif" />
-    <Content Include="Scripts\layui\images\face\42.gif" />
-    <Content Include="Scripts\layui\images\face\43.gif" />
-    <Content Include="Scripts\layui\images\face\44.gif" />
-    <Content Include="Scripts\layui\images\face\45.gif" />
-    <Content Include="Scripts\layui\images\face\46.gif" />
-    <Content Include="Scripts\layui\images\face\47.gif" />
-    <Content Include="Scripts\layui\images\face\48.gif" />
-    <Content Include="Scripts\layui\images\face\49.gif" />
-    <Content Include="Scripts\layui\images\face\5.gif" />
-    <Content Include="Scripts\layui\images\face\50.gif" />
-    <Content Include="Scripts\layui\images\face\51.gif" />
-    <Content Include="Scripts\layui\images\face\52.gif" />
-    <Content Include="Scripts\layui\images\face\53.gif" />
-    <Content Include="Scripts\layui\images\face\54.gif" />
-    <Content Include="Scripts\layui\images\face\55.gif" />
-    <Content Include="Scripts\layui\images\face\56.gif" />
-    <Content Include="Scripts\layui\images\face\57.gif" />
-    <Content Include="Scripts\layui\images\face\58.gif" />
-    <Content Include="Scripts\layui\images\face\59.gif" />
-    <Content Include="Scripts\layui\images\face\6.gif" />
-    <Content Include="Scripts\layui\images\face\60.gif" />
-    <Content Include="Scripts\layui\images\face\61.gif" />
-    <Content Include="Scripts\layui\images\face\62.gif" />
-    <Content Include="Scripts\layui\images\face\63.gif" />
-    <Content Include="Scripts\layui\images\face\64.gif" />
-    <Content Include="Scripts\layui\images\face\65.gif" />
-    <Content Include="Scripts\layui\images\face\66.gif" />
-    <Content Include="Scripts\layui\images\face\67.gif" />
-    <Content Include="Scripts\layui\images\face\68.gif" />
-    <Content Include="Scripts\layui\images\face\69.gif" />
-    <Content Include="Scripts\layui\images\face\7.gif" />
-    <Content Include="Scripts\layui\images\face\70.gif" />
-    <Content Include="Scripts\layui\images\face\71.gif" />
-    <Content Include="Scripts\layui\images\face\8.gif" />
-    <Content Include="Scripts\layui\images\face\9.gif" />
-    <Content Include="Scripts\layui\layui.all.js" />
-    <Content Include="Scripts\layui\layui.js" />
-    <Content Include="Scripts\layui\lay\modules\carousel.js" />
-    <Content Include="Scripts\layui\lay\modules\code.js" />
-    <Content Include="Scripts\layui\lay\modules\colorpicker.js" />
-    <Content Include="Scripts\layui\lay\modules\element.js" />
-    <Content Include="Scripts\layui\lay\modules\flow.js" />
-    <Content Include="Scripts\layui\lay\modules\form.js" />
-    <Content Include="Scripts\layui\lay\modules\jquery.js" />
-    <Content Include="Scripts\layui\lay\modules\laydate.js" />
-    <Content Include="Scripts\layui\lay\modules\layedit.js" />
-    <Content Include="Scripts\layui\lay\modules\layer.js" />
-    <Content Include="Scripts\layui\lay\modules\laypage.js" />
-    <Content Include="Scripts\layui\lay\modules\laytpl.js" />
-    <Content Include="Scripts\layui\lay\modules\mobile.js" />
-    <Content Include="Scripts\layui\lay\modules\rate.js" />
-    <Content Include="Scripts\layui\lay\modules\slider.js" />
-    <Content Include="Scripts\layui\lay\modules\table.js" />
-    <Content Include="Scripts\layui\lay\modules\transfer.js" />
-    <Content Include="Scripts\layui\lay\modules\tree.js" />
-    <Content Include="Scripts\layui\lay\modules\upload.js" />
-    <Content Include="Scripts\layui\lay\modules\util.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\config.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\console\prograss.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\console\top-card.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\console\top-search.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\content\comment.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\content\list.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\content\tags.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\forum\list.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\forum\replys.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\layer\photos.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\layim\getList.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\layim\getMembers.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\mall\order.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\menu.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\menu1.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\message\all.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\message\detail.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\message\direct.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\message\new.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\message\notice.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\table\demo.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\table\demo2.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\table\demo3.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\table\user.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\table\user30.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\upload\demo.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\useradmin\mangadmin.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\useradmin\role.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\useradmin\webuser.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\user\forget.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\user\login.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\user\logout.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\user\reg.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\user\resetpass.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\user\session.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\user\sms.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\workorder\demo.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\json\说明.txt" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\css\layui.css" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\css\layui.mobile.css" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\css\modules\code.css" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\css\modules\laydate\default\laydate.css" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\css\modules\layer\default\icon-ext.png" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\css\modules\layer\default\icon.png" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\css\modules\layer\default\layer.css" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\css\modules\layer\default\loading-0.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\css\modules\layer\default\loading-1.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\css\modules\layer\default\loading-2.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\css\modules\layim\html\chatlog.html" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\css\modules\layim\html\find.html" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\css\modules\layim\html\msgbox.html" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\css\modules\layim\layim.css" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\css\modules\layim\mobile\layim.css" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\css\modules\layim\skin\1.jpg" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\css\modules\layim\skin\2.jpg" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\css\modules\layim\skin\3.jpg" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\css\modules\layim\skin\4.jpg" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\css\modules\layim\skin\5.jpg" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\css\modules\layim\skin\logo.jpg" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\css\modules\layim\voice\default.mp3" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\font\iconfont.svg" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\0.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\1.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\10.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\11.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\12.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\13.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\14.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\15.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\16.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\17.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\18.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\19.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\2.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\20.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\21.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\22.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\23.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\24.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\25.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\26.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\27.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\28.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\29.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\3.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\30.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\31.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\32.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\33.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\34.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\35.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\36.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\37.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\38.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\39.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\4.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\40.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\41.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\42.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\43.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\44.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\45.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\46.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\47.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\48.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\49.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\5.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\50.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\51.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\52.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\53.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\54.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\55.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\56.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\57.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\58.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\59.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\6.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\60.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\61.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\62.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\63.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\64.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\65.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\66.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\67.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\68.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\69.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\7.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\70.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\71.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\8.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\images\face\9.gif" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\layui.all.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\layui.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\lay\modules\carousel.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\lay\modules\code.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\lay\modules\colorpicker.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\lay\modules\element.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\lay\modules\flow.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\lay\modules\form.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\lay\modules\jquery.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\lay\modules\laydate.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\lay\modules\layedit.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\lay\modules\layer.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\lay\modules\layim.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\lay\modules\laypage.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\lay\modules\laytpl.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\lay\modules\mobile.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\lay\modules\rate.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\lay\modules\slider.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\lay\modules\table.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\lay\modules\tree.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\lay\modules\upload.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\lay\modules\util.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\lib\admin.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\lib\extend\echarts.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\lib\extend\echartsTheme.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\lib\index.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\lib\view.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\modules\common.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\modules\console.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\modules\contlist.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\modules\forum.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\modules\im.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\modules\message.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\modules\sample.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\modules\senior.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\modules\set.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\modules\user.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\modules\useradmin.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\modules\workorder.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\style\admin.css" />
+    <Content Include="Scripts\layui\dist\layuiadmin\style\login.css" />
+    <Content Include="Scripts\layui\dist\layuiadmin\style\res\bg-none.jpg" />
+    <Content Include="Scripts\layui\dist\layuiadmin\style\res\layui-logo.jpg" />
+    <Content Include="Scripts\layui\dist\layuiadmin\style\res\logo-black.png" />
+    <Content Include="Scripts\layui\dist\layuiadmin\style\res\logo.png" />
+    <Content Include="Scripts\layui\dist\layuiadmin\style\res\template\character.jpg" />
+    <Content Include="Scripts\layui\dist\layuiadmin\style\res\template\huge.jpg" />
+    <Content Include="Scripts\layui\dist\layuiadmin\style\res\template\portrait.png" />
+    <Content Include="Scripts\layui\dist\layuiadmin\style\template.css" />
+    <Content Include="Scripts\layui\dist\layuiadmin\tpl\layim\demo.html" />
+    <Content Include="Scripts\layui\dist\layuiadmin\tpl\system\about.html" />
+    <Content Include="Scripts\layui\dist\layuiadmin\tpl\system\get.html" />
+    <Content Include="Scripts\layui\dist\layuiadmin\tpl\system\more.html" />
+    <Content Include="Scripts\layui\dist\layuiadmin\tpl\system\theme.html" />
+    <Content Include="Scripts\layui\dist\layuiadmin\tpl\system\说明.txt" />
+    <Content Include="Scripts\layui\dist\layuiadmin\tpl\说明.txt" />
+    <Content Include="Scripts\layui\src\layuiadmin\config.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\layui.css" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\layui.mobile.css" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\code.css" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\laydate\default\font.css" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\laydate\default\laydate.css" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layer\default\icon-ext.png" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layer\default\icon.png" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layer\default\layer.css" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layer\default\loading-0.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layer\default\loading-1.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layer\default\loading-2.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layim\html\chatlog.html" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layim\html\find.html" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layim\html\msgbox.html" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layim\layim.css" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layim\mobile\layim.css" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layim\skin\1.jpg" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layim\skin\2.jpg" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layim\skin\3.jpg" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layim\skin\4.jpg" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layim\skin\5.jpg" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layim\skin\logo.jpg" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layim\voice\default.mp3" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\font\iconfont.svg" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\0.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\1.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\10.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\11.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\12.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\13.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\14.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\15.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\16.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\17.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\18.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\19.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\2.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\20.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\21.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\22.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\23.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\24.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\25.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\26.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\27.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\28.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\29.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\3.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\30.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\31.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\32.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\33.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\34.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\35.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\36.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\37.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\38.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\39.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\4.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\40.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\41.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\42.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\43.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\44.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\45.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\46.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\47.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\48.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\49.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\5.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\50.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\51.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\52.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\53.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\54.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\55.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\56.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\57.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\58.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\59.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\6.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\60.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\61.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\62.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\63.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\64.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\65.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\66.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\67.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\68.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\69.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\7.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\70.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\71.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\8.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\9.gif" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\layui.all.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\layui.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\lay\all-mobile.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\lay\all.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\lay\modules\carousel.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\lay\modules\code.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\lay\modules\colorpicker.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\lay\modules\element.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\lay\modules\flow.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\lay\modules\form.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\lay\modules\jquery.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\lay\modules\laydate.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\lay\modules\layedit.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\lay\modules\layer.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\lay\modules\layim.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\lay\modules\laypage.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\lay\modules\laytpl.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\lay\modules\mobile.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\lay\modules\mobile\layer-mobile.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\lay\modules\mobile\layim-mobile-open.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\lay\modules\mobile\layim-mobile.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\lay\modules\mobile\upload-mobile.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\lay\modules\mobile\zepto.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\lay\modules\rate.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\lay\modules\slider.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\lay\modules\table.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\lay\modules\tree.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\lay\modules\upload.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\lay\modules\util.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\lib\admin.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\lib\extend\echarts.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\lib\extend\echartsTheme.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\lib\index.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\lib\view.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\modules\common.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\modules\console.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\modules\contlist.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\modules\forum.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\modules\im.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\modules\message.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\modules\sample.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\modules\senior.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\modules\set.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\modules\user.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\modules\useradmin.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\modules\workorder.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\style\admin.css" />
+    <Content Include="Scripts\layui\src\layuiadmin\style\login.css" />
+    <Content Include="Scripts\layui\src\layuiadmin\style\res\bg-none.jpg" />
+    <Content Include="Scripts\layui\src\layuiadmin\style\res\layui-logo.jpg" />
+    <Content Include="Scripts\layui\src\layuiadmin\style\res\logo-black.png" />
+    <Content Include="Scripts\layui\src\layuiadmin\style\res\logo.png" />
+    <Content Include="Scripts\layui\src\layuiadmin\style\res\template\character.jpg" />
+    <Content Include="Scripts\layui\src\layuiadmin\style\res\template\huge.jpg" />
+    <Content Include="Scripts\layui\src\layuiadmin\style\res\template\portrait.png" />
+    <Content Include="Scripts\layui\src\layuiadmin\style\template.css" />
+    <Content Include="Scripts\layui\src\layuiadmin\tpl\layim\demo.html" />
+    <Content Include="Scripts\layui\src\layuiadmin\tpl\system\about.html" />
+    <Content Include="Scripts\layui\src\layuiadmin\tpl\system\get.html" />
+    <Content Include="Scripts\layui\src\layuiadmin\tpl\system\more.html" />
+    <Content Include="Scripts\layui\src\layuiadmin\tpl\system\theme.html" />
+    <Content Include="Scripts\layui\src\layuiadmin\tpl\system\说明.txt" />
+    <Content Include="Scripts\layui\src\layuiadmin\tpl\说明.txt" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -277,16 +569,24 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="packages.config" />
-    <Content Include="Scripts\layui\font\iconfont.eot" />
-    <Content Include="Scripts\layui\font\iconfont.ttf" />
-    <Content Include="Scripts\layui\font\iconfont.woff" />
-    <Content Include="Scripts\layui\font\iconfont.woff2" />
     <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\css\modules\layim\html\getmsg.json" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\font\iconfont.eot" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\font\iconfont.ttf" />
+    <Content Include="Scripts\layui\dist\layuiadmin\layui\font\iconfont.woff" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layim\html\getmsg.json" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\font\iconfont.eot" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\font\iconfont.ttf" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\font\iconfont.woff" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NL.Framework.DAL\NL.Framework.DAL.csproj">
       <Project>{e3f96973-88ca-488e-aa52-8bd32f896266}</Project>
       <Name>NL.Framework.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NL.Framework.IDAL\NL.Framework.IDAL.csproj">
+      <Project>{B950E470-D7A5-42BD-9EE7-C882B5B68966}</Project>
+      <Name>NL.Framework.IDAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\NL.Framework.Model\NL.Framework.Model.csproj">
       <Project>{1DEDA5BD-EA4B-47B1-8E13-6CE29F6319C6}</Project>

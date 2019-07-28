@@ -48,8 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IDbContext.cs" />
-    <Compile Include="INLFrameEntityTypeConfiguration.cs" />
     <Compile Include="Map\System\MenuFunctionModelMap.cs" />
     <Compile Include="Map\System\RoleMenuFunctionModelMap.cs" />
     <Compile Include="Map\System\RoleModelMap.cs" />
@@ -66,6 +64,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NL.Framework.IDAL\NL.Framework.IDAL.csproj">
+      <Project>{B950E470-D7A5-42BD-9EE7-C882B5B68966}</Project>
+      <Name>NL.Framework.IDAL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NL.Framework.Model\NL.Framework.Model.csproj">
       <Project>{1DEDA5BD-EA4B-47B1-8E13-6CE29F6319C6}</Project>
       <Name>NL.Framework.Model</Name>
