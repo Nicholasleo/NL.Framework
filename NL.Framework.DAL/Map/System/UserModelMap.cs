@@ -25,6 +25,8 @@ namespace NL.Framework.DAL.Map
             Property(t => t.UserName).HasColumnType("NVARCHAR").HasMaxLength(50);
 
             Property(t => t.UserCode).IsRequired().HasColumnType("NVARCHAR").HasMaxLength(20);
+            //添加唯一约束
+            HasIndex(t => t.UserCode).IsUnique();
 
             Property(t => t.UserPwd).IsRequired().HasColumnType("NVARCHAR").HasMaxLength(24);
 

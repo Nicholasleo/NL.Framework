@@ -16,7 +16,7 @@
     <AssemblyName>NL.Framework.Web</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>44330</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
@@ -173,6 +173,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\SystemController.cs" />
+    <Compile Include="Controllers\System\RoleController.cs" />
     <Compile Include="Filters\NLFrameActionFilterAttribute.cs" />
     <Compile Include="Filters\NLFrameAuthorizeAttribute.cs" />
     <Compile Include="Filters\NLFrameAuthenticationAttribute.cs" />
@@ -558,6 +560,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\Role\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -578,6 +581,10 @@
     <Content Include="Scripts\layui\src\layuiadmin\layui\font\iconfont.eot" />
     <Content Include="Scripts\layui\src\layuiadmin\layui\font\iconfont.ttf" />
     <Content Include="Scripts\layui\src\layuiadmin\layui\font\iconfont.woff" />
+    <Content Include="Views\System\RoleIndex.cshtml" />
+    <Content Include="Views\System\UserIndex.cshtml" />
+    <Content Include="Views\System\RightIndex.cshtml" />
+    <Content Include="Views\System\MenuIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NL.Framework.DAL\NL.Framework.DAL.csproj">
@@ -611,7 +618,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50295</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44330/</IISUrl>
+          <IISUrl>http://localhost:8000/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

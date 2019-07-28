@@ -8,11 +8,11 @@ namespace NL.Framework.Web
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            //filters.Add(new HandleErrorAttribute());
-            filters.Add(new NLFrameActionFilterAttribute());
-            filters.Add(new NLFrameAuthenticationAttribute());
-            filters.Add(new NLFrameAuthorizeAttribute());
-            filters.Add(new NLFrameHandleErrorAttribute());
+            filters.Add(new HandleErrorAttribute());
+            //filters.Add(new NLFrameActionFilterAttribute());
+            //filters.Add(new NLFrameAuthenticationAttribute());
+            //filters.Add(new NLFrameAuthorizeAttribute());
+            //filters.Add(new NLFrameHandleErrorAttribute());
         }
     }
 }

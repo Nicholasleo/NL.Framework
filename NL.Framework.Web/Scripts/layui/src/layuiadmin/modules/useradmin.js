@@ -153,23 +153,39 @@ layui.define(['table', 'form'], function(exports){
   //角色管理
   table.render({
     elem: '#LAY-user-back-role'
-    ,url: layui.setter.base + 'json/useradmin/role.js' //模拟接口
+      , url: '/System/GetRoleList' //模拟接口
     ,cols: [[
       {type: 'checkbox', fixed: 'left'}
-      ,{field: 'id', width: 80, title: 'ID', sort: true}
-      ,{field: 'rolename', title: '角色名'}
-      ,{field: 'limits', title: '拥有权限'}
-      ,{field: 'descr', title: '具体描述'}
+        , { field: 'FID', width: 80, title: 'ID', hide:true, sort: true}
+        , { field: 'RoleName', title: '角色名' }
+      , { field: 'Description', title: '具体描述'}
       ,{title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-useradmin-admin'}
-    ]]
-    ,text: '对不起，加载出现异常！'
+      ]]
+      , page: true
+      , limit: 30
+      , height: 'full-220'
+      , text: '对不起，加载出现异常！'
   });
   
   //监听工具条
   table.on('tool(LAY-user-back-role)', function(obj){
-    var data = obj.data;
-    if(obj.event === 'del'){
-      layer.confirm('确定删除此角色？', function(index){
+      var data = obj.data;
+      console.log(data);
+    if(obj.event === 'delete'){
+        layer.confirm('确定删除此角色？', function (index) {
+            $.ajax({
+                url: '/System/DeleteRole',
+                type: 'POST',
+                dataType: 'JSON',
+                data: data,
+                success: function (res) {
+                    if (res.code > 0) {
+                        //请求成功后，写入 access_token
+                        table.reload('LAY-user-back-role');
+                    }
+                    layer.msg(res.msg);
+                }
+            });
         obj.del();
         layer.close(index);
       });

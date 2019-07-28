@@ -6,15 +6,25 @@ using System.Threading.Tasks;
 
 namespace NL.Framework.Model
 {
-    public class ResultData
+    public class ResultData : StatusData
+    {
+        public TokenData data { get; set; }
+    }
+
+    public class StatusData
     {
         public int code { get; set; }
         public string msg { get; set; }
-        public TokenData data { get; set; }
     }
 
     public class TokenData
     {
         public string access_token { get; set; }
+    }
+
+    public class AjaxResultData<T> : StatusData
+    {
+        public string count { get; set; }
+        public List<T> data { get; set; }
     }
 }

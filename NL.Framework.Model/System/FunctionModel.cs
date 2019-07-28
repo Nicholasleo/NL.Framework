@@ -17,7 +17,7 @@ namespace NL.Framework.Model.System
     public class FunctionModel : SystemBaseModel
     {
         public string FunctionName { get; set; }
-
+        public string FunctionEvent { get; set; }
         public virtual ICollection<RoleMenuFunctionModel> RoleMenuFunctionModels { get; set; }
         public virtual ICollection<MenuFunctionModel> MenuFunctionModels { get; set; }
     }

@@ -23,7 +23,7 @@ namespace NL.Framework.DAL
     {
         public NLFrameContext() : base("name=DbConn")
         {
-            //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<NLFrameContext>());
+            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<NLFrameContext>());
         }
 
         public virtual int Delete<TEntity>(Guid fid) where TEntity : BaseModel
@@ -65,12 +65,12 @@ namespace NL.Framework.DAL
             if (whereLambda == null)
             {
                 totalCount = this.Set<TEntity>().Count();
-                return this.Set<TEntity>().Skip(pageSize * (pageIndex - 1)).Take(pageSize).AsQueryable();
+                return this.Set<TEntity>().OrderBy(t=>t.Fid).Skip(pageSize * (pageIndex - 1)).Take(pageSize).AsQueryable();
             }
             else
             {
                 totalCount = this.Set<TEntity>().Where(whereLambda).Count();
-                return this.Set<TEntity>().Where(whereLambda).Skip(pageSize * (pageIndex - 1)).Take(pageSize).AsQueryable();
+                return this.Set<TEntity>().Where(whereLambda).OrderBy(t => t.Fid).Skip(pageSize * (pageIndex - 1)).Take(pageSize).AsQueryable();
             }
         }
 
@@ -79,14 +79,14 @@ namespace NL.Framework.DAL
             if (whereLambda == null)
             {
                 totalCount = this.Set<TEntity>().Count();
-                return this.Set<TEntity>().Skip(pageSize * (pageIndex - 1)).Take(pageSize).AsQueryable();
+                return this.Set<TEntity>().OrderBy(t => t.Fid).Skip(pageSize * (pageIndex - 1)).Take(pageSize).AsQueryable();
             }
             else
             {
                 if (orderByLambda == null)
                 {
                     totalCount = this.Set<TEntity>().Where(whereLambda).Count();
-                    return this.Set<TEntity>().Where(whereLambda).Skip(pageSize * (pageIndex - 1)).Take(pageSize).AsQueryable();
+                    return this.Set<TEntity>().OrderBy(t=>t.Fid).Where(whereLambda).OrderBy(t => t.Fid).Skip(pageSize * (pageIndex - 1)).Take(pageSize).AsQueryable();
                 }
                 else
                 {
@@ -116,6 +116,9 @@ namespace NL.Framework.DAL
 
         public virtual bool IsExist<TEntity>(Expression<Func<TEntity, bool>> where) where TEntity : BaseModel
         {
+            List<TEntity> result = this.Set<TEntity>().AsQueryable().ToList();
+            if (result.Count <= 0)
+                return false;
             return this.Set<TEntity>().Where(where).Count() > 0 ? true : false;
         }
 
@@ -158,7 +161,9 @@ namespace NL.Framework.DAL
 
         public virtual TEntity GetEntity<TEntity>(Expression<Func<TEntity, bool>> where) where TEntity : BaseModel
         {
+            //return this.Set<TEntity>().Where(where).FirstOrDefault();
             return this.Set<TEntity>().Where(where).FirstOrDefault();
         }
+
     }
 }
