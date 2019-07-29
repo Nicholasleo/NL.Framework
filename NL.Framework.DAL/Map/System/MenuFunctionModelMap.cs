@@ -20,6 +20,10 @@ namespace NL.Framework.DAL.Map
 
             HasKey(t => t.Fid);
 
+            //HasIndex(t => t.FunctionId).IsUnique();
+
+            //HasIndex(t => t.MenuId).IsUnique();
+
             Property(t => t.Fid).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             Property(t => t.CreateTime).HasColumnType("DATETIME2");

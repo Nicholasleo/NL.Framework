@@ -16,7 +16,7 @@
     <AssemblyName>NL.Framework.Web</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>44330</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
@@ -206,6 +206,7 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\SystemController.cs" />
     <Compile Include="Controllers\System\RoleController.cs" />
+    <Compile Include="Controllers\System\UserController.cs" />
     <Compile Include="Filters\NLFrameActionFilterAttribute.cs" />
     <Compile Include="Filters\NLFrameAuthorizeAttribute.cs" />
     <Compile Include="Filters\NLFrameAuthenticationAttribute.cs" />
@@ -573,6 +574,7 @@
     <Content Include="Scripts\layui\src\layuiadmin\tpl\system\theme.html" />
     <Content Include="Scripts\layui\src\layuiadmin\tpl\system\说明.txt" />
     <Content Include="Scripts\layui\src\layuiadmin\tpl\说明.txt" />
+    <Content Include="Scripts\Modules\UserScript.js" />
     <Content Include="Scripts\Modules\RoleScript.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -593,6 +595,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Role\" />
+    <Folder Include="Views\User\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -661,7 +664,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50295</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:50295/</IISUrl>
+          <IISUrl>http://localhost:8000/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

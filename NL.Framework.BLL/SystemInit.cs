@@ -115,6 +115,23 @@ namespace NL.Framework.BLL
             _context.Insert(list);
         }
 
+        public void InitMenuFunction()
+        {
+            var list = _context.GetLists<FunctionModel>();
+            var menu = _context.GetEntity<MenuModel>(t => t.MenuName.Equals("角色管理"));
+            List<MenuFunctionModel> right = new List<MenuFunctionModel>();
+            foreach (FunctionModel item in list)
+            {
+                MenuFunctionModel m = new MenuFunctionModel();
+                m.MenuId = menu.Fid;
+                m.FunctionId = item.Fid;
+                m.CreatePerson = "NicholasLeo";
+                m.CreateTime = DateTime.Now;
+                right.Add(m);
+            }
+            _context.Insert<MenuFunctionModel>(right);
+        }
+
         public void InitRole()
         {
             RoleModel role = new RoleModel();

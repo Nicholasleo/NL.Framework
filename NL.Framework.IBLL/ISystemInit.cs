@@ -19,5 +19,7 @@ namespace NL.Framework.IBLL
         void InitMenu();
         void InitRole();
         void InitFunction();
+
+        void InitMenuFunction();
     }
 }

@@ -101,17 +101,33 @@ namespace NL.Framework.DAL
 
         public virtual int Insert<TEntity>(TEntity ent) where TEntity : BaseModel
         {
-            this.Entry<TEntity>(ent).State = EntityState.Added;
-            return this.SaveChanges();
+            try
+            {
+                this.Entry<TEntity>(ent).State = EntityState.Added;
+                return this.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
         }
 
         public virtual int Insert<TEntity>(List<TEntity> entitys) where TEntity : BaseModel
         {
-            foreach (var item in entitys)
+            try
             {
-                this.Entry<TEntity>(item).State = EntityState.Added;
+                foreach (var item in entitys)
+                {
+                    this.Entry<TEntity>(item).State = EntityState.Added;
+                }
+                return this.SaveChanges();
             }
-            return this.SaveChanges();
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
         }
 
         public virtual bool IsExist<TEntity>(Expression<Func<TEntity, bool>> where) where TEntity : BaseModel

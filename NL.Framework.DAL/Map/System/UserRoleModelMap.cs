@@ -22,6 +22,10 @@ namespace NL.Framework.DAL.Map
 
             Property(t => t.Fid).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
+            //HasIndex(t => t.UserId).IsUnique();
+
+            //HasIndex(t => t.RoleId).IsUnique();
+
             Property(t => t.UserId);
 
             Property(t => t.RoleId);

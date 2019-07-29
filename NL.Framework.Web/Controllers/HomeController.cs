@@ -58,6 +58,9 @@ namespace NL.Framework.Web.Controllers
             //{
             //    _context.Insert(user);
             //}
+            //_ISystemInit.InitMenu();
+            //_ISystemInit.InitFunction();
+            //_ISystemInit.InitMenuFunction();
             _ISystemInit.InitRole();
 
             List<NvaMenus> menuList = _IMenuBll.GetMenuList();
