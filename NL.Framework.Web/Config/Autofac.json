@@ -1,0 +1,36 @@
+{
+  "components": [
+    {
+      "type": "NL.Framework.DAL.NLFrameContext, NL.Framework.DAL",
+      "services": [
+        {
+          "type": "NL.Framework.IDAL.IDbContext,NL.Framework.IDAL"
+        }
+      ]
+    },
+    {
+      "type": "NL.Framework.BLL.SystemInit, NL.Framework.BLL",
+      "services": [
+        {
+          "type": "NL.Framework.IBLL.ISystemInit,NL.Framework.IBLL"
+        }
+      ]
+    },
+    {
+      "type": "NL.Framework.BLL.MenuBll, NL.Framework.BLL",
+      "services": [
+        {
+          "type": "NL.Framework.IBLL.IMenuBll,NL.Framework.IBLL"
+        }
+      ]
+    },
+    {
+      "type": "NL.Framework.BLL.RoleBll, NL.Framework.BLL",
+      "services": [
+        {
+          "type": "NL.Framework.IBLL.IRoleBll,NL.Framework.IBLL"
+        }
+      ]
+    }
+  ]
+}

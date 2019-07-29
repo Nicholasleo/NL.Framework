@@ -1,14 +1,13 @@
 ﻿using Autofac;
-using System;
+using Autofac.Configuration;
 using Autofac.Integration.Mvc;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using NL.Framework.DAL;
-using NL.Framework.IDAL;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
 using NL.Framework.BLL;
+using NL.Framework.DAL;
 using NL.Framework.IBLL;
+using NL.Framework.IDAL;
+using System.Web.Mvc;
 //***********************************************************
 //    作者：Nicholas Leo
 //    E-Mail:nicholasleo1030@163.com
@@ -23,12 +22,25 @@ namespace NL.Framework.Web.App_Start
     {
         public static void RegisterDependencies()
         {
+            var config = new ConfigurationBuilder();
+            IConfigurationSource autofacJsonConfigSource = new JsonConfigurationSource()
+            {
+                Path = "/Config/Autofac.json",
+                Optional = false,//boolean,默认就是false,可不写
+                ReloadOnChange = false,//同上
+            };
+            config.Add(autofacJsonConfigSource);
+            var module = new ConfigurationModule(config.Build());
+
             var builder = new ContainerBuilder();
+            builder.RegisterModule(module);
+
+            // Register your MVC controllers.
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
-            builder.RegisterType<NLFrameContext>().As<IDbContext>();
-            builder.RegisterType<SystemInit>().As<ISystemInit>();
-            builder.RegisterType<MenuBll>().As<IMenuBll>();
-            builder.RegisterType<RoleBll>().As<IRoleBll>();
+            //builder.RegisterType<NLFrameContext>().As<IDbContext>();
+            //builder.RegisterType<SystemInit>().As<ISystemInit>();
+            //builder.RegisterType<MenuBll>().As<IMenuBll>();
+            //builder.RegisterType<RoleBll>().As<IRoleBll>();
             //autofac 注册依赖
             IContainer container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
