@@ -31,7 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -41,7 +48,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MenuBll.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SystemInit.cs" />
+    <Compile Include="System\RoleBll.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NL.Framework.IBLL\NL.Framework.IBLL.csproj">
+      <Project>{B9125CEC-0E55-4011-A443-2F0D337B52A1}</Project>
+      <Name>NL.Framework.IBLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NL.Framework.IDAL\NL.Framework.IDAL.csproj">
+      <Project>{B950E470-D7A5-42BD-9EE7-C882B5B68966}</Project>
+      <Name>NL.Framework.IDAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NL.Framework.Model\NL.Framework.Model.csproj">
+      <Project>{1DEDA5BD-EA4B-47B1-8E13-6CE29F6319C6}</Project>
+      <Name>NL.Framework.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

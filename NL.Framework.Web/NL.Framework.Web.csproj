@@ -542,6 +542,7 @@
     <Content Include="Scripts\layui\src\layuiadmin\tpl\system\theme.html" />
     <Content Include="Scripts\layui\src\layuiadmin\tpl\system\说明.txt" />
     <Content Include="Scripts\layui\src\layuiadmin\tpl\说明.txt" />
+    <Content Include="Scripts\Modules\RoleScript.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -585,11 +586,21 @@
     <Content Include="Views\System\UserIndex.cshtml" />
     <Content Include="Views\System\RightIndex.cshtml" />
     <Content Include="Views\System\MenuIndex.cshtml" />
+    <Content Include="Views\System\RoleEdit.cshtml" />
+    <Content Include="Views\Shared\_LayoutForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NL.Framework.BLL\NL.Framework.BLL.csproj">
+      <Project>{CC693A27-4142-4563-8326-6BE4D4371364}</Project>
+      <Name>NL.Framework.BLL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NL.Framework.DAL\NL.Framework.DAL.csproj">
       <Project>{e3f96973-88ca-488e-aa52-8bd32f896266}</Project>
       <Name>NL.Framework.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NL.Framework.IBLL\NL.Framework.IBLL.csproj">
+      <Project>{B9125CEC-0E55-4011-A443-2F0D337B52A1}</Project>
+      <Name>NL.Framework.IBLL</Name>
     </ProjectReference>
     <ProjectReference Include="..\NL.Framework.IDAL\NL.Framework.IDAL.csproj">
       <Project>{B950E470-D7A5-42BD-9EE7-C882B5B68966}</Project>

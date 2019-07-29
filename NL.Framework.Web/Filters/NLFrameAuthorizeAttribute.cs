@@ -16,37 +16,42 @@ namespace NL.Framework.Web.Filters
     /// <summary>
     /// 身份过滤器
     /// </summary>
-    public class NLFrameAuthorizeAttribute : AuthorizeAttribute
+    public class NLFrameAuthorizeAttribute : FilterAttribute,IAuthorizationFilter
     {
-        protected override bool AuthorizeCore(HttpContextBase httpContext)
+        public void OnAuthorization(AuthorizationContext filterContext)
         {
-            //if (httpContext.Session["UserInfo"] == null)
-            //{
-            //    return false;
-            //}
-            return true;
+            //throw new NotImplementedException();
         }
 
-        protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
-        {
-            //如果是Ajax请求
-            if (filterContext.HttpContext.Request.IsAjaxRequest())
-            {
-                //filterContext.Result = new JsonResult
-                //{
-                //    //Data = new
-                //    //{
-                //    //    ResultCode = ResultCode.Exception,
-                //    //    ResultMess = "请求用户未登录！"
-                //    //}
-                //};
-            }
-            else
-            {
-                //处理Url请求
-                //验证不通过,直接跳转到相应页面，注意：如果不使用以下跳转，则会继续执行Action方法 
-                //filterContext.Result = new RedirectResult("/Home/Index");
-            }
-        }
+        //protected override bool AuthorizeCore(HttpContextBase httpContext)
+        //{
+        //    //if (httpContext.Session["UserInfo"] == null)
+        //    //{
+        //    //    return false;
+        //    //}
+        //    return true;
+        //}
+
+        //protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
+        //{
+        //    //如果是Ajax请求
+        //    if (filterContext.HttpContext.Request.IsAjaxRequest())
+        //    {
+        //        //filterContext.Result = new JsonResult
+        //        //{
+        //        //    //Data = new
+        //        //    //{
+        //        //    //    ResultCode = ResultCode.Exception,
+        //        //    //    ResultMess = "请求用户未登录！"
+        //        //    //}
+        //        //};
+        //    }
+        //    else
+        //    {
+        //        //处理Url请求
+        //        //验证不通过,直接跳转到相应页面，注意：如果不使用以下跳转，则会继续执行Action方法 
+        //        //filterContext.Result = new RedirectResult("/Home/Index");
+        //    }
+        //}
     }
 }

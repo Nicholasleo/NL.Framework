@@ -41,7 +41,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IBaseBll.cs" />
+    <Compile Include="ISystemBaseBll.cs" />
+    <Compile Include="System\IMenuBll.cs" />
+    <Compile Include="ISystemInit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="System\IRoleBll.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NL.Framework.Model\NL.Framework.Model.csproj">
+      <Project>{1DEDA5BD-EA4B-47B1-8E13-6CE29F6319C6}</Project>
+      <Name>NL.Framework.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

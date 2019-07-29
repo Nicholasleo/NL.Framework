@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/bundles/css")
+    @Styles.Render("~/bundles/admincss")
+    @Scripts.Render("~/bundles/layui")
+    <style type="text/css">
+        .footer {
+            text-align: center;
+            height:44px;
+            font-weight: 300;   
+            background-color: #fff;
+        }
+    </style>
+</head>
+    
+<body>
+    @RenderBody()
+    @*@RenderSection("scripts", required: false)*@
+    @*<script>
+            layui.config({
+                base: '../Scripts/layui/src/layuiadmin/' //静态资源所在路径
+            }).extend({
+                index: 'lib/index' //主入口模块
+            }).use('index');
+        </script>*@
+</body>
+</html >

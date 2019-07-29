@@ -170,7 +170,6 @@ layui.define(['table', 'form'], function(exports){
   //监听工具条
   table.on('tool(LAY-user-back-role)', function(obj){
       var data = obj.data;
-      console.log(data);
     if(obj.event === 'delete'){
         layer.confirm('确定删除此角色？', function (index) {
             $.ajax({
@@ -180,7 +179,7 @@ layui.define(['table', 'form'], function(exports){
                 data: data,
                 success: function (res) {
                     if (res.code > 0) {
-                        //请求成功后，写入 access_token
+                        //请求成功后，重载table
                         table.reload('LAY-user-back-role');
                     }
                     layer.msg(res.msg);
@@ -190,12 +189,12 @@ layui.define(['table', 'form'], function(exports){
         layer.close(index);
       });
     }else if(obj.event === 'edit'){
-      var tr = $(obj.tr);
-
+        var tr = $(obj.tr);
+        var data = obj.data;
       layer.open({
         type: 2
         ,title: '编辑角色'
-        ,content: '../../../views/user/administrators/roleform.html'
+        ,content: '/System/RoleEdit?fid=' + data.Fid
         ,area: ['500px', '480px']
         ,btn: ['确定', '取消']
         ,yes: function(index, layero){
@@ -208,7 +207,19 @@ layui.define(['table', 'form'], function(exports){
             
             //提交 Ajax 成功后，静态更新表格中的数据
             //$.ajax({});
-            table.reload('LAY-user-back-role'); //数据刷新
+              $.ajax({
+                  url: '/System/UpdateRole',
+                  type: 'POST',
+                  dataType: 'JSON',
+                  data: field,
+                  success: function (res) {
+                      if (res.code > 0) {
+                          //请求成功后，重载table
+                          table.reload('LAY-user-back-role'); //数据刷新
+                      }
+                      layer.msg(res.msg);
+                  }
+              });
             layer.close(index); //关闭弹层
           });  
           

@@ -22,25 +22,25 @@ namespace NL.Framework.Web.Filters
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-            filterContext.HttpContext.Response.Write("我是执行前打出来的" + Name);
+            //filterContext.HttpContext.Response.Write("我是执行前打出来的" + Name);
         }
 
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
             base.OnActionExecuted(filterContext);
-            filterContext.HttpContext.Response.Write("我是执行后打出来的" + Name);
+            //filterContext.HttpContext.Response.Write("我是执行后打出来的" + Name);
         }
 
         public override void OnResultExecuting(ResultExecutingContext filterContext)
         {
             base.OnResultExecuting(filterContext);
-            filterContext.HttpContext.Response.Write("我是在结果执行前打出来的" + Name);
+            //filterContext.HttpContext.Response.Write("我是在结果执行前打出来的" + Name);
         }
 
         public override void OnResultExecuted(ResultExecutedContext filterContext)
         {
             base.OnResultExecuted(filterContext);
-            filterContext.HttpContext.Response.Write("我是结果执行后打出来的" + Name);
+            //filterContext.HttpContext.Response.Write("我是结果执行后打出来的" + Name);
         }
     }
 }

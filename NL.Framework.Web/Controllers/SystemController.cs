@@ -1,20 +1,15 @@
-﻿using NL.Framework.IDAL;
-using NL.Framework.Model.System;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using NL.Framework.IBLL;
 using System.Web.Mvc;
 
 namespace NL.Framework.Web.Controllers
 {
     public partial class SystemController : Controller
     {
-        private readonly IDbContext _context;
+        private readonly IRoleBll _IRoleBll;
 
-        public SystemController(IDbContext db)
+        public SystemController(IRoleBll roleBll)
         {
-            _context = db;
+            _IRoleBll = roleBll;
         }
 
         public ActionResult UserIndex()
