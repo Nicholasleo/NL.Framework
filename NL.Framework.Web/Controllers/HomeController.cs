@@ -24,44 +24,11 @@ namespace NL.Framework.Web.Controllers
 
         public ActionResult Index()
         {
-            //UserModel user = _context.GetEntity<UserModel>(t=>t.UserName.Equals("NicholasLeo"));
-            //user.UserAge = 20;
-            //user.QQ = "461183790";
-            //user.ModifyTime = DateTime.Now;
-            //user.LastLoginTime = DateTime.Now;
-            ////Console.WriteLine(_context.Insert(user)); 
-            //_context.Update<UserModel>(user);
-
-            //UserModel user = new UserModel
-            //{
-            //    UserName = "NicholasLeo",
-            //    UserCode = "1001",
-            //    UserPwd = "123456",
-            //    UserAge = 20,
-            //    QQ = "461183790",
-            //    CreateTime = DateTime.Now,
-            //    CreatePerson = "NicholasLeo"
-            //};
-            //_context.Insert(CreateMenu());
-            //_context.Insert<FunctionModel>(CreateFunction());
-            //_context.Insert<MenuFunctionModel>(CreateMenuFunction());
-            //if (_context.IsExist<UserModel>(t => t.UserCode == "1001"))
-            //{
-            //    user = _context.GetEntity<UserModel>(t => t.UserCode.Equals("1001"));
-            //    user.UserAge = 20;
-            //    user.QQ = "461183790";
-            //    user.ModifyTime = DateTime.Now;
-            //    user.LastLoginTime = DateTime.Now;
-            //    _context.Update(user);
-            //}
-            //else
-            //{
-            //    _context.Insert(user);
-            //}
             //_ISystemInit.InitMenu();
             //_ISystemInit.InitFunction();
             //_ISystemInit.InitMenuFunction();
             _ISystemInit.InitRole();
+            _ISystemInit.InitUser();
 
             List<NvaMenus> menuList = _IMenuBll.GetMenuList();
             ViewBag.Title = "测试";

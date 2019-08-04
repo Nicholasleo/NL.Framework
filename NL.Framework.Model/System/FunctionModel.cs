@@ -6,6 +6,7 @@
 //    说明：
 //    版权所有：个人
 //***********************************************************
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace NL.Framework.Model.System
     {
         public string FunctionName { get; set; }
         public string FunctionEvent { get; set; }
+        [JsonIgnore]
         public virtual ICollection<RoleMenuFunctionModel> RoleMenuFunctionModels { get; set; }
-        public virtual ICollection<MenuFunctionModel> MenuFunctionModels { get; set; }
     }
 }

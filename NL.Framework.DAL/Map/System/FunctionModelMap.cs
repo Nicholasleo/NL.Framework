@@ -32,9 +32,7 @@ namespace NL.Framework.DAL.Map
 
             Property(t => t.ModifyTime).HasColumnType("DATETIME2");
 
-
-            HasMany(t => t.MenuFunctionModels).WithRequired(t => t.FunctionModel).HasForeignKey(t => t.FunctionId);
-
+            //HasOptional(x => x.RoleMenuFunctionModel).WithOptionalDependent(l => l.FunctionModel).Map(t=>t.MapKey("FunctionId"));
             HasMany(t => t.RoleMenuFunctionModels).WithRequired(t => t.FunctionModel).HasForeignKey(t => t.FunctionId);
 
             //HasMany(t => t.RoleModels).WithMany(t => t.MenuModels).Map(t => t.ToTable(TableName._ROLEMENU).MapLeftKey("MenuId").MapRightKey("RoleId"));

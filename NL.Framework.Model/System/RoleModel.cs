@@ -6,6 +6,7 @@
 //    说明：
 //    版权所有：个人
 //***********************************************************
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,11 +36,13 @@ namespace NL.Framework.Model.System
         /// <summary>
         /// 角色关联用户
         /// </summary>
+        [JsonIgnore]
         public virtual ICollection<UserRoleModel> UserRoleModels { get; set; }
         /// <summary>
         /// 角色关联菜单
         /// </summary>
-        public virtual ICollection<RoleMenuFunctionModel> RoleMenuFunctionModels { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<RoleMenuModel> RoleMenuModels { get; set; }
 
     }
 }

@@ -52,7 +52,7 @@ namespace NL.Framework.DAL.Map
 
             Property(t => t.ModifyTime).HasColumnType("DATETIME2");
 
-
+            //HasOptional(t => t.UserRoleModel).WithOptionalDependent(l => l.UserModel).Map(t=>t.MapKey("UserId"));
             HasMany(t => t.UserRoleModels).WithRequired(t => t.UserModel).HasForeignKey(t => t.UserId);
 
         }

@@ -10,6 +10,7 @@ using NL.Framework.Model;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -18,6 +19,12 @@ namespace NL.Framework.IDAL
     public partial interface IDbContext
     {
         DbSet<TEntity> Set<TEntity>() where TEntity : BaseModel;
+
+        List<TEntity> GetLists<TEntity>(string sql);
+
+        List<TEntity> GetLists<TEntity>(string sql, params SqlParameter[] sqlParameters);
+
+
 
         #region 获取数据列表
         /// <summary>

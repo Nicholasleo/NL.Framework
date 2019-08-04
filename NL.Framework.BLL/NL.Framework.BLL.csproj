@@ -48,12 +48,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MenuBll.cs" />
+    <Compile Include="System\MenuBll.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemInit.cs" />
     <Compile Include="System\RoleBll.cs" />
+    <Compile Include="System\UserBll.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NL.Framework.Common\NL.Framework.Common.csproj">
+      <Project>{D7DFEF58-B527-463F-B418-AA8E0769406A}</Project>
+      <Name>NL.Framework.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NL.Framework.IBLL\NL.Framework.IBLL.csproj">
       <Project>{B9125CEC-0E55-4011-A443-2F0D337B52A1}</Project>
       <Name>NL.Framework.IBLL</Name>

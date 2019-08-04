@@ -15,7 +15,7 @@ namespace NL.Framework.Web
 {
     public class MvcApplication : System.Web.HttpApplication
     {
-        private static IContainer _container;
+        private  static IContainer _container;
 
         public static IContainer Container
         {

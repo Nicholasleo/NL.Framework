@@ -1,12 +1,3 @@
-/**
-
- @Name：layuiAdmin 用户管理 管理员管理 角色管理
- @Author：star1029
- @Site：http://www.layui.com/admin/
- @License：LPPL
-    
- */
-
 
 layui.define(['table', 'form'], function(exports){
   var $ = layui.$
@@ -16,23 +7,46 @@ layui.define(['table', 'form'], function(exports){
   //用户管理
   table.render({
     elem: '#LAY-user-manage'
-    ,url: layui.setter.base + 'json/useradmin/webuser.js' //模拟接口
+      , url: '/System/GetUserList' //模拟接口
+      , cellMinWidth:150
     ,cols: [[
       {type: 'checkbox', fixed: 'left'}
-      ,{field: 'id', width: 100, title: 'ID', sort: true}
-      ,{field: 'username', title: '用户名', minWidth: 100}
-      ,{field: 'avatar', title: '头像', width: 100, templet: '#imgTpl'}
-      ,{field: 'phone', title: '手机'}
-      ,{field: 'email', title: '邮箱'}
-      ,{field: 'sex', width: 80, title: '性别'}
-      ,{field: 'ip', title: 'IP'}
-      ,{field: 'jointime', title: '加入时间', sort: true}
+        , { field: 'Fid', width: 100, hide:true, title: 'ID', sort: true}
+        , { field: 'UserCode', title: '登录名'}
+        , { field: 'UserName', title: '用户名'}
+        , { field: 'UserPwd', title: '密码'}
+        , {
+            field: 'Gender', title: '性别', templet: '#GenderTpl', unresize: true
+        }
+        , { field: 'UserAge', width: 80, title: '年龄'}
+        , { field: 'Email', title: '电子邮件'}
+        , { field: 'WeChat', title: '微信' }
+        , { field: 'QQ', title: 'QQ' }
+        , { field: 'MobilePhone', title: '手机' }
+        , { field: 'Address', title: '地址' }
+        , { field: 'IsAdmin', title: '超级管理员', templet: '#IsAdminTpl', unresize: true}
+        , { field: 'FirstLoginTime', title: '第一次登录', templet: '<div>{{ layui.laytpl.toDateString(d.FirstLoginTime) }}</div>' }
+        , { field: 'LastLoginTime', title: '最近一次登录', templet: '<div>{{ layui.laytpl.toDateString(d.LastLoginTime) }}</div>' }
+        , { field: 'State', title: '状态', templet: '#StateTpl', unresize: true}
+        , { field: 'Description', title: '描述' }
+        , { field: 'CreateTime', title: '创建时间', templet: '<div>{{ layui.laytpl.toDateString(d.CreateTime) }}</div>' }
+        , { field: 'CreatePerson', title: '创建人' }
+        , { field: 'ModifyTime', title: '修改时间', templet: '<div>{{ layui.laytpl.toDateString(d.ModifyTime) }}</div>' }
+        , { field: 'ModifyPerson', title: '修改人' }
       ,{title: '操作', width: 150, align:'center', fixed: 'right', toolbar: '#table-useradmin-webuser'}
-    ]]
-    ,page: true
-    ,limit: 30
-    ,height: 'full-220'
-    ,text: '对不起，加载出现异常！'
+      ]]
+      , parseData: function (res) { //res 即为原始返回的数据
+          return {
+              "code": res.code, //解析接口状态
+              "msg": res.msg, //解析提示文本
+              "count": res.count, //解析数据长度
+              "data": JSON.parse(res.data) //解析数据列表
+          };
+      }
+      , page: true
+      , limit: 30
+      , height: 'full-220'
+      , text: '对不起，加载出现异常！'
   });
   
   //监听工具条
@@ -45,20 +59,33 @@ layui.define(['table', 'form'], function(exports){
       }, function(value, index){
         layer.close(index);
         
-        layer.confirm('真的删除行么', function(index){
-          obj.del();
+              layer.confirm('真的删除行么', function (index) {
+                  $.ajax({
+                      url: '/System/DeleteUser',
+                      type: 'POST',
+                      dataType: 'JSON',
+                      data: data,
+                      success: function (res) {
+                          if (res.code > 0) {
+                              obj.del();
+                              //请求成功后，重载table
+                              table.reload('LAY-user-manage'); //数据刷新
+                          }
+                          layer.msg(res.msg);
+                      }
+                  });
           layer.close(index);
         });
       });
     } else if(obj.event === 'edit'){
       var tr = $(obj.tr);
-
+        console.log(data);
       layer.open({
         type: 2
         ,title: '编辑用户'
-        ,content: '../../../views/user/user/userform.html'
+        ,content: '/System/UserEdit?fid='+data.Fid
         ,maxmin: true
-        ,area: ['500px', '450px']
+        ,area: ['900px', '800px']
         ,btn: ['确定', '取消']
         ,yes: function(index, layero){
           var iframeWindow = window['layui-layer-iframe'+ index]
@@ -71,7 +98,19 @@ layui.define(['table', 'form'], function(exports){
             
             //提交 Ajax 成功后，静态更新表格中的数据
             //$.ajax({});
-            table.reload('LAY-user-front-submit'); //数据刷新
+              $.ajax({
+                  url: '/System/UpdateUser',
+                  type: 'POST',
+                  dataType: 'JSON',
+                  data: field,
+                  success: function (res) {
+                      if (res.code > 0) {
+                          //请求成功后，重载table
+                          table.reload('LAY-user-manage'); //数据刷新
+                      }
+                      layer.msg(res.msg);
+                  }
+              });
             layer.close(index); //关闭弹层
           });  
           
@@ -98,8 +137,19 @@ layui.define(['table', 'form'], function(exports){
       ,{field: 'jointime', title: '加入时间', sort: true}
       ,{field: 'check', title:'审核状态', templet: '#buttonTpl', minWidth: 80, align: 'center'}
       ,{title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-useradmin-admin'}
-    ]]
-    ,text: '对不起，加载出现异常！'
+      ]]
+      , parseData: function (res) { //res 即为原始返回的数据
+          return {
+              "code": res.code, //解析接口状态
+              "msg": res.msg, //解析提示文本
+              "count": res.count, //解析数据长度
+              "data": JSON.parse(res.data) //解析数据列表
+          };
+      }
+      , page: true
+      , limit: 30
+      , height: 'full-220'
+      , text: '对不起，加载出现异常！'
   });
   
   //监听工具条
@@ -156,11 +206,23 @@ layui.define(['table', 'form'], function(exports){
       , url: '/System/GetRoleList' //模拟接口
     ,cols: [[
       {type: 'checkbox', fixed: 'left'}
-        , { field: 'FID', width: 80, title: 'ID', hide:true, sort: true}
+        , { field: 'FID', width: 10, title: 'ID', hide:true, sort: true}
         , { field: 'RoleName', title: '角色名' }
-      , { field: 'Description', title: '具体描述'}
+        , { field: 'Description', title: '具体描述' ,width:400 }
+        , { field: 'CreatePerson', title: '创建人' ,width:150 }
+        , { field: 'CreateTime', title: '创建时间', templet: '<div>{{ layui.laytpl.toDateString(d.CreateTime) }}</div>'}
+        , { field: 'ModifyPerson', title: '修改人' ,width:150}
+        , { field: 'ModifyTime', title: '修改时间', templet: '<div>{{ layui.laytpl.toDateString(d.ModifyPerson) }}</div>'}
       ,{title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-useradmin-admin'}
       ]]
+      , parseData: function (res) { //res 即为原始返回的数据
+          return {
+              "code": res.code, //解析接口状态
+              "msg": res.msg, //解析提示文本
+              "count": res.count, //解析数据长度
+              "data": JSON.parse(res.data) //解析数据列表
+          };
+      }
       , page: true
       , limit: 30
       , height: 'full-220'
@@ -180,17 +242,16 @@ layui.define(['table', 'form'], function(exports){
                 success: function (res) {
                     if (res.code > 0) {
                         //请求成功后，重载table
+                        obj.del();
                         table.reload('LAY-user-back-role');
                     }
                     layer.msg(res.msg);
                 }
             });
-        obj.del();
         layer.close(index);
       });
     }else if(obj.event === 'edit'){
         var tr = $(obj.tr);
-        var data = obj.data;
       layer.open({
         type: 2
         ,title: '编辑角色'
@@ -232,5 +293,43 @@ layui.define(['table', 'form'], function(exports){
     }
   });
 
+    //时间戳的处理
+    layui.laytpl.toDateString = function (d, format) {
+        var date = new Date();
+        if (d == null)
+            return "";
+        else
+            date = new Date(parseInt(d.replace("/Date(", "").replace(")/", ""), 10) || new Date())
+            , ymd = [
+                this.digit(date.getFullYear(), 4)
+                , this.digit(date.getMonth() + 1)
+                , this.digit(date.getDate())
+            ]
+            , hms = [
+                this.digit(date.getHours())
+                , this.digit(date.getMinutes())
+                , this.digit(date.getSeconds())
+            ];
+
+        format = format || 'yyyy-MM-dd HH:mm:ss';
+
+        return format.replace(/yyyy/g, ymd[0])
+            .replace(/MM/g, ymd[1])
+            .replace(/dd/g, ymd[2])
+            .replace(/HH/g, hms[0])
+            .replace(/mm/g, hms[1])
+            .replace(/ss/g, hms[2]);
+    };
+
+    //数字前置补零
+    layui.laytpl.digit = function (num, length, end) {
+        var str = '';
+        num = String(num);
+        length = length || 2;
+        for (var i = num.length; i < length; i++) {
+            str += '0';
+        }
+        return num < Math.pow(10, length) ? str + (num | 0) : num;
+    };
   exports('useradmin', {})
 });

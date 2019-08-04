@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "新增角色";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+}
+
+@model NL.Framework.Model.System.RoleModel
+
+<div class="layui-form" lay-filter="layuiadmin-form-role" id="layuiadmin-form-role" style="padding: 20px 30px 0 0;">
+    <div class="layui-form-item">
+        <label class="layui-form-label">角色</label>
+        <div class="layui-input-block">
+            <input type="text" name="RoleName" id="LAY-user-login-username" lay-verify="required" placeholder="请输入角色名称" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">角色编号</label>
+        <div class="layui-input-block">
+            <input type="text" name="RoleCode" lay-verify="required" placeholder="请输入角色编号，如：Admin" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">具体描述</label>
+        <div class="layui-input-block">
+            <textarea type="text" name="Description" lay-verify="required" placeholder="请输入角色描述" autocomplete="off" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+        <button class="layui-btn" lay-submit lay-filter="LAY-user-role-submit" id="LAY-user-role-submit">提交</button>
+    </div>
+</div>
+<script>
+  layui.config({
+    base: '../Scripts/layui/src/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form'], function(){
+    var $ = layui.$
+          , form = layui.form;
+  })
+</script>
+

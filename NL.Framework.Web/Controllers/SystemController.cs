@@ -6,16 +6,15 @@ namespace NL.Framework.Web.Controllers
     public partial class SystemController : Controller
     {
         private readonly IRoleBll _IRoleBll;
+        private readonly IUserBll _IUserBll;
 
-        public SystemController(IRoleBll roleBll)
+        public SystemController(IRoleBll roleBll
+            , IUserBll userBll)
         {
             _IRoleBll = roleBll;
+            _IUserBll = userBll;
         }
 
-        public ActionResult UserIndex()
-        {
-            return View();
-        }
 
         public ActionResult RightIndex()
         {

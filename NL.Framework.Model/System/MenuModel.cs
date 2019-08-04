@@ -6,6 +6,7 @@
 //    说明：
 //    版权所有：个人
 //***********************************************************
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,11 +44,10 @@ namespace NL.Framework.Model.System
         /// 菜单显示顺序
         /// </summary>
         public int MenuIndex { get; set; }
-
-        public virtual ICollection<MenuFunctionModel> MenuFunctionModels { get; set; }
         /// <summary>
         /// 角色关联菜单
         /// </summary>
-        public virtual ICollection<RoleMenuFunctionModel> RoleMenuFunctionModels { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<RoleMenuModel> RoleMenuModels { get; set; }
     }
 }

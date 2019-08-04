@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -43,18 +46,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseModel.cs" />
+    <Compile Include="NLFrameEnt\UserPageEnt.cs" />
     <Compile Include="NvaMenus.cs" />
     <Compile Include="Pagination.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultData.cs" />
     <Compile Include="System\FunctionModel.cs" />
-    <Compile Include="System\MenuFunctionModel.cs" />
     <Compile Include="System\MenuModel.cs" />
     <Compile Include="System\RoleMenuFunctionModel.cs" />
+    <Compile Include="System\RoleMenuModel.cs" />
     <Compile Include="System\RoleModel.cs" />
     <Compile Include="System\SystemBaseModel.cs" />
     <Compile Include="System\UserModel.cs" />
     <Compile Include="System\UserRoleModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

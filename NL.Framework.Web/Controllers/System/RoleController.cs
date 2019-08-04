@@ -1,7 +1,9 @@
-﻿using NL.Framework.Model;
+﻿using Newtonsoft.Json;
+using NL.Framework.Model;
 using NL.Framework.Model.System;
 using NL.Framework.Web.Filters;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -22,7 +24,12 @@ namespace NL.Framework.Web.Controllers
             return View(model);
         }
 
-        public ActionResult RoleEdit(string fid)
+        public ActionResult RoleAdd()
+        {
+            return View();
+        }
+
+        public ActionResult RoleEdit(Guid fid)
         {
             RoleModel model = _IRoleBll.GetRoleModel(fid);
             return View(model);
@@ -30,12 +37,13 @@ namespace NL.Framework.Web.Controllers
 
 
         [HttpGet]
-        [NLFrameAuthorizeAttribute]
-        public ActionResult GetRoleList(int page,int limit,string role = "")
+        public ActionResult GetRoleList(int page, int limit, string role = "")
         {
             AjaxResultData<RoleModel> result = new AjaxResultData<RoleModel>();
             int total = 0;
-            result.data = _IRoleBll.GetRolesLists(page, limit, out total, role);            
+            List<RoleModel> data = _IRoleBll.GetRolesLists(page, limit, out total, role);
+            string json = JsonConvert.SerializeObject(data);
+            result.data = json;
             result.count = total.ToString();
             result.code = 0;
             result.msg = "";
@@ -56,10 +64,25 @@ namespace NL.Framework.Web.Controllers
         [HttpPost]
         public ActionResult UpdateRole(RoleModel model)
         {
+            model.ModifyPerson = "NicholasLeo";
+            model.ModifyTime = DateTime.Now;
             ResultData result = new ResultData();
             int i = _IRoleBll.UpdateRole(model);
             result.code = i;
             result.msg = i > 0 ? "修改成功！" : "修改失败！";
+            result.data = new TokenData { access_token = Guid.NewGuid().ToString() };
+            return Json(result);
+        }
+
+        [HttpPost]
+        public ActionResult AddRole(RoleModel model)
+        {
+            model.CreateTime = DateTime.Now;
+            model.CreatePerson = "NicholasLeo";
+            ResultData result = new ResultData();
+            int i = _IRoleBll.AddRole(model);
+            result.code = i;
+            result.msg = i > 0 ? "添加成功！" : "添加失败！";
             result.data = new TokenData { access_token = Guid.NewGuid().ToString() };
             return Json(result);
         }

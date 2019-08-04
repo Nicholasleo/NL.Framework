@@ -26,23 +26,28 @@ namespace NL.Framework.BLL
         }
         public int AddRole(RoleModel model)
         {
-            throw new NotImplementedException();
+            return _context.Insert<RoleModel>(model);
         }
 
         public int DeleteRole(RoleModel model)
         {
+            //不允许删除超级管理员
+            if (model.RoleCode.Equals("SuperAdmin"))
+                return 0;
             return _context.Delete<RoleModel>(model.Fid);
         }
 
         public List<FunctionModel> GetMenuFunction()
         {
-            var menu = _context.GetEntity<MenuModel>(t => t.MenuName == "角色管理");
+            MenuModel menu = _context.GetEntity<MenuModel>(t => t.MenuName == "角色管理");
             var r = from f in _context.Set<FunctionModel>()
-                    join fm in _context.Set<MenuFunctionModel>()
+                    join fm in _context.Set<RoleMenuFunctionModel>()
                     on f.Fid equals fm.FunctionId
-                    join m in _context.Set<MenuModel>()
-                    on fm.MenuId equals m.Fid
-                    where m.Fid == menu.Fid
+                    join m in _context.Set<RoleMenuModel>()
+                    on fm.RoleMenuId equals m.Fid
+                    join rol in _context.Set<RoleModel>()
+                    on m.RoleId equals rol.Fid
+                    where m.MenuId.Equals(menu.Fid) && rol.RoleCode.Equals("SuperAdmin")
                     select new
                     {
                         FunctionName = f.FunctionName,
@@ -64,9 +69,9 @@ namespace NL.Framework.BLL
             return _context.GetLists<RoleModel>();
         }
 
-        public RoleModel GetRoleModel(string fid)
+        public RoleModel GetRoleModel(Guid fid)
         {
-            return _context.GetEntity<RoleModel>(t => t.Fid.ToString().Equals(fid));
+            return _context.GetEntity<RoleModel>(fid);
         }
 
         public List<RoleModel> GetRolesLists(int page, int limit,out int total, string role = "")

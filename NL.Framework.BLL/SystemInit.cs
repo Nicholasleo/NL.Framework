@@ -54,6 +54,31 @@ namespace NL.Framework.BLL
             _context.Insert(list);
         }
 
+        public void InitUser()
+        {
+            var role = _context.GetEntity<RoleModel>(t => t.RoleCode.Equals("SuperAdmin"));
+            if (!_context.IsExist<UserModel>(t => t.UserCode.Equals("admin")))
+            {
+                UserModel user = new UserModel
+                {
+                    UserName = "NicholasLeo",
+                    UserCode = "admin",
+                    UserPwd = "123456",
+                    UserAge = 27,
+                    Gender = 1,
+                    CreatePerson = "NicholasLeo",
+                    CreateTime = DateTime.Now,
+                    WeChat = "nicholasleo1030",
+                    QQ = "461183790",
+                    IsAdmin = 1,
+                    IsDelete = 0,
+                    MobilePhone = "13158985896"
+                };
+                _context.Insert<UserModel>(user);
+            }
+        }
+
+
         public void InitMenu()
         {
             List<MenuModel> list = new List<MenuModel>();
@@ -117,19 +142,48 @@ namespace NL.Framework.BLL
 
         public void InitMenuFunction()
         {
-            var list = _context.GetLists<FunctionModel>();
-            var menu = _context.GetEntity<MenuModel>(t => t.MenuName.Equals("角色管理"));
-            List<MenuFunctionModel> right = new List<MenuFunctionModel>();
+            var menus = _context.GetLists<MenuModel>(t=>!t.MenuParentId.Equals(Guid.Empty));
+            var role = _context.GetEntity<RoleModel>(t => t.RoleCode.Equals("SuperAdmin"));
+            List<RoleMenuModel> rmList = new List<RoleMenuModel>();
+            //添加角色菜单
+            foreach (MenuModel menu in menus)
+            {
+                rmList.Add(new RoleMenuModel
+                {
+                    Fid = Guid.NewGuid(),
+                    RoleId = role.Fid,
+                    MenuId = menu.Fid,
+                    CreatePerson = "NicholasLeo",
+                    CreateTime = DateTime.Now
+                });
+            }
+            _context.Insert(rmList);
+            //添加角色菜单功能
+            var list = _context.GetLists<FunctionModel>(t=>t.FunctionName.Equals("编辑") || t.FunctionName.Equals("删除"));
+            //通过角色获取菜单
+            var rmFid = from m in _context.Set<MenuModel>().AsEnumerable()
+                           join rm in _context.Set<RoleMenuModel>().AsEnumerable() on m.Fid equals rm.MenuId
+                           join r in _context.Set<RoleModel>() on rm.RoleId equals r.Fid
+                           where r.RoleName.Equals("系统超级管理员") && m.MenuName.Equals("角色管理")
+                           select new {
+                               MenuId = rm.Fid
+                           };
+            List <RoleMenuFunctionModel> right = new List<RoleMenuFunctionModel>();
+            Guid tempId = Guid.NewGuid();
+            foreach (var i in rmFid)
+            {
+                tempId = i.MenuId;
+            }
             foreach (FunctionModel item in list)
             {
-                MenuFunctionModel m = new MenuFunctionModel();
-                m.MenuId = menu.Fid;
+                RoleMenuFunctionModel m = new RoleMenuFunctionModel();
                 m.FunctionId = item.Fid;
+                m.RoleMenuId = tempId;
                 m.CreatePerson = "NicholasLeo";
                 m.CreateTime = DateTime.Now;
                 right.Add(m);
             }
-            _context.Insert<MenuFunctionModel>(right);
+            _context.Insert<RoleMenuFunctionModel>(right);
         }
 
         public void InitRole()

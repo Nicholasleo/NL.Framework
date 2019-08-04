@@ -31,6 +31,14 @@
           "type": "NL.Framework.IBLL.IRoleBll,NL.Framework.IBLL"
         }
       ]
+    },
+    {
+      "type": "NL.Framework.BLL.UserBll, NL.Framework.BLL",
+      "services": [
+        {
+          "type": "NL.Framework.IBLL.IUserBll,NL.Framework.IBLL"
+        }
+      ]
     }
   ]
 }

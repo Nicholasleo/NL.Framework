@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -181,5 +182,14 @@ namespace NL.Framework.DAL
             return this.Set<TEntity>().Where(where).FirstOrDefault();
         }
 
+        public List<TEntity> GetLists<TEntity>(string sql)
+        {
+            return this.Database.SqlQuery<TEntity>(sql).ToList();
+        }
+
+        public List<TEntity> GetLists<TEntity>(string sql, params SqlParameter[] sqlParameters)
+        {
+            return this.Database.SqlQuery<TEntity>(sql).ToList();
+        }
     }
 }

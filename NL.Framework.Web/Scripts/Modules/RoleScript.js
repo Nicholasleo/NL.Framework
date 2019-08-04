@@ -49,7 +49,7 @@
             layer.open({
                 type: 2
                 , title: '添加新角色'
-                , content: 'roleform.html'
+                , content: '/System/RoleAdd'
                 , area: ['500px', '480px']
                 , btn: ['确定', '取消']
                 , yes: function (index, layero) {
@@ -59,10 +59,21 @@
                     //监听提交
                     iframeWindow.layui.form.on('submit(LAY-user-role-submit)', function (data) {
                         var field = data.field; //获取提交的字段
-
+                        console.log(field);
                         //提交 Ajax 成功后，静态更新表格中的数据
-                        //$.ajax({});
-                        table.reload('LAY-user-back-role');
+                        $.ajax({
+                            url: '/System/AddRole',
+                            type: 'POST',
+                            dataType: 'JSON',
+                            data: field,
+                            success: function (res) {
+                                if (res.code > 0) {
+                                    //请求成功后，重载table
+                                    table.reload('LAY-user-back-role'); //数据刷新
+                                }
+                                layer.msg(res.msg);
+                            }
+                        });
                         layer.close(index); //关闭弹层
                     });
 

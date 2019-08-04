@@ -19,7 +19,7 @@ namespace NL.Framework.IBLL
     {
         List<RoleModel> GetRolesLists(int page, int limit, out int total, string role = "");
 
-        RoleModel GetRoleModel(string fid);
+        RoleModel GetRoleModel(Guid fid);
 
         IQueryable GetRoleAll();
 

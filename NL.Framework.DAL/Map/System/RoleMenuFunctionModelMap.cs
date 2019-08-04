@@ -34,6 +34,10 @@ namespace NL.Framework.DAL.Map
 
             Property(t => t.ModifyTime).HasColumnType("DATETIME2");
 
+            //HasOptional(t => t.RoleMenuModel).WithOptionalDependent(l => l.FunctionModel);
+
+            //HasMany(t=>t.FunctionModel).WithMany(t=>t.)
+
             //HasMany(t => t.RoleModels).WithMany(t => t.MenuModels).Map(t => t.ToTable(TableName._ROLEMENU).MapLeftKey("MenuId").MapRightKey("RoleId"));
 
             //HasMany(t => t.FunctionModels).WithMany(t => t.MenuModels).Map(t => t.ToTable(TableName._ROLEMENUFUNCTION).MapLeftKey("MenuId").MapRightKey("FunctionId"));
