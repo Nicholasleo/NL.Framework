@@ -28,6 +28,9 @@ namespace NL.Framework.DAL.Map
             //添加唯一约束
             HasIndex(t => t.UserCode).IsUnique();
 
+            Property(t => t.IdCard).IsRequired().HasColumnType("NVARCHAR").HasMaxLength(18);
+            HasIndex(t => t.IdCard).IsUnique();
+
             Property(t => t.UserPwd).IsRequired().HasColumnType("NVARCHAR").HasMaxLength(24);
 
             Property(t => t.Gender);

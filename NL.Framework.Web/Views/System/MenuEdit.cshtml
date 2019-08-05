@@ -1,0 +1,81 @@
+﻿@using NL.Framework.Model.System
+@model NL.Framework.Web.Controllers.MenuEditModel
+@{
+    ViewBag.Title = "菜单编辑";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+}
+
+
+    <div class="layui-form" lay-filter="layuiadmin-form-menu" id="layuiadmin-form-menu" style="padding: 20px 30px 0 0;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="MenuName" id="LAY-user-login-username" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单地址</label>
+            <div class="layui-input-block">
+                <input type="text" name="MenuUrl" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单图标</label>
+            <div class="layui-input-block">
+                <input type="text" name="MenuIcon" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">上级菜单</label>
+            <div class="layui-input-block">
+                <select name="MenuParentId" lay - filter="LAY-user-menu-type">
+                    @{
+                        <option value="">全部</option>
+                        foreach (MenuModel item in Model.ParentMenuList)
+                        {
+                            <option value="@item.Fid">@item.MenuName</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">显示顺序</label>
+            <div class="layui-input-block">
+                <input type="text" name="MenuIndex" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单状态</label>
+            <div class="layui-input-block">
+                <input type="text" name="MenuIsShow" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-hide">
+            <input type="text" name="FID" class="layui-input">
+        </div>
+        <div class="layui-form-item layui-hide">
+            <button class="layui-btn" lay-submit lay-filter="LAY-user-menu-submit" id="LAY-user-menu-submit">提交</button>
+        </div>
+    </div>
+<script>
+  layui.config({
+    base: '../Scripts/layui/src/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form'], function(){
+    var $ = layui.$
+          , form = layui.form;
+      form.val('layuiadmin-form-menu', {
+          'MenuName':'@Model.Menu.MenuName',
+          'FID':'@Model.Menu.Fid',
+          'MenuUrl':'@Model.Menu.MenuUrl',
+          'MenuIcon':'@Model.Menu.MenuIcon',
+          'MenuIsShow':'@Model.Menu.MenuIsShow',
+          'MenuParentId':'@Model.Menu.MenuParentId',
+          'MenuIsShow':'@Model.Menu.MenuIsShow',
+          'MenuIndex':'@Model.Menu.MenuIndex'
+      })
+  })
+</script>
+

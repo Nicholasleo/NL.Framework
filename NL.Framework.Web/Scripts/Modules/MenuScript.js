@@ -9,11 +9,12 @@
         , admin = layui.admin;
 
     //搜索角色
-    form.on('select(LAY-user-adminrole-type)', function (data) {
+    form.on('select(LAY-user-menu-type)', function (data) {
+        console.log(data);
         //执行重载
-        table.reload('LAY-user-back-role', {
+        table.reload('LAY-useradmin-menu', {
             where: {
-                role: data.value
+                filtter: data.value
             }
         });
     });
@@ -21,7 +22,7 @@
     //事件
     var active = {
         delete: function () {
-            var checkStatus = table.checkStatus('LAY-user-back-role')
+            var checkStatus = table.checkStatus('LAY-useradmin-menu')
                 , checkData = checkStatus.data; //得到选中的数据
 
             if (checkData.length === 0) {
@@ -31,14 +32,14 @@
             layer.confirm('确定删除吗？', function (index) {
                 //执行 Ajax 后重载
                 $.ajax({
-                    url: '/System/DeleteRole',
+                    url: '/System/DeleteMenu',
                     type: 'POST',
                     dataType: 'JSON',
                     data: checkData[0],
                     success: function (res) {
                         if (res.code > 0) {
                             //请求成功后，写入 access_token
-                            table.reload('LAY-user-back-role');
+                            table.reload('LAY-useradmin-menu');
                         }
                         layer.msg(res.msg);
                     }
@@ -48,28 +49,28 @@
         add: function () {
             layer.open({
                 type: 2
-                , title: '添加角色'
-                , content: '/System/RoleAdd'
+                , title: '添加菜单'
+                , content: '/System/MenuAdd'
                 , area: ['500px', '480px']
                 , btn: ['确定', '取消']
                 , yes: function (index, layero) {
                     var iframeWindow = window['layui-layer-iframe' + index]
-                        , submit = layero.find('iframe').contents().find("#LAY-user-role-submit");
+                        , submit = layero.find('iframe').contents().find("#LAY-user-menu-submit");
 
                     //监听提交
-                    iframeWindow.layui.form.on('submit(LAY-user-role-submit)', function (data) {
+                    iframeWindow.layui.form.on('submit(LAY-user-menu-submit)', function (data) {
                         var field = data.field; //获取提交的字段
                         console.log(field);
                         //提交 Ajax 成功后，静态更新表格中的数据
                         $.ajax({
-                            url: '/System/AddRole',
+                            url: '/System/AddMenu',
                             type: 'POST',
                             dataType: 'JSON',
                             data: field,
                             success: function (res) {
                                 if (res.code > 0) {
                                     //请求成功后，重载table
-                                    table.reload('LAY-user-back-role'); //数据刷新
+                                    table.reload('LAY-useradmin-menu'); //数据刷新
                                 }
                                 layer.msg(res.msg);
                             }
@@ -82,7 +83,7 @@
             });
         }
     }
-    $('.layui-btn.layuiadmin-btn-role').on('click', function () {
+    $('.layui-btn.layuiadmin-btn-menu').on('click', function () {
         var type = $(this).data('type');
         active[type] ? active[type].call(this) : '';
     });

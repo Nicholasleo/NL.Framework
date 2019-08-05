@@ -7,6 +7,7 @@
 //    版权所有：个人
 //***********************************************************
 using NL.Framework.Model;
+using NL.Framework.Model.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +16,14 @@ using System.Threading.Tasks;
 
 namespace NL.Framework.IBLL
 {
-    public interface IMenuBll
+    public interface IMenuBll : ISystemBaseBll, IBaseBll
     {
         List<NvaMenus> GetMenuList();
+        IQueryable GetParentMenu();
+        List<MenuModel> GetMenuLists(int page, int limit, out int total, string filtter = "");
+        MenuModel GetMenuModel(Guid fid);
+        int DeleteMenu(MenuModel model);
+        int UpdateMenu(MenuModel model);
+        int AddMenu(MenuModel model);
     }
 }

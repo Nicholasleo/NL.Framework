@@ -64,6 +64,7 @@ namespace NL.Framework.BLL
                     UserName = "NicholasLeo",
                     UserCode = "admin",
                     UserPwd = "123456",
+                    IdCard="362330199010303750",
                     UserAge = 27,
                     Gender = 1,
                     CreatePerson = "NicholasLeo",
@@ -157,17 +158,26 @@ namespace NL.Framework.BLL
                     CreateTime = DateTime.Now
                 });
             }
-            _context.Insert(rmList);
+            //_context.Insert(rmList);
             //添加角色菜单功能
-            var list = _context.GetLists<FunctionModel>(t=>t.FunctionName.Equals("编辑") || t.FunctionName.Equals("删除"));
+            var list = _context.GetLists<FunctionModel>(t=>t.FunctionName.Equals("编辑") || t.FunctionName.Equals("删除") || t.FunctionName.Equals("新增"));
             //通过角色获取菜单
             var rmFid = from m in _context.Set<MenuModel>().AsEnumerable()
-                           join rm in _context.Set<RoleMenuModel>().AsEnumerable() on m.Fid equals rm.MenuId
-                           join r in _context.Set<RoleModel>() on rm.RoleId equals r.Fid
-                           where r.RoleName.Equals("系统超级管理员") && m.MenuName.Equals("角色管理")
-                           select new {
-                               MenuId = rm.Fid
-                           };
+                        join rm in _context.Set<RoleMenuModel>().AsEnumerable() on m.Fid equals rm.MenuId
+                        join r in _context.Set<RoleModel>() on rm.RoleId equals r.Fid
+                        where r.RoleName.Equals("系统超级管理员") && m.MenuName.Equals("用户管理")
+                        select new
+                        {
+                            MenuId = rm.Fid
+                        };
+            //var rmFid = from m in _context.Set<MenuModel>().AsEnumerable()
+            //            join rm in _context.Set<RoleMenuModel>().AsEnumerable() on m.Fid equals rm.MenuId
+            //            join r in _context.Set<RoleModel>() on rm.RoleId equals r.Fid
+            //            where r.RoleName.Equals("系统超级管理员") && m.MenuName.Equals("菜单管理")
+            //            select new
+            //            {
+            //                MenuId = rm.Fid
+            //            };
             List <RoleMenuFunctionModel> right = new List<RoleMenuFunctionModel>();
             Guid tempId = Guid.NewGuid();
             foreach (var i in rmFid)

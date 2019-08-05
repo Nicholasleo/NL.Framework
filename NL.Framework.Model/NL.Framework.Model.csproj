@@ -51,6 +51,7 @@
     <Compile Include="Pagination.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultData.cs" />
+    <Compile Include="System\DropDownOptionsModel.cs" />
     <Compile Include="System\FunctionModel.cs" />
     <Compile Include="System\MenuModel.cs" />
     <Compile Include="System\RoleMenuFunctionModel.cs" />

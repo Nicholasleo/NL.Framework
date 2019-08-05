@@ -64,6 +64,26 @@ namespace NL.Framework.BLL
             return flist;
         }
 
+        public List<FunctionModel> GetMenuFunction(Guid menuFid, Guid roleFid)
+        {
+            return CommonBll.GetMenuFunction(_context, menuFid, roleFid);
+        }
+
+        public List<FunctionModel> GetMenuFunction(Guid menuFid, string roleCode)
+        {
+            return CommonBll.GetMenuFunction(_context, menuFid, roleCode);
+        }
+
+        public List<FunctionModel> GetMenuFunction(string menuName, string roleCode)
+        {
+            return CommonBll.GetMenuFunction(_context, menuName, roleCode);
+        }
+
+        public List<FunctionModel> GetMenuFunction(string menuName, Guid roleFid)
+        {
+            return CommonBll.GetMenuFunction(_context, menuName, roleFid);
+        }
+
         public IQueryable GetRoleAll()
         {
             return _context.GetLists<RoleModel>();

@@ -47,8 +47,15 @@
 
         <div class="layui-card-body">
             <div style="padding-bottom: 10px;">
-                <button class="layui-btn layuiadmin-btn-useradmin" data-type="batchdel">删除</button>
-                <button class="layui-btn layuiadmin-btn-useradmin" data-type="add">添加</button>
+                @{
+                    foreach (FunctionModel item in Model.FunctionLists)
+                    {
+                        if (!item.FunctionEvent.Equals("edit"))
+                        {
+                            <button class="layui-btn layuiadmin-btn-role" data-type="@item.FunctionEvent">@item.FunctionName</button>
+                        }
+                    }
+                }
             </div>
 
             <table id="LAY-user-manage" lay-filter="LAY-user-manage"></table>
@@ -56,8 +63,20 @@
                 <img style="display: inline-block; width: 50%; height: 100%;" src={{ d.avatar }}>
             </script>
             <script type="text/html" id="table-useradmin-webuser">
-                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
-                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+                @{
+                    foreach (FunctionModel item in Model.FunctionLists)
+                    {
+                        if (item.FunctionEvent.Equals("edit"))
+                        {
+                            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="@item.FunctionEvent"><i class="layui-icon layui-icon-edit"></i>@item.FunctionName</a>
+                        }
+
+                        if (item.FunctionEvent.Equals("delete"))
+                        {
+                            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="@item.FunctionEvent"><i class="layui-icon layui-icon-edit"></i>@item.FunctionName</a>
+                        }
+                    }
+                }
             </script>
         </div>
     </div>
@@ -83,11 +102,11 @@
 </script>
 
 <script type="text/html" id="StateTpl">
-    {{# if(d.State == 0){ }}
-    <span class="layuiadmin-span-color">启用</span>
-    {{# }else{ }}
-    <span class="layuiadmin-span-color">禁用</span>
-    {{# } }}
+    {{#  if(d.State == 0){ }}
+    <button class="layui-btn layui-btn-xs">启用</button>
+    {{#  } else { }}
+    <button class="layui-btn layui-btn-primary layui-btn-xs">禁用</button>
+    {{#  } }}
 </script>
 <script src="@Url.Content("~/Scripts/Modules/UserScript.js")"></script>
 

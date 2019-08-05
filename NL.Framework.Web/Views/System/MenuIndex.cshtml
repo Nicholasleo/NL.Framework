@@ -1,7 +1,70 @@
-﻿
+﻿@using NL.Framework.Model.System
+@using NL.Framework.Web.Controllers
+@model PageModels
+
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>MenuIndex</h2>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    菜单筛选
+                </div>
+                <div class="layui-inline">
+                    <select name="rolename" lay-filter="LAY-user-menu-type">
+                        <option value="">全部</option>
+                        @{
+                            foreach (MenuModel item in Model.MenuLists)
+                            {
+                                <option value="@item.Fid">@item.MenuName</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-card-body">
+            <div style="padding-bottom: 10px;">
+                @{
+                    foreach (FunctionModel item in Model.FunctionLists)
+                    {
+                        if (!item.FunctionEvent.Equals("edit"))
+                        {
+                            <button class="layui-btn layuiadmin-btn-menu" data-type="@item.FunctionEvent">@item.FunctionName</button>
+                        }
+                    }
+                }
+            </div>
+
+            <table id="LAY-useradmin-menu" lay-filter="LAY-useradmin-menu"></table>
+            <script type="text/html" id="buttonTpl">
+                {{#  if(d.MenuIsShow == 1){ }}
+                <button class="layui-btn layui-btn-xs">正常</button>
+                {{#  } else { }}
+                <button class="layui-btn layui-btn-primary layui-btn-xs">禁用</button>
+                {{#  } }}
+            </script>
+            <script type="text/html" id="table-useradmin-menu">
+                @{
+                    foreach (FunctionModel item in Model.FunctionLists)
+                    {
+                        if (item.FunctionEvent.Equals("edit"))
+                        {
+                            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="@item.FunctionEvent"><i class="layui-icon layui-icon-edit"></i>@item.FunctionName</a>
+                        }
+
+                        if (item.FunctionEvent.Equals("delete"))
+                        {
+                            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="@item.FunctionEvent"><i class="layui-icon layui-icon-edit"></i>@item.FunctionName</a>
+                        }
+                    }
+                }
+            </script>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Scripts/Modules/MenuScript.js")"></script>
 

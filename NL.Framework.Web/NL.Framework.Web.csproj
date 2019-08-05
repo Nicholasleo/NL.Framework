@@ -205,8 +205,10 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\SystemController.cs" />
+    <Compile Include="Controllers\System\MenuController.cs" />
     <Compile Include="Controllers\System\RoleController.cs" />
     <Compile Include="Controllers\System\UserController.cs" />
+    <Compile Include="Controllers\WebInfoController.cs" />
     <Compile Include="Filters\NLFrameActionFilterAttribute.cs" />
     <Compile Include="Filters\NLFrameAuthorizeAttribute.cs" />
     <Compile Include="Filters\NLFrameAuthenticationAttribute.cs" />
@@ -574,6 +576,7 @@
     <Content Include="Scripts\layui\src\layuiadmin\tpl\system\theme.html" />
     <Content Include="Scripts\layui\src\layuiadmin\tpl\system\说明.txt" />
     <Content Include="Scripts\layui\src\layuiadmin\tpl\说明.txt" />
+    <Content Include="Scripts\Modules\MenuScript.js" />
     <Content Include="Scripts\Modules\UserScript.js" />
     <Content Include="Scripts\Modules\RoleScript.js" />
     <Content Include="Web.config" />
@@ -594,6 +597,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\Menu\" />
     <Folder Include="Views\Role\" />
     <Folder Include="Views\User\" />
   </ItemGroup>
@@ -625,6 +629,9 @@
     <Content Include="Views\Shared\_LayoutForm.cshtml" />
     <Content Include="Views\System\RoleAdd.cshtml" />
     <Content Include="Views\System\UserEdit.cshtml" />
+    <Content Include="Views\System\MenuEdit.cshtml" />
+    <Content Include="Views\System\MenuAdd.cshtml" />
+    <Content Include="Views\WebInfo\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NL.Framework.BLL\NL.Framework.BLL.csproj">

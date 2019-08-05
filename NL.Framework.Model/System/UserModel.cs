@@ -34,6 +34,10 @@ namespace NL.Framework.Model.System
         /// </summary>
         public string UserPwd { get; set; }
         /// <summary>
+        /// 身份证号码
+        /// </summary>
+        public string IdCard { get; set; }
+        /// <summary>
         /// 用户性别
         /// </summary>
         public int Gender { get; set; }

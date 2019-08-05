@@ -6,18 +6,18 @@
 //    说明：
 //    版权所有：个人
 //***********************************************************
-using NL.Framework.Model;
 using NL.Framework.Model.System;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NL.Framework.IBLL
 {
     public interface ISystemBaseBll
     {
         List<FunctionModel> GetMenuFunction();
+        List<FunctionModel> GetMenuFunction(Guid menuFid,Guid roleFid);
+        List<FunctionModel> GetMenuFunction(Guid menuFid, string roleCode);
+        List<FunctionModel> GetMenuFunction(string menuName, string roleCode);
+        List<FunctionModel> GetMenuFunction(string menuName, Guid roleFid);
     }
 }

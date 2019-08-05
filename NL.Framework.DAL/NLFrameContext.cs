@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration;
+using System.Data.Entity.Validation;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
@@ -107,9 +108,12 @@ namespace NL.Framework.DAL
                 this.Entry<TEntity>(ent).State = EntityState.Added;
                 return this.SaveChanges();
             }
+            catch (DbEntityValidationException ex)
+            {
+                throw new Exception(ex.Message);
+            }
             catch (Exception ex)
             {
-
                 throw new Exception(ex.Message);
             }
         }
@@ -123,6 +127,10 @@ namespace NL.Framework.DAL
                     this.Entry<TEntity>(item).State = EntityState.Added;
                 }
                 return this.SaveChanges();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                throw new Exception(ex.Message);
             }
             catch (Exception ex)
             {
@@ -146,9 +154,20 @@ namespace NL.Framework.DAL
 
         public virtual int Update<TEntity>(TEntity ent) where TEntity : BaseModel
         {
-            this.Set<TEntity>().Attach(ent);
-            this.Entry<TEntity>(ent).State = EntityState.Modified;
-            return this.SaveChanges();
+            try
+            {
+                this.Set<TEntity>().Attach(ent);
+                this.Entry<TEntity>(ent).State = EntityState.Modified;
+                return this.SaveChanges();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

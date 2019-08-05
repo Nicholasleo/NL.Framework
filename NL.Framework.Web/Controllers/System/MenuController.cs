@@ -1,61 +1,67 @@
 ﻿using Newtonsoft.Json;
 using NL.Framework.Model;
 using NL.Framework.Model.System;
-using NL.Framework.Web.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace NL.Framework.Web.Controllers
 {
-    public class PageModels
+    public class MenuEditModel
     {
-        public IQueryable RoleLists { get; set; }
-        public IQueryable MenuLists { get; set; }
-        public IQueryable FunctionLists { get; set; }
+        public MenuModel Menu { get; set; }
+        public IQueryable ParentMenuList { get; set; }
     }
+
     public partial class SystemController
     {
-        public ActionResult RoleIndex()
+        private static IQueryable _ParentMenuList = null;
+        public ActionResult MenuIndex()
         {
             PageModels model = new PageModels();
-            model.RoleLists = _IRoleBll.GetRoleAll();
-            model.FunctionLists = _IRoleBll.GetMenuFunction().AsQueryable();
+            model.FunctionLists = _IMenuBll.GetMenuFunction().AsQueryable();
+            model.MenuLists = _IMenuBll.GetParentMenu();
             return View(model);
         }
 
-        public ActionResult RoleAdd()
+        public ActionResult MenuEdit(Guid fid)
         {
-            return View();
-        }
-
-        public ActionResult RoleEdit(Guid fid)
-        {
-            RoleModel model = _IRoleBll.GetRoleModel(fid);
+            //if (_ParentMenuList == null)
+                _ParentMenuList = _IMenuBll.GetParentMenu();
+            MenuEditModel model = new MenuEditModel();
+            //MenuModel model = new MenuModel();
+            model.Menu = _IMenuBll.GetMenuModel(fid);
+            model.ParentMenuList = _ParentMenuList;
             return View(model);
         }
 
+        public ActionResult MenuAdd()
+        {
+            IQueryable model = _IMenuBll.GetParentMenu();
+            return View(model);
+        }
 
         [HttpGet]
-        public ActionResult GetRoleList(int page, int limit, string role = "")
+        public ActionResult GetMenuList(int page, int limit, string filtter = "")
         {
-            AjaxResultData<RoleModel> result = new AjaxResultData<RoleModel>();
+            AjaxResultData<MenuModel> result = new AjaxResultData<MenuModel>();
             int total = 0;
-            List<RoleModel> data = _IRoleBll.GetRolesLists(page, limit, out total, role);
+            List<MenuModel> data = _IMenuBll.GetMenuLists(page, limit, out total, filtter);
             string json = JsonConvert.SerializeObject(data);
             result.data = json;
             result.count = total.ToString();
             result.code = 0;
             result.msg = "";
-            return Json(result,JsonRequestBehavior.AllowGet);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public ActionResult DeleteRole(RoleModel model)
+        public ActionResult DeleteMenu(MenuModel model)
         {
             ResultData result = new ResultData();
-            int i = _IRoleBll.DeleteRole(model);
+            int i = _IMenuBll.DeleteMenu(model);
             result.code = i;
             result.msg = i > 0 ? "删除成功！" : "删除失败！";
             result.data = new TokenData { access_token = Guid.NewGuid().ToString() };
@@ -63,12 +69,12 @@ namespace NL.Framework.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult UpdateRole(RoleModel model)
+        public ActionResult UpdateMenu(MenuModel model)
         {
             model.ModifyPerson = "NicholasLeo";
             model.ModifyTime = DateTime.Now;
             ResultData result = new ResultData();
-            int i = _IRoleBll.UpdateRole(model);
+            int i = _IMenuBll.UpdateMenu(model);
             result.code = i;
             result.msg = i > 0 ? "修改成功！" : "修改失败！";
             result.data = new TokenData { access_token = Guid.NewGuid().ToString() };
@@ -76,12 +82,12 @@ namespace NL.Framework.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddRole(RoleModel model)
+        public ActionResult AddMenu(MenuModel model)
         {
             model.CreateTime = DateTime.Now;
             model.CreatePerson = "NicholasLeo";
             ResultData result = new ResultData();
-            int i = _IRoleBll.AddRole(model);
+            int i = _IMenuBll.AddMenu(model);
             result.code = i;
             result.msg = i > 0 ? "添加成功！" : "添加失败！";
             result.data = new TokenData { access_token = Guid.NewGuid().ToString() };

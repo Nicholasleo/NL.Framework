@@ -121,7 +121,50 @@ namespace NL.Framework.BLL
 
         public int UpdateUser(UserModel model)
         {
-            return _context.Update(model);
+            UserModel userModel = _context.GetEntity<UserModel>(model.Fid);
+            if (userModel != null)
+            {
+                userModel.Description = model.Description;
+                userModel.Address = model.Address;
+                userModel.Email = model.Email;
+                userModel.Gender = model.Gender;
+                userModel.IdCard = model.IdCard;
+                userModel.IsAdmin = model.IsAdmin;
+                userModel.IsDelete = model.IsDelete;
+                userModel.CreatePerson = model.CreatePerson;
+                userModel.CreateTime = model.CreateTime;
+                userModel.MobilePhone = model.MobilePhone;
+                userModel.ModifyPerson = "NIcholasLeo";
+                userModel.ModifyTime = DateTime.Now;
+                userModel.QQ = model.QQ;
+                userModel.State = model.State;
+                userModel.UserAge = model.UserAge;
+                userModel.UserName = model.UserName;
+                userModel.UserPwd = model.UserPwd;
+                userModel.WeChat = model.WeChat;
+                return _context.Update(userModel);
+            }
+            return 0;
+        }
+
+        public List<FunctionModel> GetMenuFunction(Guid menuFid, Guid roleFid)
+        {
+            return CommonBll.GetMenuFunction(_context, menuFid, roleFid);
+        }
+
+        public List<FunctionModel> GetMenuFunction(Guid menuFid, string roleCode)
+        {
+            return CommonBll.GetMenuFunction(_context, menuFid, roleCode);
+        }
+
+        public List<FunctionModel> GetMenuFunction(string menuName, string roleCode)
+        {
+            return CommonBll.GetMenuFunction(_context, menuName, roleCode);
+        }
+
+        public List<FunctionModel> GetMenuFunction(string menuName, Guid roleFid)
+        {
+            return CommonBll.GetMenuFunction(_context, menuName, roleFid);
         }
     }
 }

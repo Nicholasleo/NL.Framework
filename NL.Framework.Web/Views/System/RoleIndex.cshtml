@@ -31,19 +31,22 @@
                 @{
                     foreach (FunctionModel item in Model.FunctionLists)
                     {
-                        <button class="layui-btn layuiadmin-btn-role" data-type="@item.FunctionEvent">@item.FunctionName</button>
+                        if (!item.FunctionEvent.Equals("edit"))
+                        { 
+                            <button class="layui-btn layuiadmin-btn-role" data-type="@item.FunctionEvent">@item.FunctionName</button>
+                        }
                     }
                 }
             </div>
 
             <table id="LAY-user-back-role" lay-filter="LAY-user-back-role"></table>
-            <script type="text/html" id="buttonTpl">
+            @*<script type="text/html" id="buttonTpl">
                 {{#  if(d.check == true){ }}
                 <button class="layui-btn layui-btn-xs">已审核</button>
                 {{#  } else { }}
                 <button class="layui-btn layui-btn-primary layui-btn-xs">未审核</button>
                 {{#  } }}
-            </script>
+            </script>*@
             <script type="text/html" id="table-useradmin-admin">
                 @{
                     foreach (FunctionModel item in Model.FunctionLists)
