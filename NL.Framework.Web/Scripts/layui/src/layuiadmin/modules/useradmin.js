@@ -131,7 +131,7 @@ layui.define(['table', 'form'], function(exports){
         , { field: 'CreatePerson', title: '创建人', align: 'center'}
         , { field: 'CreateTime', title: '创建时间', templet: '<div>{{ layui.laytpl.toDateString(d.CreateTime) }}</div>', align: 'center'}
         , { field: 'ModifyPerson', title: '修改人', align: 'center'}
-        , { field: 'ModifyTime', title: '修改时间', templet: '<div>{{ layui.laytpl.toDateString(d.ModifyPerson) }}</div>', align: 'center'}
+        , { field: 'ModifyTime', title: '修改时间', templet: '<div>{{ layui.laytpl.toDateString(d.ModifyTime) }}</div>', align: 'center'}
         , { title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-useradmin-menu'}
       ]]
       , parseData: function (res) { //res 即为原始返回的数据
@@ -227,7 +227,7 @@ layui.define(['table', 'form'], function(exports){
         , { field: 'CreatePerson', title: '创建人' ,width:150 }
         , { field: 'CreateTime', title: '创建时间', templet: '<div>{{ layui.laytpl.toDateString(d.CreateTime) }}</div>'}
         , { field: 'ModifyPerson', title: '修改人' ,width:150}
-        , { field: 'ModifyTime', title: '修改时间', templet: '<div>{{ layui.laytpl.toDateString(d.ModifyPerson) }}</div>'}
+        , { field: 'ModifyTime', title: '修改时间', templet: '<div>{{ layui.laytpl.toDateString(d.ModifyTime) }}</div>'}
       ,{title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-useradmin-admin'}
       ]]
       , parseData: function (res) { //res 即为原始返回的数据
@@ -314,7 +314,7 @@ layui.define(['table', 'form'], function(exports){
         if (d == null)
             return "";
         else
-            date = new Date(parseInt(d.replace("/Date(", "").replace(")/", ""), 10) || new Date())
+            date = new Date(d.replace("/Date(", "").replace(")/", "") || new Date())
             , ymd = [
                 this.digit(date.getFullYear(), 4)
                 , this.digit(date.getMonth() + 1)
