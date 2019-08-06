@@ -2,6 +2,42 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@Styles.Render("~/bundles/eleTree")
 
-<h2>RightIndex</h2>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+        </div>
+        <div class="layui-card-body">
+            <div class="layui-row layui-col-space10">
+                <div class="layui-col-md6">
+                    <div class="layui-card" overflow-y:auto;">
+                        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+                            <h1>请选择对应的角色授权</h1>
+                        </div>
+                        <div class="layui-card-body">
+                            <table id="LAY-useradmin-right" lay-filter="LAY-useradmin-right"></table>
+                        </div>
+                    </div>
+                </div>
+                <!--菜单功能树-->
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+                            <button class="layui-btn" onclick="App.Save()">保存</button>
+                        </div>
+                        <div class="layui-card-body">
+                            <div style="padding-bottom: 10px;">
+                                <h2>请勾选权限</h2>
+                            </div>
+                            <div id="rightTree"  style="height:calc(100vh - 260px); overflow-y:auto;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/Modules/RightScript.js")"></script>
 

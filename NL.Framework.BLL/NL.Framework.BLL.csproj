@@ -52,6 +52,7 @@
     <Compile Include="System\MenuBll.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemInit.cs" />
+    <Compile Include="System\RightBll.cs" />
     <Compile Include="System\RoleBll.cs" />
     <Compile Include="System\UserBll.cs" />
   </ItemGroup>

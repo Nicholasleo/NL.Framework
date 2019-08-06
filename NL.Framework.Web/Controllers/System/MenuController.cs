@@ -44,7 +44,7 @@ namespace NL.Framework.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetMenuList(int page, int limit, string filtter = "")
+        public JsonResult GetMenuList(int page, int limit, string filtter = "")
         {
             AjaxResultData<MenuModel> result = new AjaxResultData<MenuModel>();
             int total = 0;
@@ -69,7 +69,7 @@ namespace NL.Framework.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult UpdateMenu(MenuModel model)
+        public JsonResult UpdateMenu(MenuModel model)
         {
             model.ModifyPerson = "NicholasLeo";
             model.ModifyTime = DateTime.Now;
@@ -82,7 +82,7 @@ namespace NL.Framework.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddMenu(MenuModel model)
+        public JsonResult AddMenu(MenuModel model)
         {
             model.CreateTime = DateTime.Now;
             model.CreatePerson = "NicholasLeo";

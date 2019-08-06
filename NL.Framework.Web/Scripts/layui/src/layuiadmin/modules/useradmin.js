@@ -123,15 +123,15 @@ layui.define(['table', 'form'], function(exports){
     ,cols: [[
         { type: 'checkbox', fixed: 'left' }
         , { field: 'Fid', width: 80, title: 'ID', hide: true, sort: true }
-        , { field: 'MenuName', title: '菜单名称'}
-        , { field: 'MenuUrl', title: '菜单地址',width:240}
-        , { field: 'MenuIcon', title: '菜单图标', width: 240}
-        , { field: 'MenuIndex', title: '菜单顺序', sort: true, width: 120}
-        , { field: 'MenuIsShow', title: '菜单状态', templet: '#buttonTpl', minWidth: 80, align: 'center' }
-        , { field: 'CreatePerson', title: '创建人' }
-        , { field: 'CreateTime', title: '创建时间', templet: '<div>{{ layui.laytpl.toDateString(d.CreateTime) }}</div>' }
-        , { field: 'ModifyPerson', title: '修改人'}
-        , { field: 'ModifyTime', title: '修改时间', templet: '<div>{{ layui.laytpl.toDateString(d.ModifyPerson) }}</div>' }
+        , { field: 'MenuName', title: '菜单名称',align:'center'}
+        , { field: 'MenuUrl', title: '菜单地址', width: 240 }
+        , { field: 'MenuIcon', title: '菜单图标', width: 100, templet: '<div><i class="layui-icon {{d.MenuIcon}}"></i></div>', unresize: true, align: 'center' }
+        , { field: 'MenuIndex', title: '菜单顺序', sort: true, width: 100, unresize: true, align: 'center' }
+        , { field: 'MenuIsShow', title: '菜单状态', templet: '#buttonTpl', width: 100, align: 'center', unresize: true, align: 'center' }
+        , { field: 'CreatePerson', title: '创建人', align: 'center'}
+        , { field: 'CreateTime', title: '创建时间', templet: '<div>{{ layui.laytpl.toDateString(d.CreateTime) }}</div>', align: 'center'}
+        , { field: 'ModifyPerson', title: '修改人', align: 'center'}
+        , { field: 'ModifyTime', title: '修改时间', templet: '<div>{{ layui.laytpl.toDateString(d.ModifyPerson) }}</div>', align: 'center'}
         , { title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-useradmin-menu'}
       ]]
       , parseData: function (res) { //res 即为原始返回的数据
@@ -176,7 +176,7 @@ layui.define(['table', 'form'], function(exports){
         type: 2
           , title: '编辑菜单'
           , content: '/System/MenuEdit?fid=' + data.Fid
-        ,area: ['420px', '420px']
+        ,area: ['550px', '450px']
         ,btn: ['确定', '取消']
         ,yes: function(index, layero){
           var iframeWindow = window['layui-layer-iframe'+ index]
@@ -211,7 +211,7 @@ layui.define(['table', 'form'], function(exports){
           
         }
       })
-          layer.full(index);
+          //layer.full(index);
     }
   });
 

@@ -206,6 +206,7 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\SystemController.cs" />
     <Compile Include="Controllers\System\MenuController.cs" />
+    <Compile Include="Controllers\System\RightController.cs" />
     <Compile Include="Controllers\System\RoleController.cs" />
     <Compile Include="Controllers\System\UserController.cs" />
     <Compile Include="Controllers\WebInfoController.cs" />
@@ -366,6 +367,7 @@
     <Content Include="Scripts\layui\dist\layuiadmin\layui\lay\modules\code.js" />
     <Content Include="Scripts\layui\dist\layuiadmin\layui\lay\modules\colorpicker.js" />
     <Content Include="Scripts\layui\dist\layuiadmin\layui\lay\modules\element.js" />
+    <Content Include="Scripts\layui\dist\layuiadmin\modules\eleTree.js" />
     <Content Include="Scripts\layui\dist\layuiadmin\layui\lay\modules\flow.js" />
     <Content Include="Scripts\layui\dist\layuiadmin\layui\lay\modules\form.js" />
     <Content Include="Scripts\layui\dist\layuiadmin\layui\lay\modules\jquery.js" />
@@ -400,6 +402,7 @@
     <Content Include="Scripts\layui\dist\layuiadmin\modules\useradmin.js" />
     <Content Include="Scripts\layui\dist\layuiadmin\modules\workorder.js" />
     <Content Include="Scripts\layui\dist\layuiadmin\style\admin.css" />
+    <Content Include="Scripts\layui\dist\layuiadmin\style\eleTree.css" />
     <Content Include="Scripts\layui\dist\layuiadmin\style\login.css" />
     <Content Include="Scripts\layui\dist\layuiadmin\style\res\bg-none.jpg" />
     <Content Include="Scripts\layui\dist\layuiadmin\style\res\layui-logo.jpg" />
@@ -440,6 +443,8 @@
     <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layim\skin\5.jpg" />
     <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layim\skin\logo.jpg" />
     <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layim\voice\default.mp3" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layui-icon-extend\iconfont.css" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layui-icon-extend\iconfont.svg" />
     <Content Include="Scripts\layui\src\layuiadmin\layui\font\iconfont.svg" />
     <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\0.gif" />
     <Content Include="Scripts\layui\src\layuiadmin\layui\images\face\1.gif" />
@@ -550,6 +555,7 @@
     <Content Include="Scripts\layui\src\layuiadmin\modules\common.js" />
     <Content Include="Scripts\layui\src\layuiadmin\modules\console.js" />
     <Content Include="Scripts\layui\src\layuiadmin\modules\contlist.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\modules\eleTree.js" />
     <Content Include="Scripts\layui\src\layuiadmin\modules\forum.js" />
     <Content Include="Scripts\layui\src\layuiadmin\modules\im.js" />
     <Content Include="Scripts\layui\src\layuiadmin\modules\message.js" />
@@ -560,6 +566,7 @@
     <Content Include="Scripts\layui\src\layuiadmin\modules\useradmin.js" />
     <Content Include="Scripts\layui\src\layuiadmin\modules\workorder.js" />
     <Content Include="Scripts\layui\src\layuiadmin\style\admin.css" />
+    <Content Include="Scripts\layui\src\layuiadmin\style\eleTree.css" />
     <Content Include="Scripts\layui\src\layuiadmin\style\login.css" />
     <Content Include="Scripts\layui\src\layuiadmin\style\res\bg-none.jpg" />
     <Content Include="Scripts\layui\src\layuiadmin\style\res\layui-logo.jpg" />
@@ -576,6 +583,7 @@
     <Content Include="Scripts\layui\src\layuiadmin\tpl\system\theme.html" />
     <Content Include="Scripts\layui\src\layuiadmin\tpl\system\说明.txt" />
     <Content Include="Scripts\layui\src\layuiadmin\tpl\说明.txt" />
+    <Content Include="Scripts\Modules\RightScript.js" />
     <Content Include="Scripts\Modules\MenuScript.js" />
     <Content Include="Scripts\Modules\UserScript.js" />
     <Content Include="Scripts\Modules\RoleScript.js" />
@@ -598,6 +606,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Menu\" />
+    <Folder Include="Views\Right\" />
     <Folder Include="Views\Role\" />
     <Folder Include="Views\User\" />
   </ItemGroup>
@@ -632,6 +641,10 @@
     <Content Include="Views\System\MenuEdit.cshtml" />
     <Content Include="Views\System\MenuAdd.cshtml" />
     <Content Include="Views\WebInfo\Index.cshtml" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layui-icon-extend\iconfont.eot" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layui-icon-extend\iconfont.ttf" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layui-icon-extend\iconfont.woff" />
+    <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\layui-icon-extend\iconfont.woff2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NL.Framework.BLL\NL.Framework.BLL.csproj">

@@ -60,6 +60,7 @@
     <Compile Include="System\SystemBaseModel.cs" />
     <Compile Include="System\UserModel.cs" />
     <Compile Include="System\UserRoleModel.cs" />
+    <Compile Include="TreeDataEnt.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

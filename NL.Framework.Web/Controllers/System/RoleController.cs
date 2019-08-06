@@ -38,7 +38,7 @@ namespace NL.Framework.Web.Controllers
 
 
         [HttpGet]
-        public ActionResult GetRoleList(int page, int limit, string role = "")
+        public JsonResult GetRoleList(int page, int limit, string role = "")
         {
             AjaxResultData<RoleModel> result = new AjaxResultData<RoleModel>();
             int total = 0;
@@ -52,7 +52,7 @@ namespace NL.Framework.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeleteRole(RoleModel model)
+        public JsonResult DeleteRole(RoleModel model)
         {
             ResultData result = new ResultData();
             int i = _IRoleBll.DeleteRole(model);
@@ -63,7 +63,7 @@ namespace NL.Framework.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult UpdateRole(RoleModel model)
+        public JsonResult UpdateRole(RoleModel model)
         {
             model.ModifyPerson = "NicholasLeo";
             model.ModifyTime = DateTime.Now;
@@ -76,7 +76,7 @@ namespace NL.Framework.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddRole(RoleModel model)
+        public JsonResult AddRole(RoleModel model)
         {
             model.CreateTime = DateTime.Now;
             model.CreatePerson = "NicholasLeo";

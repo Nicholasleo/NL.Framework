@@ -31,7 +31,7 @@ namespace NL.Framework.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetUserList(int page, int limit, string UserCode = "",string UserName = "",int Gender = 3,string Email="")
+        public JsonResult GetUserList(int page, int limit, string UserCode = "",string UserName = "",int Gender = 3,string Email="")
         {
             AjaxResultData<UserModel> result = new AjaxResultData<UserModel>();
             UserPageEnt pageEnt = new UserPageEnt
@@ -52,7 +52,7 @@ namespace NL.Framework.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeleteUser(UserModel model)
+        public JsonResult DeleteUser(UserModel model)
         {
             ResultData result = new ResultData();
             int i =_IUserBll.DeleteUser(model);
@@ -63,7 +63,7 @@ namespace NL.Framework.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult UpdateUser(UserModel model)
+        public JsonResult UpdateUser(UserModel model)
         {
             model.ModifyPerson = "NicholasLeo";
             model.ModifyTime = DateTime.Now;
@@ -76,7 +76,7 @@ namespace NL.Framework.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddUser(UserModel model)
+        public JsonResult AddUser(UserModel model)
         {
             model.CreateTime = DateTime.Now;
             model.CreatePerson = "NicholasLeo";

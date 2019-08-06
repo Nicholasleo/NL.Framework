@@ -46,6 +46,7 @@
     <Compile Include="System\IMenuBll.cs" />
     <Compile Include="ISystemInit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="System\IRightBll.cs" />
     <Compile Include="System\IRoleBll.cs" />
     <Compile Include="System\IUserBll.cs" />
   </ItemGroup>

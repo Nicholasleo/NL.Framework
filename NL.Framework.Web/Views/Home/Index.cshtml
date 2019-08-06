@@ -11,7 +11,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
     @Styles.Render("~/bundles/css")
-    @Styles.Render("~/bundles/admincss")
 </head>
 <body class="layui-layout-body">
     <div id="LAY_app">
@@ -48,16 +47,22 @@
                             <i class="layui-icon layui-icon-screen-full"></i>
                         </a>
                     </li>
+                    @*<li class="layui-nav-item layui-hide-xs" lay-unselect>
+                        <a href="javascript:;" layadmin-event="clearCache" title="清除缓存">
+                            <i class="layui-icon layui-icon-screen-full"></i>
+                        </a>
+                    </li>*@
                     <li class="layui-nav-item">
                         <a href="javascript:;">
                             <img src="@Url.Content("~/favicon.ico")" class="layui-nav-img" />@ViewBag.UserName
                         </a>
                         <dl class="layui-nav-child">
-                            <dd><a href="">基本资料</a></dd>
-                            <dd><a href="">安全设置</a></dd>
+                            <dd><a lay-href="@Url.Action("Index","Login")">基本资料</a></dd>
+                            <dd><a href="">修改密码</a></dd>
+                            <dd><a href="">退出系统</a></dd>
                         </dl>
                     </li>
-                    <li class="layui-nav-item"><a href="">退出系统</a></li>
+                    @*<li class="layui-nav-item"><a href="">退出系统</a></li>*@
 
                     <li class="layui-nav-item layui-hide-xs" lay-unselect>
                         <a href="javascript:;" layadmin-event="about" title="关于"><i class="layui-icon layui-icon-more-vertical"></i></a>
