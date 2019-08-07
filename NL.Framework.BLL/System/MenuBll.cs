@@ -60,15 +60,20 @@ namespace NL.Framework.BLL
             return 0;
         }
 
-        public List<NvaMenus> GetMenuList()
+        public List<NvaMenus> GetMenuList(Guid roleid)
         {
             IQueryable menus = _context.GetLists<MenuModel>();
 
             List<NvaMenus> menuList = new List<NvaMenus>();
-            //获取根节点
-            var roots = _context.GetLists<MenuModel>(t => t.MenuParentId.Equals(Guid.Empty));
+            //获取根节点 -- 通过角色获取菜单
+            var roots = from menu in _context.Set<MenuModel>()
+                      join rm in _context.Set<RoleMenuModel>()
+                      on menu.Fid equals rm.MenuId
+                      where rm.RoleId.Equals(roleid) && menu.MenuParentId.Equals(Guid.Empty)
+                      select menu;
+            //var roots = _context.GetLists<MenuModel>(t => t.MenuParentId.Equals(Guid.Empty));
             //通过根节点获取对应的子节点
-            foreach (MenuModel root in roots)
+            foreach (MenuModel root in roots.AsEnumerable())
             {
                 if (root.MenuIsShow == 1)
                 {
@@ -79,8 +84,13 @@ namespace NL.Framework.BLL
                     nva.MenuIndex = root.MenuIndex;
                     nva.Fid = root.Fid;
                     List<MenuModel> childMenus = new List<MenuModel>();
-                    var childs = _context.GetLists<MenuModel>(t => t.MenuParentId.Equals(root.Fid));
-                    foreach (MenuModel child in childs)
+                    //var childs = _context.GetLists<MenuModel>(t => t.MenuParentId.Equals(root.Fid));
+                    var childs = from menu in _context.Set<MenuModel>()
+                                 join rm in _context.Set<RoleMenuModel>()
+                                 on menu.Fid equals rm.MenuId
+                                 where rm.RoleId.Equals(roleid) && menu.MenuParentId.Equals(root.Fid)
+                                 select menu;
+                    foreach (MenuModel child in childs.AsEnumerable())
                     {
                         if (child.MenuIsShow == 1)
                         {

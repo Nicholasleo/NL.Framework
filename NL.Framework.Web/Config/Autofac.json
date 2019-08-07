@@ -47,6 +47,14 @@
           "type": "NL.Framework.IBLL.IRightBll,NL.Framework.IBLL"
         }
       ]
+    },
+    {
+      "type": "NL.Framework.BLL.LoginBll, NL.Framework.BLL",
+      "services": [
+        {
+          "type": "NL.Framework.IBLL.ILoginBll,NL.Framework.IBLL"
+        }
+      ]
     }
   ]
 }

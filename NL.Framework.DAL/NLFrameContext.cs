@@ -30,16 +30,39 @@ namespace NL.Framework.DAL
 
         public virtual int Delete<TEntity>(Guid fid) where TEntity : BaseModel
         {
-            TEntity t = this.Set<TEntity>().Find(fid);
-            this.Set<TEntity>().Remove(t);
-            return this.SaveChanges();
+            try
+            {
+                TEntity t = this.Set<TEntity>().Find(fid);
+                this.Set<TEntity>().Remove(t);
+                return this.SaveChanges();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public virtual int Delete<TEntity>(Expression<Func<TEntity, bool>> whereLambda) where TEntity : BaseModel
         {
-            TEntity t = this.Set<TEntity>().Where(whereLambda).FirstOrDefault();
-            this.Set<TEntity>().Remove(t);
-            return this.SaveChanges();
+            try
+            {
+                List<TEntity> t = this.Set<TEntity>().Where(whereLambda).ToList();
+                t.ForEach(m => this.Entry<TEntity>(m).State = EntityState.Deleted);
+                //this.Set<TEntity>().Remove(t);
+                return this.SaveChanges();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public virtual TEntity GetTEntity<TEntity>(Guid fid) where TEntity : BaseModel
@@ -141,10 +164,7 @@ namespace NL.Framework.DAL
 
         public virtual bool IsExist<TEntity>(Expression<Func<TEntity, bool>> where) where TEntity : BaseModel
         {
-            List<TEntity> result = this.Set<TEntity>().AsQueryable().ToList();
-            if (result.Count <= 0)
-                return false;
-            return this.Set<TEntity>().Where(where).Count() > 0 ? true : false;
+            return this.Set<TEntity>().Any(where);
         }
 
         public virtual bool IsExist<TEntity>(Guid fid) where TEntity : BaseModel
@@ -209,6 +229,87 @@ namespace NL.Framework.DAL
         public List<TEntity> GetLists<TEntity>(string sql, params SqlParameter[] sqlParameters)
         {
             return this.Database.SqlQuery<TEntity>(sql).ToList();
+        }
+
+        #region 事务
+        DbContextTransaction Transaction = null;
+        public void BeginTransaction()
+        {
+            if (Transaction == null)
+                this.Database.BeginTransaction();
+        }
+
+        public int Commit()
+        {
+            int result = 0;
+            if (Transaction == null)
+            {
+                result += this.SaveChanges();
+
+                DbContextTransaction transaction = this.Database.CurrentTransaction;
+                if (transaction != null)
+                {
+                    transaction.Commit();
+                    transaction.Dispose();
+                    result += 1;
+                }
+            }
+            return result;
+        }
+
+        public void Rollback()
+        {
+            if (Transaction == null)
+            {
+
+                DbContextTransaction transaction = this.Database.CurrentTransaction;
+                if (transaction != null)
+                {
+                    transaction.Rollback();
+                    transaction.Dispose();
+                }
+            }
+            else
+            {
+                throw new Exception("事务异常");
+            }
+        }
+        public int UsingTransaction(Action<IDbContext> action)
+        {
+            using (var tran = this.Database.BeginTransaction())
+            {
+                try
+                {
+                    action.Invoke(this);
+                    tran.Commit();
+                    return 1;
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    tran.Rollback();
+                    return 0;
+                    throw new Exception(ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    return 0;
+                    throw new Exception(ex.Message);
+                }
+            }
+        }
+
+        #endregion
+
+
+        public bool ExecuteSqlCommand(string sql, params object[] paras)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool ExcuteSqlCommandAsync(string sql, params object[] paras)
+        {
+            throw new NotImplementedException();
         }
     }
 }

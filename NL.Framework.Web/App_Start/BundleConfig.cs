@@ -20,8 +20,9 @@ namespace NL.Framework.Web
             bundles.Add(new StyleBundle("~/bundles/logincss").Include(
                       "~/Scripts/layui/src/layuiadmin/style/login.css"));
 
-            bundles.Add(new StyleBundle("~/bundles/eleTree").Include(
-                      "~/Scripts/layui/src/layuiadmin/style/eleTree.css"));
+            bundles.Add(new StyleBundle("~/bundles/dtree").Include(
+                      "~/Scripts/layui/src/layuiadmin/style/dtree.css",
+                      "~/Scripts/layui/src/layuiadmin/layui/css/modules/dtree/dtreefont.css"));
 
 
         }

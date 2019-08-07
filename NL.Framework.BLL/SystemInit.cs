@@ -215,5 +215,18 @@ namespace NL.Framework.BLL
             if (!_context.IsExist<RoleModel>(t => t.RoleCode == "Admin"))
                 _context.Insert<RoleModel>(role);
         }
+
+        public void InitUserRole()
+        {
+            UserModel user = _context.GetEntity<UserModel>(t => t.UserCode.ToLower().Equals("admin"));
+            RoleModel role = _context.GetEntity<RoleModel>(t => t.RoleCode.ToLower().Equals("superadmin"));
+            UserRoleModel userRole = new UserRoleModel();
+            userRole.UserId = user.Fid;
+            userRole.RoleId = role.Fid;
+            userRole.CreatePerson = "NicholasLeo";
+            userRole.CreateTime = DateTime.Now;
+            if(!_context.IsExist<UserRoleModel>(t=>t.UserId.Equals(user.Fid) && t.RoleId.Equals(role.Fid)))
+                _context.Insert<UserRoleModel>(userRole);
+        }
     }
 }

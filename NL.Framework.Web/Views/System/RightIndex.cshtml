@@ -2,7 +2,7 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@Styles.Render("~/bundles/eleTree")
+@Styles.Render("~/bundles/dtree")
 
 <div class="layui-fluid">
     <div class="layui-card">
@@ -24,13 +24,15 @@
                 <div class="layui-col-md6">
                     <div class="layui-card">
                         <div class="layui-form layui-card-header layuiadmin-card-header-auto">
-                            <button class="layui-btn" onclick="App.Save()">保存</button>
+                            <button class="layui-btn layui-nicholas-leo" data-type="save">保存</button>
                         </div>
                         <div class="layui-card-body">
                             <div style="padding-bottom: 10px;">
                                 <h2>请勾选权限</h2>
                             </div>
-                            <div id="rightTree"  style="height:calc(100vh - 260px); overflow-y:auto;"></div>
+                            <div style="height:calc(100vh - 260px); overflow-y:auto;" id="toolBarDiv">
+                                <ul id="rightTree" class="dtree" data-id="0"></ul>
+                            </div>
                         </div>
                     </div>
                 </div>

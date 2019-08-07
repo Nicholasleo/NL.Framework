@@ -59,10 +59,12 @@ namespace NL.Framework.BLL
                 //将所有的子菜单添加上功能
                 foreach (MenuModel root in roots)
                 {
+                    List<string> _flgList = new List<string>();
                     TreeBaseEnt treeData = new TreeBaseEnt();
+                    string _status = "0";
                     treeData.Id = root.Fid;
                     treeData.Name = root.MenuName;
-                    treeData.Disabled = root.MenuIsShow > 0;
+                    treeData.ParentId = root.MenuParentId;
                     List<TreeBaseEnt> childs = new List<TreeBaseEnt>();
                     IQueryable menus = _context.GetLists<MenuModel>(t => t.MenuParentId.Equals(root.Fid));
                     //子菜单
@@ -71,23 +73,33 @@ namespace NL.Framework.BLL
                         TreeBaseEnt m = new TreeBaseEnt();
                         m.Id = menu.Fid;
                         m.Name = menu.MenuName;
-                        m.Disabled = menu.MenuIsShow > 0;
+                        m.ParentId = menu.MenuParentId;
                         List<TreeBaseEnt> mChilds = new List<TreeBaseEnt>();
+                        int funcNum = 0;
+                        List<Guid> _fun = new List<Guid>();
                         try
                         {
-                            List<Guid> _fun = new List<Guid>();
                             if (_dir.ContainsKey(menu.Fid))
                             {
                                 _fun = _dir.First(t => t.Key.Equals(menu.Fid)).Value;
                             }
                             foreach (FunctionModel func in functions)
                             {
+                                funcNum++;
                                 TreeBaseEnt baseEnt = new TreeBaseEnt();
                                 baseEnt.Id = func.Fid;
                                 baseEnt.Name = func.FunctionName;
-                                if (_fun != null && _fun.Count > 0)
+                                baseEnt.ParentId = menu.Fid;
+                                baseEnt.Last = true;
+                                baseEnt.CheckArrs = new List<CheckArr> {
+                                    new CheckArr()
+                                };
+                                if (_fun != null && _fun.Contains(func.Fid))
                                 {
-                                    baseEnt.IsChecked = _fun.Contains(func.Fid);
+                                    List<CheckArr> checkArrs = new List<CheckArr> {
+                                        new CheckArr("1")
+                                    };
+                                    baseEnt.CheckArrs = checkArrs;
                                 }
                                 mChilds.Add(baseEnt);
                             }
@@ -96,9 +108,18 @@ namespace NL.Framework.BLL
                         {
                             throw new Exception(ex.Message);
                         }
+                        _status = GetCheckStatus(funcNum, _fun.Count);
+                        if(!_flgList.Contains(_status))
+                            _flgList.Add(_status);
+                        m.CheckArrs = new List<CheckArr> {
+                            new CheckArr(_status)
+                        };
                         m.Childrens = mChilds;
                         childs.Add(m);
                     }
+                    treeData.CheckArrs = new List<CheckArr> {
+                        new CheckArr(GetCheckStatus(_flgList))
+                    };
                     treeData.Childrens = childs;
                     lists.Add(treeData);
                 }
@@ -108,6 +129,83 @@ namespace NL.Framework.BLL
                 throw new Exception(ex.Message);
             }
             return lists;
+        }
+
+
+        /// <summary>
+        /// 0 1 2
+        /// </summary>
+        /// <param name="l"></param>
+        /// <returns></returns>
+        private string GetCheckStatus(List<string> l)
+        {
+            if (l.Count > 1)
+                return "2";
+            else
+            {
+                return l[0];
+            }
+        }
+        private string GetCheckStatus(int f, int l)
+        {
+            if (f == l)
+                return "1";
+            if (f > l && l > 0)
+                return "2";
+            if (l == 0)
+                return "0";
+            return "0";
+        }
+
+
+
+        public int SaveRoleRight(RightSaveEnt data)
+        {
+            Action<IDbContext> action = new Action<IDbContext>((IDbContext db) => {
+                Guid roleId = data.RoleId;
+                List<RoleMenuModel> roleMenus = new List<RoleMenuModel>();
+                //先删除功能授权关系表数据
+                IQueryable res = db.GetLists<RoleMenuModel>(t => t.RoleId.Equals(roleId));
+                foreach (RoleMenuModel item in res)
+                {
+                    if (db.IsExist<RoleMenuFunctionModel>(t => t.RoleMenuId.Equals(item.Fid)))
+                        db.Delete<RoleMenuFunctionModel>(t => t.RoleMenuId.Equals(item.Fid));
+                }
+                //再删除角色菜单授权关系表数据
+                if (db.IsExist<RoleMenuModel>(t => t.RoleId.Equals(roleId)))
+                    db.Delete<RoleMenuModel>(t => t.RoleId.Equals(roleId));
+
+                if (data.RoleMenuEnts != null && data.RoleMenuEnts.Count > 0)
+                {
+                    foreach (var item in data.RoleMenuEnts)
+                    {
+                        RoleMenuModel model = new RoleMenuModel();
+                        model.RoleId = roleId;
+                        model.MenuId = item.MenuId;
+                        model.CreatePerson = "NicholasLeo";
+                        model.CreateTime = DateTime.Now;
+                        roleMenus.Add(model);
+                    }
+                    //新增角色菜单关系
+                    db.Insert<RoleMenuModel>(roleMenus);
+
+                    List<RoleMenuFunctionModel> roleMenuFunctions = new List<RoleMenuFunctionModel>();
+                    //新增角色菜单功能关系
+                    foreach (var item in data.RoleMenuFunctionEnts)
+                    {
+                        //获取角色菜单关系主键
+                        RoleMenuModel ent = _context.GetEntity<RoleMenuModel>(t => t.RoleId.Equals(roleId) && t.MenuId.Equals(item.MenuId));
+                        RoleMenuFunctionModel model = new RoleMenuFunctionModel();
+                        model.RoleMenuId = ent.Fid;
+                        model.FunctionId = item.FunctionId;
+                        model.CreatePerson = "NicholasLeo";
+                        model.CreateTime = DateTime.Now;
+                        roleMenuFunctions.Add(model);
+                    }
+                    db.Insert<RoleMenuFunctionModel>(roleMenuFunctions);
+                }
+            });
+            return _context.UsingTransaction(action);
         }
     }
 }

@@ -24,7 +24,23 @@ namespace NL.Framework.IDAL
 
         List<TEntity> GetLists<TEntity>(string sql, params SqlParameter[] sqlParameters);
 
+        #region 事务
+        /// <summary>
+        /// 开启事务
+        /// </summary>
+        void BeginTransaction();
+        /// <summary>
+        /// 提交事务
+        /// </summary>
+        /// <returns></returns>
+        int Commit();
+        /// <summary>
+        /// 事务回滚
+        /// </summary>
+        void Rollback();
 
+        int UsingTransaction(Action<IDbContext> action);
+        #endregion
 
         #region 获取数据列表
         /// <summary>
@@ -125,6 +141,11 @@ namespace NL.Framework.IDAL
         /// </summary>
         /// <returns></returns>
         int SaveChanges();
+        #endregion
+
+        #region
+        bool ExecuteSqlCommand(string sql,params object[] paras);
+        bool ExcuteSqlCommandAsync(string sql, params object[] paras);
         #endregion
     }
 }

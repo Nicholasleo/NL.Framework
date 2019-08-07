@@ -13,24 +13,17 @@ namespace NL.Framework.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private ISystemInit _ISystemInit;
         private IMenuBll _IMenuBll;
 
-        public HomeController(ISystemInit systemInit, IMenuBll menuBll)
+        public HomeController(IMenuBll menuBll)
         {
-            _ISystemInit = systemInit;
             _IMenuBll = menuBll;
         }
 
         public ActionResult Index()
         {
-            //_ISystemInit.InitMenu();
-            //_ISystemInit.InitFunction();
-            //_ISystemInit.InitMenuFunction();
-            _ISystemInit.InitRole();
-            _ISystemInit.InitUser();
-
-            List<NvaMenus> menuList = _IMenuBll.GetMenuList();
+            Guid roleid = Common.Cache.Session.GetSession<LoginUserEnt>("NLFRAME_LOGIN_TOKEN").RoleId;
+            List<NvaMenus> menuList = _IMenuBll.GetMenuList(roleid);
             ViewBag.Title = "测试";
             ViewBag.SystemName = "NLFrame";
             ViewBag.UserName = "NicholasLeo";

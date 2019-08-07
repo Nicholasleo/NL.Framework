@@ -18,9 +18,31 @@ namespace NL.Framework.Web.Filters
     /// </summary>
     public class NLFrameAuthorizeAttribute : FilterAttribute,IAuthorizationFilter
     {
+        public bool Ignore { get; set; }
+        public NLFrameAuthorizeAttribute(bool ignore = false)
+        {
+            Ignore = ignore;
+        }
         public void OnAuthorization(AuthorizationContext filterContext)
         {
             //throw new NotImplementedException();
+            //if (Ignore)
+            //{
+            //    return;
+            //}
+            //try
+            //{
+            //    var token = HttpContext.Current.Request.Cookies["NLFRAME_LOGIN_TOKEN"];
+            //    if (token == null)
+            //    {
+            //        filterContext.Result = new RedirectResult("/Login/Index");
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    filterContext.Result = new RedirectResult("/Login/Index");
+            //    throw;
+            //}
         }
 
         //protected override bool AuthorizeCore(HttpContextBase httpContext)

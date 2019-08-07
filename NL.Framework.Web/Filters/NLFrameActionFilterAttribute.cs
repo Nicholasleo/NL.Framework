@@ -1,8 +1,11 @@
-﻿using System;
+﻿using NL.Framework.Common.Cache;
+using NL.Framework.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 //***********************************************************
 //    作者：Nicholas Leo
 //    E-Mail:nicholasleo1030@163.com
@@ -15,32 +18,45 @@ namespace NL.Framework.Web.Filters
 {
     public class NLFrameActionFilterAttribute : ActionFilterAttribute
     {
+        public bool Ignore { get; set; }
+
+        public NLFrameActionFilterAttribute(bool ignore = false)
+        {
+            Ignore = ignore;
+        }
+
         public string Name
         {
             get; set;
         }
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            base.OnActionExecuting(filterContext);
             //filterContext.HttpContext.Response.Write("我是执行前打出来的" + Name);
-        }
+            //string action = filterContext.RouteData.Values["action"].ToString();
+            string controller = filterContext.RouteData.Values["controller"].ToString();
+            //过滤掉登录页面，防止多重跳转死循环
+            if (controller.ToLower() == "login")
+            {
+                return;
+            }
+            if (Ignore)
+            {
+                return;
+            }
+            LoginUserEnt tempToken = Session.GetSession<LoginUserEnt>("NLFRAME_LOGIN_TOKEN");
+            if (tempToken == null || tempToken.RoleId.Equals(Guid.Empty) || tempToken.UserCode.Equals("") || tempToken.UserPwd.Equals("") || tempToken.UserId.Equals(Guid.Empty))
+            {
+                if (filterContext.HttpContext.Request.IsAjaxRequest())
+                {
+                    filterContext.Result = new JsonResult()
+                    {
+                        //Data = new ErrorModel(AppConfig.LoginPageUrl, EMsgStatus.登录超时20),
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+                }
+                filterContext.Result = new RedirectResult("/Login/Index");
+            }
 
-        public override void OnActionExecuted(ActionExecutedContext filterContext)
-        {
-            base.OnActionExecuted(filterContext);
-            //filterContext.HttpContext.Response.Write("我是执行后打出来的" + Name);
-        }
-
-        public override void OnResultExecuting(ResultExecutingContext filterContext)
-        {
-            base.OnResultExecuting(filterContext);
-            //filterContext.HttpContext.Response.Write("我是在结果执行前打出来的" + Name);
-        }
-
-        public override void OnResultExecuted(ResultExecutedContext filterContext)
-        {
-            base.OnResultExecuted(filterContext);
-            //filterContext.HttpContext.Response.Write("我是结果执行后打出来的" + Name);
         }
     }
 }

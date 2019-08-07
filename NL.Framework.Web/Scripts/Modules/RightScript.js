@@ -2,12 +2,12 @@
     base: '../Scripts/layui/src/layuiadmin/' //静态资源所在路径
 }).extend({
     index: 'lib/index' //主入口模块
-}).use(['index', 'useradmin', 'table', 'eleTree'], function () {
+}).use(['index', 'useradmin', 'table', 'dtree'], function () {
     var $ = layui.$
         , form = layui.form
         , layer = layui.layer
         , table = layui.table
-        , eleTree = layui.eleTree
+        , dtree = layui.dtree
         , admin = layui.admin;
 
     table.render({
@@ -33,34 +33,81 @@
         , text: '对不起，加载出现异常！'
     });
 
-    var flag = true;
+    var roleid;
+
     //监听行单击事件（单击事件为：rowDouble）
     table.on('row(LAY-useradmin-right)', function (obj) {
         var data = obj.data;
         //layer.alert(JSON.stringify(data), {
         //    title: '当前行数据：'
         //});
-        //标注选中样式
-        var treeObj = {
+        // 生成授权树
+        roleid = data.Fid;
+        var Dtree = dtree.render({
             elem: '#rightTree',
-            url: "/System/GetMenuFuncTree?fid=" + data.Fid,
-            renderAfterExpand: true,
-            showCheckbox: true,
-            defaultExpandAll: true,
-            autoExpandParent: true,
-            emptText: "暂无数据", // 内容为空的时候展示的文本
-            expandOnClickNode: true,
-            defaultCheckedKeys: [23]
-        }
-        var el1 = eleTree.render(treeObj);
+            method: 'GET',
+            initLevel: "1",
+            checkbarData:'halfChoose',
+            checkbarType:'no-all',
+            url: "/System/GetMenuFuncTree?fid=" + roleid,
+            checkbar: true
+        });
 
+        //标注选中样式
         obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
         obj.tr.find('input[lay-type="layTableRadio"]').prop("checked", true);
         form.render('radio');
     });
+    //dtree.on("node(rightTree)", function (obj) {
+    //    layer.msg(JSON.stringify(obj.param));
+    //})
+    var active = {
+        save: function () {
+            var params = dtree.getCheckbarNodesParam('rightTree');
+            if (params == null || params == {} || roleid == null || roleid == undefined || roleid == "") {
+                layer.open({
+                    title: '错误'
+                    , content: '请选择对应的角色进行授权！'
+                });   
+                return;
+            }
+            //console.log(params);
+            var roleMenu = [];
+            var roleMenuFunction = [];
+            params.forEach(function (item, index) {
+                if (parseInt(item.level) <= 2) {
+                    var obj = {
+                        MenuId: item.nodeId
+                    }
+                    roleMenu.push(obj);
+                } else {
+                    var obj = {
+                        MenuId: item.parentId,
+                        FunctionId: item.nodeId
+                    }
+                    roleMenuFunction.push(obj);
+                }
+            });
+            var postData = {
+                RoleId: roleid,
+                RoleMenuEnts: roleMenu,
+                RoleMenuFunctionEnts: roleMenuFunction
+            };
+            $.ajax({
+                url: '/System/SaveRightInfo',
+                type: 'POST',
+                dataType: 'JSON',
+                data: postData,
+                success: function (res) {
+                    layer.msg(res.msg);
+                }
+            });
+        }
+    }
 
-    $('.layui-btn.layuiadmin-btn-right').on('click', function () {
+    $('.layui-btn.layui-nicholas-leo').on('click', function () {
         var type = $(this).data('type');
-        active[type] ? active[type].call(this) : '';
+        active[type] && active[type].call(this);
     });
+
 });
