@@ -7,9 +7,6 @@
     Layout = "~/Views/Shared/_LayoutForm.cshtml";
 }
 
-    <div class="layui-inline">
-    </div>
-
     <div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin" style="padding: 20px 0 0 0;">
         <div class="layui-form-item">
             <div class="layui-inline">
@@ -36,7 +33,7 @@
                 <label class="layui-form-label">绑定角色</label>
                 <div class="layui-input-inline">
                     <select name="RoleId" lay-filter="LAY-user-role-type">
-                        <option value="@Guid.Empty">全部角色</option>
+                        <option value="">全部角色</option>
                         @{
                             foreach (RoleModel item in Model.RoleModels)
                             {
@@ -131,7 +128,7 @@
     base: '../Scripts/layui/src/layuiadmin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'form', 'upload'], function () {
+    }).use(['index', 'form'], function () {
         var $ = layui.$
             , form = layui.form
             , upload = layui.upload;

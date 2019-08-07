@@ -1,6 +1,7 @@
 ﻿using NL.Framework.Common;
 using NL.Framework.IBLL;
 using NL.Framework.IDAL;
+using NL.Framework.Model;
 using NL.Framework.Model.NLFrameEnt;
 using NL.Framework.Model.System;
 using System;
@@ -227,6 +228,31 @@ namespace NL.Framework.BLL
         public List<FunctionModel> GetMenuFunction(string menuName, Guid roleFid)
         {
             return CommonBll.GetMenuFunction(_context, menuName, roleFid);
+        }
+
+        public AjaxResultEnt UpdateUserRole(UserRoleEnt ent)
+        {
+            AjaxResultEnt result = new AjaxResultEnt();
+            if (_context.IsExist<UserRoleModel>(t => t.UserId.Equals(ent.UserId)))
+            {
+                UserRoleModel userRole = _context.GetEntity<UserRoleModel>(t => t.UserId.Equals(ent.UserId));
+                userRole.RoleId = ent.RoleId;
+                result.Code = _context.Update(userRole) > 0 ? 200 : 503;
+                result.Message = "角色绑定成功！";
+            }
+            else
+            {
+                UserRoleModel userRole = new UserRoleModel
+                {
+                    UserId = ent.UserId,
+                    RoleId = ent.RoleId,
+                    CreatePerson = "NicholasLeo",
+                    CreateTime = DateTime.Now
+                };
+                result.Code = _context.Insert(userRole) > 0 ? 200 : 503;
+                result.Message = "角色绑定成功！";
+            }
+            return result;
         }
     }
 }

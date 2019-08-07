@@ -20,10 +20,14 @@ namespace NL.Framework.Model
         public string Password { get; set; }
     }
 
-    public class LoginStatusEnt
+    public class AjaxResultEnt
     {
         public int Code { get; set; }
         public string Message { get; set; }
+    }
+
+    public class LoginStatusEnt : AjaxResultEnt
+    {
         public LoginUserEnt LoginUserEnt { get; set; }
     }
 

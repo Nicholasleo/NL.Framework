@@ -109,5 +109,12 @@ namespace NL.Framework.Web.Controllers
             result.data = new TokenData { access_token = Guid.NewGuid().ToString() };
             return Json(result);
         }
+
+        [HttpPost]
+        public JsonResult UpdateUserRole(UserRoleEnt data)
+        {
+            AjaxResultEnt result = _IUserBll.UpdateUserRole(data);
+            return Json(result);
+        }
     }
 }

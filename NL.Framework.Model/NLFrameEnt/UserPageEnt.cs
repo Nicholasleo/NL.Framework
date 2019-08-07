@@ -22,6 +22,12 @@ namespace NL.Framework.Model.NLFrameEnt
         public string Email { get; set; }
     }
 
+    public class UserRoleEnt
+    {
+        public Guid RoleId { get; set; }
+        public Guid UserId { get; set; }
+    }
+
     public class UserEditEnt : BaseModel
     {
         public Guid RoleId { get; set; }

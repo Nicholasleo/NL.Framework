@@ -1,8 +1,51 @@
-﻿
+﻿@using NL.Framework.Web.Controllers;
+@using NL.Framework.Model.System
+@model PageUserEditEnt
 @{
-    ViewBag.Title = "UserBind";
+    ViewBag.Title = "用户角色绑定";
     Layout = "~/Views/Shared/_LayoutForm.cshtml";
 }
 
-<h2>UserBind</h2>
+    <div class="layui-form" lay-filter="NL-form-userrole" id="NL-form-userrole" style="padding: 20px 0 0 0;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户角色</label>
+            <div class="layui-input-inline">
+                <select name="RoleId" lay-filter="LAY-user-role-type">
+                    <option value="">全部角色</option>
+                    @{
+                        foreach (RoleModel item in Model.RoleModels)
+                        {
+                            <option value="@item.Fid">@item.RoleName</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-hide">
+            <label class="layui-form-label">主键</label>
+            <div class="layui-input-inline">
+                <input type="text" name="UserId">
+            </div>
+        </div>
+        <div class="layui-form-item layui-hide">
+            <input type="button" lay-submit lay-filter="NL-user-role-submit" id="NL-user-role-submit" value="确认">
+        </div>
+    </div>
 
+<script>
+    layui.config({
+        base: '../Scripts/layui/src/layuiadmin/' //静态资源所在路径
+        }).extend({
+            index: 'lib/index' //主入口模块
+        }).use(['index', 'form'], function () {
+        var $ = layui.$
+         , form = layui.form;
+
+        form.val('NL-form-userrole', {
+            'UserId': '@Model.UserModel.Fid',
+            'RoleId':'@Model.UserModel.RoleId'
+        });
+            
+        form.render();
+    });
+</script>

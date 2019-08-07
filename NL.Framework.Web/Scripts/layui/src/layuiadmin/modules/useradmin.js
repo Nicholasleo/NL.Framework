@@ -88,7 +88,13 @@ layui.define(['table', 'form'], function (exports) {
                     //监听提交
                     iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
                         var field = data.field; //获取提交的字段
-
+                        if (field.RoleId == "") {
+                            layer.open({
+                                title: '绑定角色',
+                                content:'请选择需要绑定的角色'
+                            });
+                            return;
+                        }
                         //提交 Ajax 成功后，静态更新表格中的数据
                         //$.ajax({});
                         $.ajax({
@@ -123,24 +129,27 @@ layui.define(['table', 'form'], function (exports) {
                 , btn: ['确定', '取消']
                 , yes: function (index, layero) {
                     var iframeWindow = window['layui-layer-iframe' + index]
-                        , submitID = 'LAY-user-front-submit'
+                        , submitID = 'NL-user-role-submit'
                         , submit = layero.find('iframe').contents().find('#' + submitID);
 
                     //监听提交
                     iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
                         var field = data.field; //获取提交的字段
                         //提交 Ajax 成功后，静态更新表格中的数据
+                        if (field.RoleId == "") {
+                            layer.open({
+                                title: '绑定角色',
+                                content: '请选择需要绑定的角色'
+                            });
+                            return;
+                        }
                         $.ajax({
                             url: '/System/UpdateUserRole',
                             type: 'POST',
                             dataType: 'JSON',
                             data: field,
                             success: function (res) {
-                                if (res.code > 0) {
-                                    //请求成功后，重载table
-                                    table.reload('LAY-user-manage'); //数据刷新
-                                }
-                                layer.msg(res.msg);
+                                layer.msg(res.Message);
                             }
                         });
                         layer.close(index); //关闭弹层
