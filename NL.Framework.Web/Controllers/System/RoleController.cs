@@ -17,11 +17,11 @@ namespace NL.Framework.Web.Controllers
     }
     public partial class SystemController
     {
-        public ActionResult RoleIndex()
+        public ActionResult RoleIndex(Guid id)
         {
             PageModels model = new PageModels();
             model.RoleLists = _IRoleBll.GetRoleAll();
-            model.FunctionLists = _IRoleBll.GetMenuFunction().AsQueryable();
+            model.FunctionLists = _IRoleBll.GetMenuFunction(id, ent.RoleId).AsQueryable();
             return View(model);
         }
 

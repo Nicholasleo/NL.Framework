@@ -18,6 +18,7 @@ namespace NL.Framework.IBLL
     public interface IRoleBll : ISystemBaseBll,IBaseBll
     {
         List<RoleModel> GetRolesLists(int page, int limit, out int total, string role = "");
+        List<RoleModel> GetRolesLists();
 
         RoleModel GetRoleModel(Guid fid);
 

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NL.Framework.IBLL;
+using NL.Framework.Model;
 using System;
 using System.Web.Mvc;
 
@@ -12,6 +13,7 @@ namespace NL.Framework.Web.Controllers
         private readonly IMenuBll _IMenuBll;
         private readonly IRightBll _IRightBll;
 
+        private static LoginUserEnt ent;
         public SystemController(IRoleBll roleBll
             , IUserBll userBll
             , IRightBll rightBll
@@ -21,6 +23,7 @@ namespace NL.Framework.Web.Controllers
             _IUserBll = userBll;
             _IRightBll = rightBll;
             _IMenuBll = menuBll;
+            ent = Common.Cache.Session.GetSession<LoginUserEnt>("NLFRAME_LOGIN_TOKEN");
         }
 
 

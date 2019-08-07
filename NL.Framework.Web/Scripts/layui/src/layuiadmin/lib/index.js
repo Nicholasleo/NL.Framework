@@ -11,12 +11,16 @@ layui.extend({
   ,view = layui.view
   
   //打开标签页
-  ,openTabsPage = function(url, text){
+  ,openTabsPage = function(url, text, menuid){
     //遍历页签选项卡
     var matchTo
     ,tabs = $('#LAY_app_tabsheader>li')
     ,path = url.replace(/(^http(s*):)|(\?[\s\S]*$)/g, '');
-    
+
+      if (menuid != '' && menuid != undefined && menuid != null) {
+          url = url + '?id=' + menuid
+      }
+
     tabs.each(function(index){
       var li = $(this)
       ,layid = li.attr('lay-id');
@@ -28,8 +32,9 @@ layui.extend({
     });
     
     text = text || '新标签页';
+
     
-    if(setter.pageTabs){
+      if (setter.pageTabs) {
       //如果未在选项卡中匹配到，则追加选项卡
       if(!matchTo){
         $(APP_BODY).append([

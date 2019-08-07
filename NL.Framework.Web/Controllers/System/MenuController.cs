@@ -18,10 +18,10 @@ namespace NL.Framework.Web.Controllers
     public partial class SystemController
     {
         private static IQueryable _ParentMenuList = null;
-        public ActionResult MenuIndex()
+        public ActionResult MenuIndex(Guid id)
         {
             PageModels model = new PageModels();
-            model.FunctionLists = _IMenuBll.GetMenuFunction().AsQueryable();
+            model.FunctionLists = _IMenuBll.GetMenuFunction(id,ent.RoleId).AsQueryable();
             model.MenuLists = _IMenuBll.GetParentMenu();
             return View(model);
         }

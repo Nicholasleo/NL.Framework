@@ -353,13 +353,14 @@ layui.define('view', function(exports){
         //回车跳转
         if(e.keyCode === 13){
           var href = othis.attr('lay-action')
-          ,text = othis.attr('lay-text') || '搜索';
+              , text = othis.attr('lay-text') || '搜索'
+              , menuid = othis.attr('data-name');
           
           href = href + this.value;
           text = text + ' <span style="color: #FF5722;">'+ admin.escape(this.value) +'</span>';
           
           //打开标签页
-          layui.index.openTabsPage(href, text);
+            layui.index.openTabsPage(href, text, menuid);
           
           //如果搜索关键词已经打开，则刷新页面即可
           events.serach.keys || (events.serach.keys = {});
@@ -758,15 +759,16 @@ layui.define('view', function(exports){
   $body.on('click', '*[lay-href]', function(){
     var othis = $(this)
     ,href = othis.attr('lay-href')
-    ,text = othis.attr('lay-text')
+    , text = othis.attr('lay-text')
+    , menuid = othis.attr('data-name')
     ,router = layui.router();
     
     admin.tabsPage.elem = othis;
-    //admin.prevRouter[router.path[0]] = router.href; //记录上一次各菜单的路由信息
-
+      //admin.prevRouter[router.path[0]] = router.href; //记录上一次各菜单的路由信息
+      //console.log(menuid);
     //执行跳转
     var topLayui = parent === self ? layui : top.layui;
-    topLayui.index.openTabsPage(href, text || othis.text());
+      topLayui.index.openTabsPage(href, text || othis.text(), menuid);
   });
   
   //点击事件

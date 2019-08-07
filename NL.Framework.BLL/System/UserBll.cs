@@ -27,16 +27,18 @@ namespace NL.Framework.BLL
         {
             _context = db;
         }
-        public int AddUser(UserModel model)
+        public int AddUser(UserEditEnt model)
         {
-            return _context.Insert<UserModel>(model);
+            UserModel userModel = new UserModel();
+            return _context.Insert<UserModel>(userModel);
         }
 
-        public int DeleteUser(UserModel model)
+        public int DeleteUser(Guid fid)
         {
+            UserModel model = _context.GetEntity<UserModel>(fid);
             if (model.UserCode.ToLower().Equals("admin") || model.UserCode.ToLower().Equals("nicholasleo"))
                 return 0;
-            return _context.Delete<UserModel>(model.Fid);
+            return _context.Delete<UserModel>(fid);
         }
 
         public List<FunctionModel> GetMenuFunction()
@@ -119,32 +121,92 @@ namespace NL.Framework.BLL
             return _context.GetEntity<UserModel>(fid);
         }
 
-        public int UpdateUser(UserModel model)
+        public UserEditEnt GetUserEidtModel(Guid fid)
         {
-            UserModel userModel = _context.GetEntity<UserModel>(model.Fid);
-            if (userModel != null)
+            Guid roleid = Guid.Empty;
+            UserModel model = _context.GetEntity<UserModel>(fid);
+            UserRoleModel uModel = _context.GetEntity<UserRoleModel>(t => t.UserId.Equals(fid));
+            if(uModel != null)
+                roleid = uModel.RoleId;
+            UserEditEnt ent = new UserEditEnt
             {
-                userModel.Description = model.Description;
-                userModel.Address = model.Address;
-                userModel.Email = model.Email;
-                userModel.Gender = model.Gender;
-                userModel.IdCard = model.IdCard;
-                userModel.IsAdmin = model.IsAdmin;
-                userModel.IsDelete = model.IsDelete;
-                userModel.CreatePerson = model.CreatePerson;
-                userModel.CreateTime = model.CreateTime;
-                userModel.MobilePhone = model.MobilePhone;
-                userModel.ModifyPerson = "NIcholasLeo";
-                userModel.ModifyTime = DateTime.Now;
-                userModel.QQ = model.QQ;
-                userModel.State = model.State;
-                userModel.UserAge = model.UserAge;
-                userModel.UserName = model.UserName;
-                userModel.UserPwd = model.UserPwd;
-                userModel.WeChat = model.WeChat;
-                return _context.Update(userModel);
-            }
-            return 0;
+                Fid = model.Fid,
+                RoleId = roleid,
+                UserCode = model.UserCode,
+                UserName = model.UserName,
+                UserPwd = model.UserPwd,
+                IdCard = model.IdCard,
+                Gender = model.Gender,
+                UserAge = model.UserAge,
+                Email = model.Email,
+                WeChat = model.WeChat,
+                QQ = model.QQ,
+                MobilePhone = model.MobilePhone,
+                Address = model.Address,
+                IsDelete = model.IsDelete,
+                IsAdmin = model.IsAdmin,
+                State = model.State,
+                LastLoginTime = model.LastLoginTime,
+                FirstLoginTime = model.FirstLoginTime,
+                Description = model.Description,
+                CreateTime = model.CreateTime,
+                CreatePerson = model.CreatePerson,
+                ModifyTime = model.ModifyTime,
+                ModifyPerson = model.ModifyPerson
+            };
+            return ent;
+        }
+
+        public UserRoleModel GetUserRoleModel(Guid fid)
+        {
+            return _context.GetEntity<UserRoleModel>(t=>t.UserId.Equals(fid));
+        }
+
+        public int UpdateUser(UserEditEnt model)
+        {
+            Action<IDbContext> action = new Action<IDbContext>((IDbContext db) => {
+                UserModel userModel = db.GetEntity<UserModel>(model.Fid);
+                //更新用户表
+                if (userModel != null)
+                {
+                    userModel.Description = model.Description;
+                    userModel.Address = model.Address;
+                    userModel.Email = model.Email;
+                    userModel.Gender = model.Gender;
+                    userModel.IdCard = model.IdCard;
+                    userModel.IsAdmin = model.IsAdmin;
+                    userModel.IsDelete = model.IsDelete;
+                    userModel.MobilePhone = model.MobilePhone;
+                    userModel.ModifyPerson = "NicholasLeo";
+                    userModel.ModifyTime = DateTime.Now;
+                    userModel.QQ = model.QQ;
+                    userModel.State = model.State;
+                    userModel.UserAge = model.UserAge;
+                    userModel.UserName = model.UserName;
+                    //userModel.UserPwd = model.UserPwd;
+                    userModel.WeChat = model.WeChat;
+                    db.Update(userModel);
+                }
+                //更新角色绑定
+                if (db.IsExist<UserRoleModel>(t => t.UserId.Equals(model.Fid)))
+                {
+                    UserRoleModel userRole = db.GetEntity<UserRoleModel>(t => t.UserId.Equals(model.Fid));
+                    userRole.RoleId = model.RoleId;
+                    userRole.ModifyPerson = "NicholasLeo";
+                    userRole.ModifyTime = DateTime.Now;
+                    db.Update(userRole);
+                }
+                else
+                {
+                    UserRoleModel userRole = new UserRoleModel();
+                    userRole.UserId = model.Fid;
+                    userRole.RoleId = model.RoleId;
+                    userRole.CreatePerson = "NicholasLeo";
+                    userRole.CreateTime = DateTime.Now;
+                    db.Insert(userRole);
+                }
+            });
+            return _context.UsingTransaction(action);
         }
 
         public List<FunctionModel> GetMenuFunction(Guid menuFid, Guid roleFid)

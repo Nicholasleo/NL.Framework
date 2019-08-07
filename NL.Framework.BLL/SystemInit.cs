@@ -56,27 +56,51 @@ namespace NL.Framework.BLL
 
         public void InitUser()
         {
-            var role = _context.GetEntity<RoleModel>(t => t.RoleCode.Equals("SuperAdmin"));
-            if (!_context.IsExist<UserModel>(t => t.UserCode.Equals("admin")))
-            {
-                UserModel user = new UserModel
+            Action<IDbContext> action = new Action<IDbContext>((IDbContext db) => {
+
+                var role = db.GetEntity<RoleModel>(t => t.RoleCode.Equals("SuperAdmin"));
+                if (!db.IsExist<UserModel>(t => t.UserCode.Equals("admin")))
                 {
-                    UserName = "NicholasLeo",
-                    UserCode = "admin",
-                    UserPwd = "123456",
-                    IdCard="362330199010303750",
-                    UserAge = 27,
-                    Gender = 1,
-                    CreatePerson = "NicholasLeo",
-                    CreateTime = DateTime.Now,
-                    WeChat = "nicholasleo1030",
-                    QQ = "461183790",
-                    IsAdmin = 1,
-                    IsDelete = 0,
-                    MobilePhone = "13158985896"
-                };
-                _context.Insert<UserModel>(user);
-            }
+                    UserModel user = new UserModel
+                    {
+                        UserName = "NicholasLeo",
+                        UserCode = "admin",
+                        UserPwd = "123456",
+                        IdCard = "362330199010303750",
+                        UserAge = 27,
+                        Gender = 1,
+                        CreatePerson = "NicholasLeo",
+                        CreateTime = DateTime.Now,
+                        WeChat = "nicholasleo1030",
+                        QQ = "461183790",
+                        IsAdmin = 1,
+                        IsDelete = 0,
+                        MobilePhone = "13158985896"
+                    };
+                    db.Insert<UserModel>(user);
+                }
+                if (!db.IsExist<UserModel>(t => t.UserCode.Equals("test")))
+                {
+                    UserModel user = new UserModel
+                    {
+                        UserName = "测试人员",
+                        UserCode = "test",
+                        UserPwd = "123456",
+                        IdCard = "362330199010303751",
+                        UserAge = 27,
+                        Gender = 1,
+                        CreatePerson = "NicholasLeo",
+                        CreateTime = DateTime.Now,
+                        WeChat = "nicholasleo1030",
+                        QQ = "461183790",
+                        IsAdmin = 1,
+                        IsDelete = 0,
+                        MobilePhone = "13158985896"
+                    };
+                    db.Insert<UserModel>(user);
+                }
+            });
+            _context.UsingTransaction(action);
         }
 
 

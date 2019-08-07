@@ -45,8 +45,8 @@
     <Compile Include="Cache\Cookie.cs" />
     <Compile Include="Expression\ExpressionHelp.cs" />
     <Compile Include="Expression\NLFrameExpressionVisitor.cs" />
+    <Compile Include="Pool\SystemPools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,12 +1,7 @@
-﻿using NL.Framework.DAL;
-using NL.Framework.IBLL;
-using NL.Framework.IDAL;
+﻿using NL.Framework.IBLL;
 using NL.Framework.Model;
-using NL.Framework.Model.System;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace NL.Framework.Web.Controllers
@@ -22,11 +17,11 @@ namespace NL.Framework.Web.Controllers
 
         public ActionResult Index()
         {
-            Guid roleid = Common.Cache.Session.GetSession<LoginUserEnt>("NLFRAME_LOGIN_TOKEN").RoleId;
-            List<NvaMenus> menuList = _IMenuBll.GetMenuList(roleid);
-            ViewBag.Title = "测试";
+            LoginUserEnt ent = Common.Cache.Session.GetSession<LoginUserEnt>("NLFRAME_LOGIN_TOKEN");
+            List<NvaMenus> menuList = _IMenuBll.GetMenuList(ent.RoleId);
+            ViewBag.Title = "NLFrame";
             ViewBag.SystemName = "NLFrame";
-            ViewBag.UserName = "NicholasLeo";
+            ViewBag.UserName = ent.UserName;
             return View(menuList);
         }
 

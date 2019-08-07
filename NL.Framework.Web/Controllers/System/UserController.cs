@@ -10,24 +10,46 @@ using System.Web.Mvc;
 
 namespace NL.Framework.Web.Controllers
 {
+    public class PageUserEditEnt
+    {
+        public UserEditEnt UserModel { get; set; }
+
+        public List<RoleModel> RoleModels { get; set; }
+    }
+
     public partial class SystemController
     {
-        public ActionResult UserIndex()
+        private static List<RoleModel> _RoleLists = null;
+        public ActionResult UserIndex(Guid id)
         {
+            if (_RoleLists == null || _RoleLists.Count <= 0)
+                _RoleLists = _IRoleBll.GetRolesLists();
             PageModels model = new PageModels();
-            model.FunctionLists = _IUserBll.GetMenuFunction().AsQueryable();
+            model.FunctionLists = _IUserBll.GetMenuFunction(id, ent.RoleId).AsQueryable();
             return View(model);
         }
 
         public ActionResult UserEdit(Guid fid)
         {
-            UserModel model = _IUserBll.GetUserModel(fid);
-            return View(model);
+            UserEditEnt model = _IUserBll.GetUserEidtModel(fid);
+            PageUserEditEnt ent = new PageUserEditEnt();
+            ent.UserModel = model;
+            ent.RoleModels = _RoleLists;
+            return View(ent);
+        }
+
+        public ActionResult UserBind(Guid fid)
+        {
+            UserEditEnt model = _IUserBll.GetUserEidtModel(fid);
+            PageUserEditEnt ent = new PageUserEditEnt();
+            ent.UserModel = model;
+            ent.RoleModels = _RoleLists;
+            return View(ent);
         }
 
         public ActionResult UserAdd()
         {
-            return View();
+            return View(_RoleLists);
         }
 
         [HttpGet]
@@ -52,10 +74,10 @@ namespace NL.Framework.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult DeleteUser(UserModel model)
+        public JsonResult DeleteUser(Guid fid)
         {
             ResultData result = new ResultData();
-            int i =_IUserBll.DeleteUser(model);
+            int i =_IUserBll.DeleteUser(fid);
             result.code = i;
             result.msg = i > 0 ? "删除成功！" : "删除失败！";
             result.data = new TokenData { access_token = Guid.NewGuid().ToString() };
@@ -63,7 +85,7 @@ namespace NL.Framework.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult UpdateUser(UserModel model)
+        public JsonResult UpdateUser(UserEditEnt model)
         {
             model.ModifyPerson = "NicholasLeo";
             model.ModifyTime = DateTime.Now;
@@ -76,7 +98,7 @@ namespace NL.Framework.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddUser(UserModel model)
+        public JsonResult AddUser(UserEditEnt model)
         {
             model.CreateTime = DateTime.Now;
             model.CreatePerson = "NicholasLeo";

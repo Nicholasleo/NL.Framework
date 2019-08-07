@@ -19,13 +19,15 @@ namespace NL.Framework.IBLL
         List<UserModel> GetUserLists(int page, int limit, out int total, UserPageEnt pageEnt);
 
         UserModel GetUserModel(Guid fid);
+        UserEditEnt GetUserEidtModel(Guid fid);
+        UserRoleModel GetUserRoleModel(Guid fid);
 
         IQueryable GetUserAll();
 
-        int AddUser(UserModel model);
+        int AddUser(UserEditEnt model);
 
-        int DeleteUser(UserModel model);
+        int DeleteUser(Guid fid);
 
-        int UpdateUser(UserModel model);
+        int UpdateUser(UserEditEnt model);
     }
 }

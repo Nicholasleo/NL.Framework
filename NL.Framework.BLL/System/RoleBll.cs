@@ -107,6 +107,12 @@ namespace NL.Framework.BLL
             }
             return result;
         }
+        public List<RoleModel> GetRolesLists()
+        {
+            var result = from r in _context.Set<RoleModel>()
+                         select r;
+            return result.ToList() ;
+        }
 
         public int UpdateRole(RoleModel model)
         {

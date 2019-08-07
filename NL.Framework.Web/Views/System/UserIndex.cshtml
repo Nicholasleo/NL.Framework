@@ -64,6 +64,7 @@
             </script>
             <script type="text/html" id="table-useradmin-webuser">
                 @{
+                    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="bind"><i class="layui-icon layui-icon-set"></i>绑定</a>
                     foreach (FunctionModel item in Model.FunctionLists)
                     {
                         if (item.FunctionEvent.Equals("edit"))
@@ -73,7 +74,7 @@
 
                         if (item.FunctionEvent.Equals("delete"))
                         {
-                            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="@item.FunctionEvent"><i class="layui-icon layui-icon-edit"></i>@item.FunctionName</a>
+                            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="@item.FunctionEvent"><i class="layui-icon layui-icon-delete"></i>@item.FunctionName</a>
                         }
                     }
                 }
