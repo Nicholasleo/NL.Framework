@@ -2,13 +2,13 @@
     base: '../Scripts/layui/src/layuiadmin/' //静态资源所在路径
 }).extend({
     index: 'lib/index' //主入口模块
-}).use(['index', 'useradmin', 'table', 'dtree'], function () {
+}).use(['index','table', 'dtree','NLFrameAjax'], function () {
     var $ = layui.$
+        , nAjax = layui.NLFrameAjax
         , form = layui.form
         , layer = layui.layer
         , table = layui.table
-        , dtree = layui.dtree
-        , admin = layui.admin;
+        , dtree = layui.dtree;
 
     table.render({
         elem: '#LAY-useradmin-right'
@@ -38,9 +38,6 @@
     //监听行单击事件（单击事件为：rowDouble）
     table.on('row(LAY-useradmin-right)', function (obj) {
         var data = obj.data;
-        //layer.alert(JSON.stringify(data), {
-        //    title: '当前行数据：'
-        //});
         // 生成授权树
         roleid = data.Fid;
         var Dtree = dtree.render({
@@ -58,9 +55,7 @@
         obj.tr.find('input[lay-type="layTableRadio"]').prop("checked", true);
         form.render('radio');
     });
-    //dtree.on("node(rightTree)", function (obj) {
-    //    layer.msg(JSON.stringify(obj.param));
-    //})
+
     var active = {
         save: function () {
             var params = dtree.getCheckbarNodesParam('rightTree');
@@ -71,7 +66,6 @@
                 });   
                 return;
             }
-            //console.log(params);
             var roleMenu = [];
             var roleMenuFunction = [];
             params.forEach(function (item, index) {
@@ -93,12 +87,10 @@
                 RoleMenuEnts: roleMenu,
                 RoleMenuFunctionEnts: roleMenuFunction
             };
-            $.ajax({
+            nAjax.NLPost({
                 url: '/System/SaveRightInfo',
-                type: 'POST',
-                dataType: 'JSON',
                 data: postData,
-                success: function (res) {
+                successfn: function (res) {
                     layer.msg(res.msg);
                 }
             });

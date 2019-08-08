@@ -74,13 +74,14 @@ namespace NL.Framework.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult DeleteUser(Guid fid)
+        public JsonResult DeleteUser(List<UserModel> data)
         {
-            ResultData result = new ResultData();
-            int i =_IUserBll.DeleteUser(fid);
-            result.code = i;
-            result.msg = i > 0 ? "删除成功！" : "删除失败！";
-            result.data = new TokenData { access_token = Guid.NewGuid().ToString() };
+            //ResultData result = new ResultData();
+            //int i =_IUserBll.DeleteUser(fid);
+            //result.code = i;
+            //result.msg = i > 0 ? "删除成功！" : "删除失败！";
+            //result.data = new TokenData { access_token = Guid.NewGuid().ToString() };
+            AjaxResultEnt result = _IUserBll.DeleteUser(data);
             return Json(result);
         }
 

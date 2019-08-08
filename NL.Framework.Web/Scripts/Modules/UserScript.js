@@ -2,11 +2,11 @@
     base: '../Scripts/layui/src/layuiadmin/' //静态资源所在路径
 }).extend({
     index: 'lib/index' //主入口模块
-}).use(['index', 'useradmin', 'table'], function () {
+}).use(['index', 'useradmin', 'NLFrameAjax','table'], function () {
     var $ = layui.$
+        , nAjax = layui.NLFrameAjax
         , form = layui.form
-        , table = layui.table
-        , admin = layui.admin;
+        , table = layui.table;
 
     //监听搜索
     form.on('submit(LAY-user-front-search)', function (data) {
@@ -25,27 +25,32 @@
                 , checkData = checkStatus.data; //得到选中的数据
 
             if (checkData.length === 0) {
-                return layer.msg('请选择数据');
+                return layer.msg('请选择用户');
             }
-
-            layer.prompt({
-                formType: 1
-                , title: '敏感操作，请验证口令'
-            }, function (value, index) {
-                layer.close(index);
-
-                layer.confirm('确定删除吗？', function (index) {
-
-                    //执行 Ajax 后重载
-                    /*
-                    admin.req({
-                      url: 'xxx'
-                      //,……
-                    });
-                    */
-                    table.reload('LAY-user-manage');
-                    layer.msg('已删除');
+            console.log(checkData);
+            //layer.prompt({
+            //    formType: 1
+            //    , title: '敏感操作，请验证口令'
+            //}, function (value, index) {
+            //    layer.close(index);
+            //});
+            layer.confirm('确定删除吗？', function (index) {
+                //执行 Ajax 后重载
+                nAjax.NLPost({
+                    url: '/System/DeleteUser',
+                    data: JSON.stringify(checkData),
+                    contentType: 'application/json',
+                    successfn: function (res) {
+                        if (res.Code == 200) {
+                            //obj.del();
+                            //请求成功后，重载table
+                            table.reload('LAY-user-manage'); //数据刷新
+                        }
+                        layer.msg(res.Message);
+                    }
                 });
+                table.reload('LAY-user-manage');
+                layer.msg('已删除');
             });
         }
         , add: function () {
@@ -74,12 +79,10 @@
                         }
                         //提交 Ajax 成功后，静态更新表格中的数据
                         //$.ajax({});
-                        $.ajax({
+                        nAjax.NLPost({
                             url: '/System/AddUser',
-                            type: 'POST',
-                            dataType: 'JSON',
                             data: field,
-                            success: function (res) {
+                            successfn: function (res) {
                                 postResult = res;
                                 if (res.Code == 200) {
                                     success = true;
@@ -98,15 +101,6 @@
                         });
                     });
                     submit.trigger('click');
-                    //if (success)
-                    //    submit.trigger('click');
-                    //else {
-                    //    layer.open({
-                    //        title: postResult.Code,
-                    //        content: postResult.Message
-                    //    });
-                    //    return;
-                    //}
                 }
             });
         }

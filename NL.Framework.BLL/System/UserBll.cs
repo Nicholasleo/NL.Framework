@@ -279,6 +279,30 @@ namespace NL.Framework.BLL
             return CommonBll.GetMenuFunction(_context, menuName, roleFid);
         }
 
+        public AjaxResultEnt DeleteUser(List<UserModel> users)
+        {
+            AjaxResultEnt result = new AjaxResultEnt();
+            result.Code = 503;
+            result.Message = "删除用户失败！";
+            string username = "";
+            Action<IDbContext> action = new Action<IDbContext>((IDbContext db) => {
+                foreach (UserModel model in users)
+                {
+                    if (model.UserCode.ToLower().Equals("admin") || model.UserCode.ToLower().Equals("nicholasleo"))
+                        continue;
+                    int i = db.Delete<UserModel>(model.Fid);
+                    if(i > 0)
+                        username += model.UserName + ",";
+                }
+            });
+
+            int state = _context.UsingTransaction(action) > 0 ? 200 : 404;
+            result.Code = state;
+            if (state == 200)
+                result.Message = $"删除【{username.TrimEnd(',')}】成功！";
+
+            return result;
+        }
         public AjaxResultEnt UpdateUserRole(UserRoleEnt ent)
         {
             AjaxResultEnt result = new AjaxResultEnt();

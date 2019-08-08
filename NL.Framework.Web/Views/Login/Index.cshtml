@@ -52,8 +52,9 @@
             base: '../Scripts/layui/src/layuiadmin/' //静态资源所在路径
         }).extend({
             index: 'lib/index' //主入口模块
-        }).use(['index', 'user'], function () {
+        }).use(['index', 'NLFrameAjax','user'], function () {
             var $ = layui.$
+                , nAjax = layui.NLFrameAjax
                 , setter = layui.setter
                 , admin = layui.admin
                 , form = layui.form
@@ -64,17 +65,14 @@
 
             //提交
             form.on('submit(LAY-user-login-submit)', function (obj) {
-                var index = layer.load(1); 
-                $.ajax({
-                    url: '/Login/CheckLogin',
-                    type: 'POST',
+                var index = layer.load(1);
+                nAjax.NLPost({
+                    url:'/Login/CheckLogin',
                     data: obj.field,
-                    dataType: 'JSON',
-                    data: obj.field,
-                    success: function (res) {
+                    successfn: function (res) {
                         layer.close(index);
                         if (res.Code == 200) {
-                             layui.data(setter.tableName, {
+                            layui.data(setter.tableName, {
                                 key: res.LoginUserEnt.UserId
                                 , value: res.LoginUserEnt.RoleId
                             });
@@ -89,11 +87,8 @@
                         } else {
                             layer.msg(res.Code + "  提示：" + res.Message);
                         }
-                        //layer.msg(res.msg);
-                        console.log(res);
                     }
                 });
-
             });
         });
     </script>

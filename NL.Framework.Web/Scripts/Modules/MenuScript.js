@@ -2,11 +2,11 @@
     base: '../Scripts/layui/src/layuiadmin/' //静态资源所在路径
 }).extend({
     index: 'lib/index' //主入口模块
-}).use(['index', 'useradmin', 'table'], function () {
+}).use(['index', 'useradmin', 'NLFrameAjax','table'], function () {
     var $ = layui.$
+        , nAjax = layui.NLFrameAjax
         , form = layui.form
-        , table = layui.table
-        , admin = layui.admin;
+        , table = layui.table;
 
     //搜索角色
     form.on('select(LAY-user-menu-type)', function (data) {
@@ -31,12 +31,10 @@
 
             layer.confirm('确定删除吗？', function (index) {
                 //执行 Ajax 后重载
-                $.ajax({
+                nAjax.NLPost({
                     url: '/System/DeleteMenu',
-                    type: 'POST',
-                    dataType: 'JSON',
                     data: checkData[0],
-                    success: function (res) {
+                    successfn: function (res) {
                         if (res.code > 0) {
                             //请求成功后，写入 access_token
                             table.reload('LAY-useradmin-menu');
@@ -61,12 +59,10 @@
                     iframeWindow.layui.form.on('submit(LAY-user-menu-submit)', function (data) {
                         var field = data.field; //获取提交的字段
                         //提交 Ajax 成功后，静态更新表格中的数据
-                        $.ajax({
+                        nAjax.NLPost({
                             url: '/System/AddMenu',
-                            type: 'POST',
-                            dataType: 'JSON',
                             data: field,
-                            success: function (res) {
+                            successfn: function (res) {
                                 if (res.code > 0) {
                                     //请求成功后，重载table
                                     table.reload('LAY-useradmin-menu'); //数据刷新

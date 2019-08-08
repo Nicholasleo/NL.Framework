@@ -99,6 +99,46 @@ namespace NL.Framework.BLL
                     };
                     db.Insert<UserModel>(user);
                 }
+                if (!db.IsExist<UserModel>(t => t.UserCode.Equals("test1")))
+                {
+                    UserModel user = new UserModel
+                    {
+                        UserName = "测试人员1",
+                        UserCode = "test1",
+                        UserPwd = "123456",
+                        IdCard = "362330199010304751",
+                        UserAge = 27,
+                        Gender = 1,
+                        CreatePerson = "NicholasLeo",
+                        CreateTime = DateTime.Now,
+                        WeChat = "nicholasleo1030",
+                        QQ = "461183790",
+                        IsAdmin = 1,
+                        IsDelete = 0,
+                        MobilePhone = "13158985896"
+                    };
+                    db.Insert<UserModel>(user);
+                }
+                if (!db.IsExist<UserModel>(t => t.UserCode.Equals("test2")))
+                {
+                    UserModel user = new UserModel
+                    {
+                        UserName = "测试人员2",
+                        UserCode = "test2",
+                        UserPwd = "123456",
+                        IdCard = "362330199010304752",
+                        UserAge = 27,
+                        Gender = 1,
+                        CreatePerson = "NicholasLeo",
+                        CreateTime = DateTime.Now,
+                        WeChat = "nicholasleo1030",
+                        QQ = "461183790",
+                        IsAdmin = 1,
+                        IsDelete = 0,
+                        MobilePhone = "13158985896"
+                    };
+                    db.Insert<UserModel>(user);
+                }
             });
             _context.UsingTransaction(action);
         }

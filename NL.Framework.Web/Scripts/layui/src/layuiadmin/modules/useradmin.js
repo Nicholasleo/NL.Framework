@@ -1,6 +1,7 @@
 
-layui.define(['table', 'form'], function (exports) {
+layui.define(['table','NLFrameAjax', 'form'], function (exports) {
     var $ = layui.$
+        , nAjax = layui.NLFrameAjax
         , table = layui.table
         , form = layui.form;
 
@@ -55,18 +56,19 @@ layui.define(['table', 'form'], function (exports) {
         var data = obj.data;
         if (obj.event === 'delete') {
             layer.confirm('真的删除行么', function (index) {
-                $.ajax({
+                var pData = [];
+                pData.push(data);
+                nAjax.NLPost({
                     url: '/System/DeleteUser',
-                    type: 'POST',
-                    dataType: 'JSON',
-                    data: data,
-                    success: function (res) {
-                        if (res.code > 0) {
-                            obj.del();
+                    data: JSON.stringify(pData),
+                    contentType: 'application/json',
+                    successfn: function (res) {
+                        if (res.Code == 200) {
+                            //obj.del();
                             //请求成功后，重载table
                             table.reload('LAY-user-manage'); //数据刷新
                         }
-                        layer.msg(res.msg);
+                        layer.msg(res.Message);
                     }
                 });
                 layer.close(index);
@@ -96,13 +98,10 @@ layui.define(['table', 'form'], function (exports) {
                             return;
                         }
                         //提交 Ajax 成功后，静态更新表格中的数据
-                        //$.ajax({});
-                        $.ajax({
+                        nAjax.NLPost({
                             url: '/System/UpdateUser',
-                            type: 'POST',
-                            dataType: 'JSON',
                             data: field,
-                            success: function (res) {
+                            successfn: function (res) {
                                 if (res.code > 0) {
                                     //请求成功后，重载table
                                     table.reload('LAY-user-manage'); //数据刷新
@@ -143,12 +142,10 @@ layui.define(['table', 'form'], function (exports) {
                             });
                             return;
                         }
-                        $.ajax({
+                        nAjax.NLPost({
                             url: '/System/UpdateUserRole',
-                            type: 'POST',
-                            dataType: 'JSON',
                             data: field,
-                            success: function (res) {
+                            successfn: function (res) {
                                 layer.msg(res.Message);
                             }
                         });
@@ -200,12 +197,10 @@ layui.define(['table', 'form'], function (exports) {
         var data = obj.data;
         if (obj.event === 'delete') {
             layer.confirm('确定删除此菜单？', function (index) {
-                $.ajax({
+                nAjax.NLPost({
                     url: '/System/DeleteMenu',
-                    type: 'POST',
-                    dataType: 'JSON',
                     data: data,
-                    success: function (res) {
+                    successfn: function (res) {
                         if (res.code > 0) {
                             //请求成功后，重载table
                             obj.del();
@@ -235,13 +230,10 @@ layui.define(['table', 'form'], function (exports) {
                         var field = data.field; //获取提交的字段
 
                         //提交 Ajax 成功后，静态更新表格中的数据
-                        //$.ajax({});
-                        $.ajax({
+                        nAjax.NLPost({
                             url: '/System/UpdateMenu',
-                            type: 'POST',
-                            dataType: 'JSON',
                             data: field,
-                            success: function (res) {
+                            successfn: function (res) {
                                 if (res.code > 0) {
                                     //请求成功后，重载table
                                     table.reload('LAY-useradmin-menu'); //数据刷新
@@ -296,12 +288,10 @@ layui.define(['table', 'form'], function (exports) {
         var data = obj.data;
         if (obj.event === 'delete') {
             layer.confirm('确定删除此角色？', function (index) {
-                $.ajax({
+                nAjax.NLPost({
                     url: '/System/DeleteRole',
-                    type: 'POST',
-                    dataType: 'JSON',
                     data: data,
-                    success: function (res) {
+                    successfn: function (res) {
                         if (res.code > 0) {
                             //请求成功后，重载table
                             obj.del();
@@ -329,13 +319,10 @@ layui.define(['table', 'form'], function (exports) {
                         var field = data.field; //获取提交的字段
 
                         //提交 Ajax 成功后，静态更新表格中的数据
-                        //$.ajax({});
-                        $.ajax({
+                        nAjax.NLPost({
                             url: '/System/UpdateRole',
-                            type: 'POST',
-                            dataType: 'JSON',
                             data: field,
-                            success: function (res) {
+                            successfn: function (res) {
                                 if (res.code > 0) {
                                     //请求成功后，重载table
                                     table.reload('LAY-user-back-role'); //数据刷新
@@ -393,5 +380,6 @@ layui.define(['table', 'form'], function (exports) {
         }
         return num < Math.pow(10, length) ? str + (num | 0) : num;
     };
+
     exports('useradmin', {})
 });

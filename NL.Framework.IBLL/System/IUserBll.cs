@@ -25,6 +25,7 @@ namespace NL.Framework.IBLL
         AjaxResultEnt UpdateUserRole(UserRoleEnt ent);
         AjaxResultEnt AddUser(UserEditEnt model);
         int DeleteUser(Guid fid);
+        AjaxResultEnt DeleteUser(List<UserModel> users);
         int UpdateUser(UserEditEnt model);
     }
 }

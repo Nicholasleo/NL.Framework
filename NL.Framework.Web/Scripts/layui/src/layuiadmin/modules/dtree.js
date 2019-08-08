@@ -4249,62 +4249,6 @@ layui.define(['jquery','layer','form'], function(exports) {
 				});
 			}
 		}
-
-		// 开启拖拽
-		/*if(_this.drawable) {
-            //绑定所有子节点div的拖拽事件
-            _this.obj.on("mousedown", "div[dtree-click='" + eventName.itemNodeClick + "'][dtree-disabled='false']", function (e) {
-                var moveCount = 0;
-                var $div = $(this);
-
-                // 克隆点击节点
-                var $tempDiv = $div.clone();
-                
-                // 获取当前被点击节点的坐标
-                var e = e || window.event;
-                var x = $div.offset().left;
-                var y = $div.offset().top;
-                var left = e.pageX - x;
-                var top = e.pageY - y;
-                
-                
-                _this.obj.append($tempDiv);
-                // 克隆节点标记
-                $tempDiv.css({
-                    "position": "absolute",
-                    "background-color": "#FF8C69",
-                    'left' : x,
-                    'top' : top,
-                });
-                // 添加临时节点
-                $div.css('cursor', 'move');
-
-                $(document).on("mousemove", function (e1) {
-                    // moveCount为了区别click事件
-                    moveCount++;
-                    if (moveCount > 2) {
-                    	// 计算坐标
-                        var e1 = e1 || window.event;
-                        var x1 = e1.pageX - left;
-                        var y1 = e1.pageY - top;
-                        var maxL = $(document).width() - $div.outerWidth();
-                        var maxT = $(document).height() - $div.outerHeight();
-                        //不允许超出浏览器范围
-                        x1 = x1 < 0 ? 0: x1;
-                        x1 = x1 > maxL ? maxL: x1;
-                        y1 = y1 < 0 ? 0: y;
-                        y1 = y1 > maxT ? maxT: y1;
-                        //3.修改克隆节点的坐标
-                        $tempDiv.css({
-                            'left' : x1,
-                            'top' : y1,
-                        });
-                    }
-                }).on("mouseup", function (e2) {
-                    $(document).off("mousemove").off("mouseup");
-                });
-            });
-        }*/
 	};
 
 	// 绑定body的单击，让本页面所有的toolbar隐藏

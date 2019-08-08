@@ -560,6 +560,7 @@
     <Content Include="Scripts\layui\src\layuiadmin\modules\forum.js" />
     <Content Include="Scripts\layui\src\layuiadmin\modules\im.js" />
     <Content Include="Scripts\layui\src\layuiadmin\modules\message.js" />
+    <Content Include="Scripts\layui\src\layuiadmin\modules\NLFrameAjax.js" />
     <Content Include="Scripts\layui\src\layuiadmin\modules\sample.js" />
     <Content Include="Scripts\layui\src\layuiadmin\modules\senior.js" />
     <Content Include="Scripts\layui\src\layuiadmin\modules\set.js" />
