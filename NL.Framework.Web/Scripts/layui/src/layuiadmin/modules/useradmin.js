@@ -82,7 +82,7 @@ layui.define(['table', 'form'], function (exports) {
                 , btn: ['确定', '取消']
                 , yes: function (index, layero) {
                     var iframeWindow = window['layui-layer-iframe' + index]
-                        , submitID = 'LAY-user-front-submit'
+                        , submitID = 'LAY-user-edit-submit'
                         , submit = layero.find('iframe').contents().find('#' + submitID);
 
                     //监听提交

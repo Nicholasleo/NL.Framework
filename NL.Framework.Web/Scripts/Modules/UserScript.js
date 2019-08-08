@@ -52,26 +52,61 @@
             layer.open({
                 type: 2
                 , title: '添加用户'
-                , content: 'userform.html'
+                , content: '/System/UserAdd'
                 , maxmin: true
-                , area: ['500px', '450px']
+                , area: ['800px', '700px']
                 , btn: ['确定', '取消']
                 , yes: function (index, layero) {
                     var iframeWindow = window['layui-layer-iframe' + index]
-                        , submitID = 'LAY-user-front-submit'
+                        , submitID = 'LAY-user-add-submit'
                         , submit = layero.find('iframe').contents().find('#' + submitID);
-
+                    var success = false;
+                    var postResult = {};
                     //监听提交
                     iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
                         var field = data.field; //获取提交的字段
-
+                        if (field.RoleId == "") {
+                            layer.open({
+                                title: '绑定角色',
+                                content: '请选择需要绑定的角色'
+                            });
+                            return;
+                        }
                         //提交 Ajax 成功后，静态更新表格中的数据
                         //$.ajax({});
-                        table.reload('LAY-user-front-submit'); //数据刷新
-                        layer.close(index); //关闭弹层
+                        $.ajax({
+                            url: '/System/AddUser',
+                            type: 'POST',
+                            dataType: 'JSON',
+                            data: field,
+                            success: function (res) {
+                                postResult = res;
+                                if (res.Code == 200) {
+                                    success = true;
+                                    layer.close(index); //关闭弹层
+                                    //请求成功后，重载table
+                                    table.reload('LAY-user-manage'); //数据刷新
+                                    layui.msg(res.Message);
+                                } else {
+                                    layer.open({
+                                        title: res.Code,
+                                        content: res.Message
+                                    });
+                                    return;
+                                }
+                            }
+                        });
                     });
-
                     submit.trigger('click');
+                    //if (success)
+                    //    submit.trigger('click');
+                    //else {
+                    //    layer.open({
+                    //        title: postResult.Code,
+                    //        content: postResult.Message
+                    //    });
+                    //    return;
+                    //}
                 }
             });
         }

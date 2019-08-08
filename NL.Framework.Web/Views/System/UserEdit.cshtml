@@ -12,7 +12,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">用户登录名</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="UserCode" lay-verify="required" placeholder="请输入登录名" autocomplete="off" class="layui-input">
+                    <input type="text" name="UserCode" lay-verify="required" placeholder="请输入登录名" autocomplete="off" class="layui-input" disabled="">
                 </div>
             </div>
             <div class="layui-inline">
@@ -63,7 +63,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">身份证号码</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="IdCard" lay-verify="identity" placeholder="" autocomplete="off" class="layui-input">
+                    <input type="text" name="IdCard" lay-verify="identity" placeholder="" autocomplete="off" class="layui-input" disabled="">
                 </div>
             </div>
             <div class="layui-inline">
@@ -120,7 +120,7 @@
             </div>
         </div>
         <div class="layui-form-item layui-hide">
-            <input type="button" lay-submit lay-filter="LAY-user-front-submit" id="LAY-user-front-submit" value="确认">
+            <input type="button" lay-submit lay-filter="LAY-user-edit-submit" id="LAY-user-edit-submit" value="确认">
         </div>
     </div>
     <script>

@@ -23,7 +23,7 @@ namespace NL.Framework.IBLL
         UserRoleModel GetUserRoleModel(Guid fid);
         IQueryable GetUserAll();
         AjaxResultEnt UpdateUserRole(UserRoleEnt ent);
-        int AddUser(UserEditEnt model);
+        AjaxResultEnt AddUser(UserEditEnt model);
         int DeleteUser(Guid fid);
         int UpdateUser(UserEditEnt model);
     }

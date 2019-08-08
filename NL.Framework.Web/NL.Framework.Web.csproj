@@ -653,6 +653,7 @@
     <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\dtree\dtreefont.woff" />
     <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\dtree\icons.json" />
     <Content Include="Views\System\UserBind.cshtml" />
+    <Content Include="Views\System\UserAdd.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NL.Framework.BLL\NL.Framework.BLL.csproj">

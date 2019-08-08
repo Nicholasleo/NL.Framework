@@ -60,7 +60,6 @@
                     //监听提交
                     iframeWindow.layui.form.on('submit(LAY-user-menu-submit)', function (data) {
                         var field = data.field; //获取提交的字段
-                        console.log(field);
                         //提交 Ajax 成功后，静态更新表格中的数据
                         $.ajax({
                             url: '/System/AddMenu',

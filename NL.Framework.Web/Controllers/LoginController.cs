@@ -18,11 +18,17 @@ namespace NL.Framework.Web.Controllers
         // GET: Login
         public ActionResult Index()
         {
+            //初始化菜单
             //_ISystemInit.InitMenu();
+            //初始化功能
             //_ISystemInit.InitFunction();
+            //初始化菜单功能关系
             //_ISystemInit.InitMenuFunction();
+            //初始化角色
             _ISystemInit.InitRole();
+            //初始化用户
             _ISystemInit.InitUser();
+            //初始化用户角色
             _ISystemInit.InitUserRole();
             return View();
         }

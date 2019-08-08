@@ -28,10 +28,59 @@ namespace NL.Framework.BLL
         {
             _context = db;
         }
-        public int AddUser(UserEditEnt model)
+        public AjaxResultEnt AddUser(UserEditEnt model)
         {
-            UserModel userModel = new UserModel();
-            return _context.Insert<UserModel>(userModel);
+            AjaxResultEnt result = new AjaxResultEnt();
+            result.Code = 100;
+            Action<IDbContext> action = new Action<IDbContext>((IDbContext db) => {
+                if (db.IsExist<UserModel>(t => t.UserCode.ToLower().Equals(model.UserCode))) {
+                    result.Code = 503;
+                    result.Message = $"{model.UserCode}已存在！";
+                    return;
+                }
+                if (db.IsExist<UserModel>(t => t.IdCard.ToLower().Equals(model.IdCard)))
+                {
+                    result.Code = 503;
+                    result.Message = $"{model.IdCard}已存在！";
+                    return;
+                }
+                UserModel userModel = new UserModel
+                {
+                    UserAge = model.UserAge,
+                    UserName = model.UserName,
+                    UserCode = model.UserCode,
+                    UserPwd = model.UserPwd,
+                    Address = model.Address,
+                    CreatePerson = model.CreatePerson,
+                    CreateTime = DateTime.Now,
+                    Description = model.Description,
+                    Email = model.Email,
+                    Gender = model.Gender,
+                    IdCard = model.IdCard,
+                    IsAdmin = model.IsAdmin,
+                    IsDelete = model.IsDelete,
+                    QQ = model.QQ,
+                    WeChat = model.WeChat,
+                    MobilePhone = model.MobilePhone,
+                    State = model.State
+                };
+                db.Insert<UserModel>(userModel);
+                Guid userId = db.GetEntity<UserModel>(t => t.UserCode.Equals(model.UserCode)).Fid;
+                UserRoleModel userRole = new UserRoleModel
+                {
+                    UserId = userId,
+                    RoleId = model.RoleId,
+                    CreatePerson = model.CreatePerson,
+                    CreateTime = DateTime.Now
+                };
+                db.Insert<UserRoleModel>(userRole);
+            });
+            int flg = _context.UsingTransaction(action);
+            if(result.Code == 100 && flg > 0) { 
+                result.Code = 200;
+                result.Message = "用户添加成功！";
+            }
+            return result;
         }
 
         public int DeleteUser(Guid fid)

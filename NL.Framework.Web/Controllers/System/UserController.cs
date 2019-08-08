@@ -100,13 +100,9 @@ namespace NL.Framework.Web.Controllers
         [HttpPost]
         public JsonResult AddUser(UserEditEnt model)
         {
-            model.CreateTime = DateTime.Now;
+            AjaxResultEnt result = new AjaxResultEnt();
             model.CreatePerson = "NicholasLeo";
-            ResultData result = new ResultData();
-            int i = _IUserBll.AddUser(model);
-            result.code = i;
-            result.msg = i > 0 ? "添加成功！" : "添加失败！";
-            result.data = new TokenData { access_token = Guid.NewGuid().ToString() };
+            result = _IUserBll.AddUser(model);
             return Json(result);
         }
 
