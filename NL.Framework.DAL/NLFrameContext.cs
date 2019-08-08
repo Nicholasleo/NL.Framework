@@ -299,6 +299,31 @@ namespace NL.Framework.DAL
             }
         }
 
+        public int UsingTransaction<T>(Func<IDbContext, T> func)
+        {
+            using (var tran = this.Database.BeginTransaction())
+            {
+                try
+                {
+                    func.Invoke(this);
+                    tran.Commit();
+                    return 1;
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    tran.Rollback();
+                    return 0;
+                    throw new Exception(ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    return 0;
+                    throw new Exception(ex.Message);
+                }
+            }
+        }
+
         #endregion
 
 

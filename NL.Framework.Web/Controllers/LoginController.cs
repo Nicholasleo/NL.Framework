@@ -1,4 +1,5 @@
-﻿using NL.Framework.IBLL;
+﻿using NL.Framework.Common;
+using NL.Framework.IBLL;
 using NL.Framework.Model;
 using NL.Framework.Model.System;
 using System;
@@ -43,7 +44,8 @@ namespace NL.Framework.Web.Controllers
         [HttpGet]
         public ActionResult LogOut()
         {
-            Common.Cache.Session.SetCookie("NLFRAME_LOGIN_TOKEN",null);
+            Common.Cache.Session.SetSession("NLFRAME_LOGIN_TOKEN", null);
+            DataPools.Instance.SetLoginInfo(null);
             return new RedirectResult("/Login/Index");
         }
     }

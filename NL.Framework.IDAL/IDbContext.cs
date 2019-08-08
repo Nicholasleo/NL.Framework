@@ -40,6 +40,8 @@ namespace NL.Framework.IDAL
         void Rollback();
 
         int UsingTransaction(Action<IDbContext> action);
+
+        int UsingTransaction<T>(Func<IDbContext, T> func);
         #endregion
 
         #region 获取数据列表

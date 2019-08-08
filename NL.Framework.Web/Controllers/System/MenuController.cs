@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using NL.Framework.Common;
 using NL.Framework.Model;
 using NL.Framework.Model.System;
 using System;
@@ -18,6 +19,8 @@ namespace NL.Framework.Web.Controllers
     public partial class SystemController
     {
         private static IQueryable _ParentMenuList = null;
+
+        private AjaxResultEnt resData = new AjaxResultEnt();
         public ActionResult MenuIndex(Guid id)
         {
             PageModels model = new PageModels();
@@ -58,20 +61,16 @@ namespace NL.Framework.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeleteMenu(MenuModel model)
+        public ActionResult DeleteMenu(List<MenuModel> model)
         {
-            ResultData result = new ResultData();
-            int i = _IMenuBll.DeleteMenu(model);
-            result.code = i;
-            result.msg = i > 0 ? "删除成功！" : "删除失败！";
-            result.data = new TokenData { access_token = Guid.NewGuid().ToString() };
-            return Json(result);
+            resData = _IMenuBll.DeleteMenu(model);
+            return Json(resData);
         }
 
         [HttpPost]
         public JsonResult UpdateMenu(MenuModel model)
         {
-            model.ModifyPerson = "NicholasLeo";
+            model.ModifyPerson = DataPools.LoginInfo.UserName;
             model.ModifyTime = DateTime.Now;
             ResultData result = new ResultData();
             int i = _IMenuBll.UpdateMenu(model);
@@ -85,7 +84,7 @@ namespace NL.Framework.Web.Controllers
         public JsonResult AddMenu(MenuModel model)
         {
             model.CreateTime = DateTime.Now;
-            model.CreatePerson = "NicholasLeo";
+            model.CreatePerson = DataPools.LoginInfo.UserName;
             ResultData result = new ResultData();
             int i = _IMenuBll.AddMenu(model);
             result.code = i;

@@ -27,13 +27,13 @@ layui.define(['table','NLFrameAjax', 'form'], function (exports) {
             , { field: 'MobilePhone', title: '手机' }
             , { field: 'Address', title: '地址' }
             , { field: 'IsAdmin', title: '超级管理员', templet: '#IsAdminTpl' }
-            , { field: 'FirstLoginTime', title: '第一次登录', templet: '<div>{{ layui.laytpl.toDateString(d.FirstLoginTime) }}</div>' }
-            , { field: 'LastLoginTime', title: '最近一次登录', templet: '<div>{{ layui.laytpl.toDateString(d.LastLoginTime) }}</div>' }
+            , { field: 'FirstLoginTime', title: '第一次登录',width:220, templet: '<div>{{ layui.laytpl.toDateString(d.FirstLoginTime) }}</div>' }
+            , { field: 'LastLoginTime', title: '最近一次登录', width: 220, templet: '<div>{{ layui.laytpl.toDateString(d.LastLoginTime) }}</div>' }
             , { field: 'State', title: '状态', width: 80, templet: '#StateTpl' }
             , { field: 'Description', title: '描述' }
-            , { field: 'CreateTime', title: '创建时间', templet: '<div>{{ layui.laytpl.toDateString(d.CreateTime) }}</div>' }
+            , { field: 'CreateTime', title: '创建时间', width: 220, templet: '<div>{{ layui.laytpl.toDateString(d.CreateTime) }}</div>' }
             , { field: 'CreatePerson', title: '创建人' }
-            , { field: 'ModifyTime', title: '修改时间', templet: '<div>{{ layui.laytpl.toDateString(d.ModifyTime) }}</div>' }
+            , { field: 'ModifyTime', title: '修改时间', width: 220, templet: '<div>{{ layui.laytpl.toDateString(d.ModifyTime) }}</div>' }
             , { field: 'ModifyPerson', title: '修改人' }
             , { title: '操作', width: 240, align: 'center', fixed: 'right', toolbar: '#table-useradmin-webuser' }
         ]]
@@ -146,6 +146,9 @@ layui.define(['table','NLFrameAjax', 'form'], function (exports) {
                             url: '/System/UpdateUserRole',
                             data: field,
                             successfn: function (res) {
+                                if (res.Code == 200) {
+                                    table.reload('LAY-user-manage'); //数据刷新
+                                }
                                 layer.msg(res.Message);
                             }
                         });
@@ -197,9 +200,12 @@ layui.define(['table','NLFrameAjax', 'form'], function (exports) {
         var data = obj.data;
         if (obj.event === 'delete') {
             layer.confirm('确定删除此菜单？', function (index) {
+                var pData = [];
+                pData.push(data);
                 nAjax.NLPost({
                     url: '/System/DeleteMenu',
-                    data: data,
+                    data: JSON.stringify(pData),
+                    listParam: true,
                     successfn: function (res) {
                         if (res.code > 0) {
                             //请求成功后，重载table

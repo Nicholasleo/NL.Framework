@@ -22,7 +22,7 @@ namespace NL.Framework.IBLL
         IQueryable GetParentMenu();
         List<MenuModel> GetMenuLists(int page, int limit, out int total, string filtter = "");
         MenuModel GetMenuModel(Guid fid);
-        int DeleteMenu(MenuModel model);
+        AjaxResultEnt DeleteMenu(List<MenuModel> meuns);
         int UpdateMenu(MenuModel model);
         int AddMenu(MenuModel model);
     }

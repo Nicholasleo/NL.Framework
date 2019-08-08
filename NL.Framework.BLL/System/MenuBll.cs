@@ -6,6 +6,7 @@
 //    说明：
 //    版权所有：个人
 //***********************************************************
+using NL.Framework.Common;
 using NL.Framework.IBLL;
 using NL.Framework.IDAL;
 using NL.Framework.Model;
@@ -46,18 +47,36 @@ namespace NL.Framework.BLL
                 menuModel.MenuName = model.MenuName;
                 menuModel.MenuParentId = model.MenuParentId;
                 menuModel.MenuUrl = model.MenuUrl;
-                menuModel.ModifyPerson = "NicholasLeo";
+                menuModel.ModifyPerson = DataPools.LoginInfo.UserName;
                 menuModel.ModifyTime = DateTime.Now;
                 return _context.Update(menuModel);
             }
             return 0;
         }
 
-        public int DeleteMenu(MenuModel model)
+        public AjaxResultEnt DeleteMenu(List<MenuModel> meuns)
         {
-            if (_context.IsExist<MenuModel>(model.Fid))
-                return _context.Delete<MenuModel>(model.Fid);
-            return 0;
+            AjaxResultEnt result = new AjaxResultEnt();
+            result.Code = 503;
+            result.Message = "删除菜单失败！";
+            string menuname = "";
+            Action<IDbContext> action = new Action<IDbContext>((IDbContext db) => {
+                foreach (MenuModel model in meuns)
+                {
+                    if (_context.IsExist<MenuModel>(model.Fid))
+                    {
+                        int i = db.Delete<MenuModel>(model.Fid);
+                        if (i > 0)
+                            menuname += model.MenuName + ",";
+                    }
+                }
+            });
+
+            int state = _context.UsingTransaction(action) > 0 ? 200 : 404;
+            result.Code = state;
+            if (state == 200)
+                result.Message = $"删除【{menuname.TrimEnd(',')}】成功！";
+            return result;
         }
 
         public List<NvaMenus> GetMenuList(Guid roleid)
@@ -134,7 +153,7 @@ namespace NL.Framework.BLL
                     on fm.RoleMenuId equals m.Fid
                     join rol in _context.Set<RoleModel>()
                     on m.RoleId equals rol.Fid
-                    where m.MenuId.Equals(menu.Fid) && rol.RoleCode.Equals("SuperAdmin")
+                    where m.MenuId.Equals(menu.Fid) && rol.RoleCode.Equals(DataPools.LoginInfo.RoleCode)
                     select new
                     {
                         FunctionName = f.FunctionName,

@@ -6,6 +6,7 @@
 //    说明：
 //    版权所有：个人
 //***********************************************************
+using NL.Framework.Common;
 using NL.Framework.IBLL;
 using NL.Framework.IDAL;
 using NL.Framework.Model.System;
@@ -47,7 +48,7 @@ namespace NL.Framework.BLL
                     on fm.RoleMenuId equals m.Fid
                     join rol in _context.Set<RoleModel>()
                     on m.RoleId equals rol.Fid
-                    where m.MenuId.Equals(menu.Fid) && rol.RoleCode.Equals("SuperAdmin")
+                    where m.MenuId.Equals(menu.Fid) && rol.RoleCode.Equals(DataPools.LoginInfo.RoleCode)
                     select new
                     {
                         FunctionName = f.FunctionName,
@@ -119,7 +120,7 @@ namespace NL.Framework.BLL
             RoleModel m = _context.GetEntity<RoleModel>(model.Fid);
             m.Description = model.Description;
             m.ModifyTime = DateTime.Now;
-            m.ModifyPerson = "NicholasLeo";
+            m.ModifyPerson = DataPools.LoginInfo.UserName;
             return _context.Update(m);
         }
     }

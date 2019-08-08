@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using NL.Framework.Common;
 using NL.Framework.Model;
 using NL.Framework.Model.System;
 using NL.Framework.Web.Filters;
@@ -65,7 +66,7 @@ namespace NL.Framework.Web.Controllers
         [HttpPost]
         public JsonResult UpdateRole(RoleModel model)
         {
-            model.ModifyPerson = "NicholasLeo";
+            model.ModifyPerson = DataPools.LoginInfo.UserName;
             model.ModifyTime = DateTime.Now;
             ResultData result = new ResultData();
             int i = _IRoleBll.UpdateRole(model);
@@ -79,7 +80,7 @@ namespace NL.Framework.Web.Controllers
         public JsonResult AddRole(RoleModel model)
         {
             model.CreateTime = DateTime.Now;
-            model.CreatePerson = "NicholasLeo";
+            model.CreatePerson = DataPools.LoginInfo.UserName;
             ResultData result = new ResultData();
             int i = _IRoleBll.AddRole(model);
             result.code = i;

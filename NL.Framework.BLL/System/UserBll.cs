@@ -227,7 +227,7 @@ namespace NL.Framework.BLL
                     userModel.IsAdmin = model.IsAdmin;
                     userModel.IsDelete = model.IsDelete;
                     userModel.MobilePhone = model.MobilePhone;
-                    userModel.ModifyPerson = "NicholasLeo";
+                    userModel.ModifyPerson = DataPools.LoginInfo.UserName;
                     userModel.ModifyTime = DateTime.Now;
                     userModel.QQ = model.QQ;
                     userModel.State = model.State;
@@ -242,7 +242,7 @@ namespace NL.Framework.BLL
                 {
                     UserRoleModel userRole = db.GetEntity<UserRoleModel>(t => t.UserId.Equals(model.Fid));
                     userRole.RoleId = model.RoleId;
-                    userRole.ModifyPerson = "NicholasLeo";
+                    userRole.ModifyPerson = DataPools.LoginInfo.UserName;
                     userRole.ModifyTime = DateTime.Now;
                     db.Update(userRole);
                 }
@@ -251,7 +251,7 @@ namespace NL.Framework.BLL
                     UserRoleModel userRole = new UserRoleModel();
                     userRole.UserId = model.Fid;
                     userRole.RoleId = model.RoleId;
-                    userRole.CreatePerson = "NicholasLeo";
+                    userRole.CreatePerson = DataPools.LoginInfo.UserName;
                     userRole.CreateTime = DateTime.Now;
                     db.Insert(userRole);
                 }
@@ -306,26 +306,44 @@ namespace NL.Framework.BLL
         public AjaxResultEnt UpdateUserRole(UserRoleEnt ent)
         {
             AjaxResultEnt result = new AjaxResultEnt();
-            if (_context.IsExist<UserRoleModel>(t => t.UserId.Equals(ent.UserId)))
+            Func<IDbContext, AjaxResultEnt> func = new Func<IDbContext, AjaxResultEnt>((IDbContext db) =>
             {
-                UserRoleModel userRole = _context.GetEntity<UserRoleModel>(t => t.UserId.Equals(ent.UserId));
-                userRole.RoleId = ent.RoleId;
-                result.Code = _context.Update(userRole) > 0 ? 200 : 503;
-                result.Message = "角色绑定成功！";
-            }
+                if (_context.IsExist<UserRoleModel>(t => t.UserId.Equals(ent.UserId)))
+                {
+                    UserRoleModel userRole = db.GetEntity<UserRoleModel>(t => t.UserId.Equals(ent.UserId));
+                    userRole.RoleId = ent.RoleId;
+                    userRole.ModifyTime = DateTime.Now;
+                    userRole.ModifyPerson = DataPools.LoginInfo.UserName;
+                    result.Code = _context.Update(userRole) > 0 ? 200 : 503;
+                    result.Message = "角色绑定成功！";
+                }
+                else
+                {
+                    UserRoleModel userRole = new UserRoleModel
+                    {
+                        UserId = ent.UserId,
+                        RoleId = ent.RoleId,
+                        CreatePerson = DataPools.LoginInfo.UserName,
+                        CreateTime = DateTime.Now
+                    };
+                    result.Code = db.Insert(userRole) > 0 ? 200 : 503;
+                    result.Message = "角色绑定成功！";
+                }
+                UserModel user = db.GetEntity<UserModel>(ent.UserId);
+                user.ModifyTime = DateTime.Now;
+                user.ModifyPerson = DataPools.LoginInfo.UserName;
+                db.Update<UserModel>(user);
+                return result;
+            });
+            int i = _context.UsingTransaction<AjaxResultEnt>(func);
+            if (i > 0)
+                return result;
             else
             {
-                UserRoleModel userRole = new UserRoleModel
-                {
-                    UserId = ent.UserId,
-                    RoleId = ent.RoleId,
-                    CreatePerson = "NicholasLeo",
-                    CreateTime = DateTime.Now
-                };
-                result.Code = _context.Insert(userRole) > 0 ? 200 : 503;
-                result.Message = "角色绑定成功！";
+                result.Code = 404;
+                result.Message = "角色绑定失败！";
+                return result;
             }
-            return result;
         }
     }
 }

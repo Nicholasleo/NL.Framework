@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using NL.Framework.Common;
 using NL.Framework.Model;
 using NL.Framework.Model.NLFrameEnt;
 using NL.Framework.Model.System;
@@ -88,7 +89,7 @@ namespace NL.Framework.Web.Controllers
         [HttpPost]
         public JsonResult UpdateUser(UserEditEnt model)
         {
-            model.ModifyPerson = "NicholasLeo";
+            model.ModifyPerson = DataPools.LoginInfo.UserName;
             model.ModifyTime = DateTime.Now;
             ResultData result = new ResultData();
             int i = _IUserBll.UpdateUser(model);
@@ -102,7 +103,7 @@ namespace NL.Framework.Web.Controllers
         public JsonResult AddUser(UserEditEnt model)
         {
             AjaxResultEnt result = new AjaxResultEnt();
-            model.CreatePerson = "NicholasLeo";
+            model.CreatePerson = DataPools.LoginInfo.UserName;
             result = _IUserBll.AddUser(model);
             return Json(result);
         }

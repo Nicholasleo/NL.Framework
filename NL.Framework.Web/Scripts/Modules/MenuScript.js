@@ -33,7 +33,8 @@
                 //执行 Ajax 后重载
                 nAjax.NLPost({
                     url: '/System/DeleteMenu',
-                    data: checkData[0],
+                    data: JSON.stringify(checkData),
+                    listParam: true,
                     successfn: function (res) {
                         if (res.code > 0) {
                             //请求成功后，写入 access_token

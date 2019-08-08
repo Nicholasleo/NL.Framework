@@ -17,7 +17,7 @@ namespace NL.Framework.Common.Cache
 {
     public static class Session
     {
-        public static void SetCookie(string key, object value)
+        public static void SetSession(string key, object value)
         {
             HttpContext.Current.Session[key] = value;
         }
