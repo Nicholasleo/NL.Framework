@@ -19,7 +19,7 @@
                 url: option.url,
                 type: 'POST',
                 dataType: option.dataType || 'JSON',
-                contentType: option.contentType || 'application/x-www-form-urlencoded',
+                contentType: (option.listParam || false) ? 'application/json' : 'application/x-www-form-urlencoded',
                 async: option.async || true,
                 cache: option.cache || false,
                 data: option.data,

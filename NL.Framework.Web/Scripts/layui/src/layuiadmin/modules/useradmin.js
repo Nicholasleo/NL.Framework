@@ -61,7 +61,7 @@ layui.define(['table','NLFrameAjax', 'form'], function (exports) {
                 nAjax.NLPost({
                     url: '/System/DeleteUser',
                     data: JSON.stringify(pData),
-                    contentType: 'application/json',
+                    listParam: true,
                     successfn: function (res) {
                         if (res.Code == 200) {
                             //obj.del();

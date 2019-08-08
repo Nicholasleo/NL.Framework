@@ -39,7 +39,7 @@
                 nAjax.NLPost({
                     url: '/System/DeleteUser',
                     data: JSON.stringify(checkData),
-                    contentType: 'application/json',
+                    listParam: true,
                     successfn: function (res) {
                         if (res.Code == 200) {
                             //obj.del();
