@@ -27,7 +27,8 @@ namespace NL.Framework.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            AutofacConfig.RegisterDependencies();
+            //AutofacConfig.RegisterDependencies();
+            AutofacConfig.Register();
         }
     }
 }

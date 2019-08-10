@@ -1,4 +1,6 @@
-﻿using NL.Framework.IBLL;
+﻿using NL.Framework.Common;
+using NL.Framework.Common.Config;
+using NL.Framework.IBLL;
 using NL.Framework.Model;
 using System;
 using System.Collections.Generic;
@@ -17,10 +19,11 @@ namespace NL.Framework.Web.Controllers
 
         public ActionResult Index()
         {
-            LoginUserEnt ent = Common.Cache.Session.GetSession<LoginUserEnt>("NLFRAME_LOGIN_TOKEN");
+            LoginUserEnt ent = OperatorProvider.Provider.GetCurrent();
             List<NvaMenus> menuList = _IMenuBll.GetMenuList(ent.RoleId);
-            ViewBag.Title = "NLFrame";
-            ViewBag.SystemName = "NLFrame";
+            ViewBag.Title = Configs.GetValue(SystemParameters.NLFRAME_SYSTEM_NAME);
+            ViewBag.SystemName = Configs.GetValue(SystemParameters.NLFRAME_SYSTEM_NAME);
+            ViewBag.Version = Configs.GetValue(SystemParameters.NLFRAME_SYSTEM_VERSION);
             ViewBag.UserName = ent.UserName;
             return View(menuList);
         }

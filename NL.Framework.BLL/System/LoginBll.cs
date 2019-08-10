@@ -90,8 +90,9 @@ namespace NL.Framework.BLL
                             userModel.FirstLoginTime = DateTime.Now;
                         userModel.LastLoginTime = DateTime.Now;
                         db.Update<UserModel>(userModel);
-                        Session.SetSession("NLFRAME_LOGIN_TOKEN", res.LoginUserEnt);
-                        DataPools.Instance.SetLoginInfo(res.LoginUserEnt);
+                        //Session.SetSession(SystemParameters.NLFRAME_LOGIN_TOKEN, res.LoginUserEnt);
+                        //DataPools.Instance.SetLoginInfo(res.LoginUserEnt);
+                        OperatorProvider.Provider.AddCurrent(res.LoginUserEnt);
                     }
                     return res;
                 }

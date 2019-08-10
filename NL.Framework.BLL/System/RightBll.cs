@@ -183,7 +183,7 @@ namespace NL.Framework.BLL
                         RoleMenuModel model = new RoleMenuModel();
                         model.RoleId = roleId;
                         model.MenuId = item.MenuId;
-                        model.CreatePerson = DataPools.LoginInfo.UserName;
+                        model.CreatePerson = OperatorProvider.Provider.GetCurrent().UserName;
                         model.CreateTime = DateTime.Now;
                         roleMenus.Add(model);
                     }
@@ -199,7 +199,7 @@ namespace NL.Framework.BLL
                         RoleMenuFunctionModel model = new RoleMenuFunctionModel();
                         model.RoleMenuId = ent.Fid;
                         model.FunctionId = item.FunctionId;
-                        model.CreatePerson = DataPools.LoginInfo.UserName;
+                        model.CreatePerson = OperatorProvider.Provider.GetCurrent().UserName;
                         model.CreateTime = DateTime.Now;
                         roleMenuFunctions.Add(model);
                     }

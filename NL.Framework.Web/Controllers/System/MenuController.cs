@@ -70,7 +70,7 @@ namespace NL.Framework.Web.Controllers
         [HttpPost]
         public JsonResult UpdateMenu(MenuModel model)
         {
-            model.ModifyPerson = DataPools.LoginInfo.UserName;
+            model.ModifyPerson = OperatorProvider.Provider.GetCurrent().UserName;
             model.ModifyTime = DateTime.Now;
             ResultData result = new ResultData();
             int i = _IMenuBll.UpdateMenu(model);
@@ -84,7 +84,7 @@ namespace NL.Framework.Web.Controllers
         public JsonResult AddMenu(MenuModel model)
         {
             model.CreateTime = DateTime.Now;
-            model.CreatePerson = DataPools.LoginInfo.UserName;
+            model.CreatePerson = OperatorProvider.Provider.GetCurrent().UserName;
             ResultData result = new ResultData();
             int i = _IMenuBll.AddMenu(model);
             result.code = i;

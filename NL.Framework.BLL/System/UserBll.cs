@@ -227,7 +227,7 @@ namespace NL.Framework.BLL
                     userModel.IsAdmin = model.IsAdmin;
                     userModel.IsDelete = model.IsDelete;
                     userModel.MobilePhone = model.MobilePhone;
-                    userModel.ModifyPerson = DataPools.LoginInfo.UserName;
+                    userModel.ModifyPerson = OperatorProvider.Provider.GetCurrent().UserName;
                     userModel.ModifyTime = DateTime.Now;
                     userModel.QQ = model.QQ;
                     userModel.State = model.State;
@@ -242,7 +242,7 @@ namespace NL.Framework.BLL
                 {
                     UserRoleModel userRole = db.GetEntity<UserRoleModel>(t => t.UserId.Equals(model.Fid));
                     userRole.RoleId = model.RoleId;
-                    userRole.ModifyPerson = DataPools.LoginInfo.UserName;
+                    userRole.ModifyPerson = OperatorProvider.Provider.GetCurrent().UserName;
                     userRole.ModifyTime = DateTime.Now;
                     db.Update(userRole);
                 }
@@ -251,7 +251,7 @@ namespace NL.Framework.BLL
                     UserRoleModel userRole = new UserRoleModel();
                     userRole.UserId = model.Fid;
                     userRole.RoleId = model.RoleId;
-                    userRole.CreatePerson = DataPools.LoginInfo.UserName;
+                    userRole.CreatePerson = OperatorProvider.Provider.GetCurrent().UserName;
                     userRole.CreateTime = DateTime.Now;
                     db.Insert(userRole);
                 }
@@ -313,7 +313,7 @@ namespace NL.Framework.BLL
                     UserRoleModel userRole = db.GetEntity<UserRoleModel>(t => t.UserId.Equals(ent.UserId));
                     userRole.RoleId = ent.RoleId;
                     userRole.ModifyTime = DateTime.Now;
-                    userRole.ModifyPerson = DataPools.LoginInfo.UserName;
+                    userRole.ModifyPerson = OperatorProvider.Provider.GetCurrent().UserName;
                     result.Code = _context.Update(userRole) > 0 ? 200 : 503;
                     result.Message = "角色绑定成功！";
                 }
@@ -323,7 +323,7 @@ namespace NL.Framework.BLL
                     {
                         UserId = ent.UserId,
                         RoleId = ent.RoleId,
-                        CreatePerson = DataPools.LoginInfo.UserName,
+                        CreatePerson = OperatorProvider.Provider.GetCurrent().UserName,
                         CreateTime = DateTime.Now
                     };
                     result.Code = db.Insert(userRole) > 0 ? 200 : 503;
@@ -331,7 +331,7 @@ namespace NL.Framework.BLL
                 }
                 UserModel user = db.GetEntity<UserModel>(ent.UserId);
                 user.ModifyTime = DateTime.Now;
-                user.ModifyPerson = DataPools.LoginInfo.UserName;
+                user.ModifyPerson = OperatorProvider.Provider.GetCurrent().UserName;
                 db.Update<UserModel>(user);
                 return result;
             });

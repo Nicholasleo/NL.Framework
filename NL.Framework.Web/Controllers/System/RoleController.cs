@@ -66,7 +66,7 @@ namespace NL.Framework.Web.Controllers
         [HttpPost]
         public JsonResult UpdateRole(RoleModel model)
         {
-            model.ModifyPerson = DataPools.LoginInfo.UserName;
+            model.ModifyPerson = OperatorProvider.Provider.GetCurrent().UserName;
             model.ModifyTime = DateTime.Now;
             ResultData result = new ResultData();
             int i = _IRoleBll.UpdateRole(model);
@@ -80,7 +80,7 @@ namespace NL.Framework.Web.Controllers
         public JsonResult AddRole(RoleModel model)
         {
             model.CreateTime = DateTime.Now;
-            model.CreatePerson = DataPools.LoginInfo.UserName;
+            model.CreatePerson = OperatorProvider.Provider.GetCurrent().UserName;
             ResultData result = new ResultData();
             int i = _IRoleBll.AddRole(model);
             result.code = i;

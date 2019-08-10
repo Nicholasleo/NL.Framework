@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using NL.Framework.Common;
 using NL.Framework.IBLL;
 using NL.Framework.Model;
 using System;
@@ -23,7 +24,7 @@ namespace NL.Framework.Web.Controllers
             _IUserBll = userBll;
             _IRightBll = rightBll;
             _IMenuBll = menuBll;
-            ent = Common.Cache.Session.GetSession<LoginUserEnt>("NLFRAME_LOGIN_TOKEN");
+            ent = OperatorProvider.Provider.GetCurrent();
         }
 
 

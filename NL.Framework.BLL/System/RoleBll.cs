@@ -48,7 +48,7 @@ namespace NL.Framework.BLL
                     on fm.RoleMenuId equals m.Fid
                     join rol in _context.Set<RoleModel>()
                     on m.RoleId equals rol.Fid
-                    where m.MenuId.Equals(menu.Fid) && rol.RoleCode.Equals(DataPools.LoginInfo.RoleCode)
+                    where m.MenuId.Equals(menu.Fid) && rol.RoleCode.Equals(OperatorProvider.Provider.GetCurrent().RoleCode)
                     select new
                     {
                         FunctionName = f.FunctionName,
@@ -120,7 +120,7 @@ namespace NL.Framework.BLL
             RoleModel m = _context.GetEntity<RoleModel>(model.Fid);
             m.Description = model.Description;
             m.ModifyTime = DateTime.Now;
-            m.ModifyPerson = DataPools.LoginInfo.UserName;
+            m.ModifyPerson = OperatorProvider.Provider.GetCurrent().UserName;
             return _context.Update(m);
         }
     }

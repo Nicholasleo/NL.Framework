@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace NL.Framework.IBLL
 {
-    public interface IRightBll
+    public interface IRightBll : IBaseBll
     {
         List<TreeBaseEnt> GetTreeLists(Guid roleFid);
 

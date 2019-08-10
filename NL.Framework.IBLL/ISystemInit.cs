@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace NL.Framework.IBLL
 {
-    public interface ISystemInit
+    public interface ISystemInit : IBaseBll
     {
         void InitMenu();
         void InitRole();

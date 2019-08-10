@@ -47,7 +47,7 @@ namespace NL.Framework.BLL
                 menuModel.MenuName = model.MenuName;
                 menuModel.MenuParentId = model.MenuParentId;
                 menuModel.MenuUrl = model.MenuUrl;
-                menuModel.ModifyPerson = DataPools.LoginInfo.UserName;
+                menuModel.ModifyPerson = OperatorProvider.Provider.GetCurrent().UserName;
                 menuModel.ModifyTime = DateTime.Now;
                 return _context.Update(menuModel);
             }
@@ -153,7 +153,7 @@ namespace NL.Framework.BLL
                     on fm.RoleMenuId equals m.Fid
                     join rol in _context.Set<RoleModel>()
                     on m.RoleId equals rol.Fid
-                    where m.MenuId.Equals(menu.Fid) && rol.RoleCode.Equals(DataPools.LoginInfo.RoleCode)
+                    where m.MenuId.Equals(menu.Fid) && rol.RoleCode.Equals(OperatorProvider.Provider.GetCurrent().RoleCode)
                     select new
                     {
                         FunctionName = f.FunctionName,

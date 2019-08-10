@@ -44,8 +44,9 @@ namespace NL.Framework.Web.Controllers
         [HttpGet]
         public ActionResult LogOut()
         {
-            Common.Cache.Session.SetSession("NLFRAME_LOGIN_TOKEN", null);
-            DataPools.Instance.SetLoginInfo(null);
+            //Common.Cache.Session.SetSession("NLFRAME_LOGIN_TOKEN", null);
+            //DataPools.Instance.SetLoginInfo(null);
+            OperatorProvider.Provider.RemoveCurrent();
             return new RedirectResult("/Login/Index");
         }
     }

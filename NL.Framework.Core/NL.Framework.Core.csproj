@@ -43,5 +43,15 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NL.Framework.Common\NL.Framework.Common.csproj">
+      <Project>{D7DFEF58-B527-463F-B418-AA8E0769406A}</Project>
+      <Name>NL.Framework.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NL.Framework.Model\NL.Framework.Model.csproj">
+      <Project>{1DEDA5BD-EA4B-47B1-8E13-6CE29F6319C6}</Project>
+      <Name>NL.Framework.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

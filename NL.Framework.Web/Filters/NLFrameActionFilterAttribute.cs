@@ -1,4 +1,5 @@
-﻿using NL.Framework.Common.Cache;
+﻿using NL.Framework.Common;
+using NL.Framework.Common.Cache;
 using NL.Framework.Model;
 using System;
 using System.Collections.Generic;
@@ -43,7 +44,7 @@ namespace NL.Framework.Web.Filters
             {
                 return;
             }
-            LoginUserEnt tempToken = Session.GetSession<LoginUserEnt>("NLFRAME_LOGIN_TOKEN");
+            LoginUserEnt tempToken = OperatorProvider.Provider.GetCurrent();
             if (tempToken == null || tempToken.RoleId.Equals(Guid.Empty) || tempToken.UserCode.Equals("") || tempToken.UserPwd.Equals("") || tempToken.UserId.Equals(Guid.Empty))
             {
                 if (filterContext.HttpContext.Request.IsAjaxRequest())

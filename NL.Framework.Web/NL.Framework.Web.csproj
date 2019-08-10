@@ -623,7 +623,9 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
-    <Content Include="Config\Autofac.json" />
+    <Content Include="Configs\Autofac.json" />
+    <Content Include="Configs\database.config" />
+    <Content Include="Configs\system.config" />
     <None Include="packages.config" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Scripts\layui\dist\layuiadmin\layui\css\modules\layim\html\getmsg.json" />

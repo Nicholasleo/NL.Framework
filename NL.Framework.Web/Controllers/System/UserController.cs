@@ -89,7 +89,7 @@ namespace NL.Framework.Web.Controllers
         [HttpPost]
         public JsonResult UpdateUser(UserEditEnt model)
         {
-            model.ModifyPerson = DataPools.LoginInfo.UserName;
+            model.ModifyPerson = OperatorProvider.Provider.GetCurrent().UserName;
             model.ModifyTime = DateTime.Now;
             ResultData result = new ResultData();
             int i = _IUserBll.UpdateUser(model);
@@ -103,7 +103,7 @@ namespace NL.Framework.Web.Controllers
         public JsonResult AddUser(UserEditEnt model)
         {
             AjaxResultEnt result = new AjaxResultEnt();
-            model.CreatePerson = DataPools.LoginInfo.UserName;
+            model.CreatePerson = OperatorProvider.Provider.GetCurrent().UserName;
             result = _IUserBll.AddUser(model);
             return Json(result);
         }

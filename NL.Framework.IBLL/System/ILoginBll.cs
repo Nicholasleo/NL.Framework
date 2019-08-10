@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace NL.Framework.IBLL
 {
-    public interface ILoginBll
+    public interface ILoginBll : IBaseBll
     {
         LoginStatusEnt CheckUserLogin(LoginEnt loginEnt);
     }
