@@ -1,4 +1,5 @@
 ﻿using NL.Framework.Common;
+using NL.Framework.Common.Log;
 using NL.Framework.IBLL;
 using NL.Framework.Model;
 using NL.Framework.Model.System;
@@ -11,10 +12,13 @@ namespace NL.Framework.Web.Controllers
     {
         private readonly ILoginBll _ILoginBll = null;
         private readonly ISystemInit _ISystemInit;
-        public LoginController(ISystemInit systemInit, ILoginBll loginBll)
+
+        private readonly ILogger _log;
+        public LoginController(ISystemInit systemInit, ILoginBll loginBll,ILogger logger)
         {
             _ISystemInit = systemInit;
             _ILoginBll = loginBll;
+            _log = logger;
         }
         // GET: Login
         public ActionResult Index()
@@ -31,6 +35,18 @@ namespace NL.Framework.Web.Controllers
             _ISystemInit.InitUser();
             //初始化用户角色
             _ISystemInit.InitUserRole();
+            //_log.Info("测试");
+            //try
+            //{
+            //    bool r = _ILoginBll.Test("SELECT 1 FROM T_Sys_User");
+            //    _log.Debug("调试");
+            //    string s = "";
+            //    int i = Int32.Parse(s);
+            //}
+            //catch (Exception ex)
+            //{
+            //    _log.Error("错误信息：", ex);
+            //}
             return View();
         }
 

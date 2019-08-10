@@ -125,5 +125,10 @@ namespace NL.Framework.BLL
             }
             return res;
         }
+
+        public bool Test(string sql)
+        {
+            return _context.ExecuteSqlCommand(sql);
+        }
     }
 }

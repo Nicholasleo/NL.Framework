@@ -6,6 +6,7 @@
 //    说明：
 //    版权所有：个人
 //***********************************************************
+using NL.Framework.Common.Log;
 using NL.Framework.IDAL;
 using NL.Framework.Model;
 using System;
@@ -23,9 +24,25 @@ namespace NL.Framework.DAL
 {
     public class NLFrameContext : DbContext, IDbContext
     {
-        public NLFrameContext() : base("name=DbConn")
+        private readonly ILogger _log;
+
+        public NLFrameContext(ILogger logger) : base("name=DbConn")
         {
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<NLFrameContext>());
+            _log = logger;
+            try
+            {
+                Database.SetInitializer(new DropCreateDatabaseIfModelChanges<NLFrameContext>());
+            }
+            catch (DbEntityValidationException ex)
+            {
+                _log.Error($"连接数据库失败{typeof(NLFrameContext).Name}", ex);
+                throw new DbEntityValidationException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"连接数据库失败{typeof(NLFrameContext).Name}", ex);
+                throw new Exception(ex.Message);
+            }
         }
 
         public virtual int Delete<TEntity>(Guid fid) where TEntity : BaseModel
@@ -38,10 +55,12 @@ namespace NL.Framework.DAL
             }
             catch (DbEntityValidationException ex)
             {
-                throw new Exception(ex.Message);
+                _log.Error($"Delete<{typeof(TEntity).Name}>失败", ex);
+                throw new DbEntityValidationException(ex.Message);
             }
             catch (Exception ex)
             {
+                _log.Error($"Delete<{typeof(TEntity).Name}>失败", ex);
                 throw new Exception(ex.Message);
             }
         }
@@ -57,70 +76,151 @@ namespace NL.Framework.DAL
             }
             catch (DbEntityValidationException ex)
             {
-                throw new Exception(ex.Message);
+                _log.Error($"Delete<{typeof(TEntity).Name}>失败(Lamand)", ex);
+                throw new DbEntityValidationException(ex.Message);
             }
             catch (Exception ex)
             {
+                _log.Error($"Delete<{typeof(TEntity).Name}>失败(Lamand)", ex);
                 throw new Exception(ex.Message);
             }
         }
 
         public virtual TEntity GetTEntity<TEntity>(Guid fid) where TEntity : BaseModel
         {
-            return this.Set<TEntity>().Find(fid);
+            TEntity t;
+            try
+            {
+                return this.Set<TEntity>().Find(fid);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                _log.Error($"GetTEntity<{typeof(TEntity).Name}>失败", ex);
+                throw new DbEntityValidationException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"GetTEntity<{typeof(TEntity).Name}>失败", ex);
+                throw new Exception(ex.Message);
+            }
         }
 
         public virtual TEntity GetTEntity<TEntity>(Expression<Func<TEntity, bool>> where) where TEntity : BaseModel
         {
-            return this.Set<TEntity>().Where(where).FirstOrDefault();
+            try
+            {
+                return this.Set<TEntity>().Where(where).FirstOrDefault();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                _log.Error($"GetTEntity<{typeof(TEntity).Name}>失败(Lamand)", ex);
+                throw new DbEntityValidationException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"GetTEntity<{typeof(TEntity).Name}>失败(Lamand)", ex);
+                throw new Exception(ex.Message);
+            }
         }
 
         public virtual IQueryable GetLists<TEntity>() where TEntity : BaseModel
         {
-            return this.Set<TEntity>();
+            try
+            {
+                return this.Set<TEntity>();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                _log.Error($"GetLists<{typeof(TEntity).Name}>失败", ex);
+                throw new DbEntityValidationException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"GetLists<{typeof(TEntity).Name}>失败", ex);
+                throw new Exception(ex.Message);
+            }
         }
 
         public virtual IQueryable GetLists<TEntity>(Expression<Func<TEntity, bool>> whereLambda) where TEntity : BaseModel
         {
-            return this.Set<TEntity>().Where(whereLambda);
+            try
+            {
+                return this.Set<TEntity>().Where(whereLambda);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                _log.Error($"GetLists<{typeof(TEntity).Name}>失败(Lamand)", ex);
+                throw new DbEntityValidationException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"GetLists<{typeof(TEntity).Name}>失败(Lamand)", ex);
+                throw new Exception(ex.Message);
+            }
         }
 
         public virtual IQueryable GetLists<TEntity>(int pageIndex, int pageSize, out int totalCount, Expression<Func<TEntity, bool>> whereLambda) where TEntity : BaseModel
         {
-            if (whereLambda == null)
+            try
             {
-                totalCount = this.Set<TEntity>().Count();
-                return this.Set<TEntity>().OrderBy(t=>t.Fid).Skip(pageSize * (pageIndex - 1)).Take(pageSize).AsQueryable();
+                if (whereLambda == null)
+                {
+                    totalCount = this.Set<TEntity>().Count();
+                    return this.Set<TEntity>().OrderBy(t => t.Fid).Skip(pageSize * (pageIndex - 1)).Take(pageSize).AsQueryable();
+                }
+                else
+                {
+                    totalCount = this.Set<TEntity>().Where(whereLambda).Count();
+                    return this.Set<TEntity>().Where(whereLambda).OrderBy(t => t.Fid).Skip(pageSize * (pageIndex - 1)).Take(pageSize).AsQueryable();
+                }
             }
-            else
+            catch (DbEntityValidationException ex)
             {
-                totalCount = this.Set<TEntity>().Where(whereLambda).Count();
-                return this.Set<TEntity>().Where(whereLambda).OrderBy(t => t.Fid).Skip(pageSize * (pageIndex - 1)).Take(pageSize).AsQueryable();
+                _log.Error($"GetLists<{typeof(TEntity).Name}>失败(PageLamand)", ex);
+                throw new DbEntityValidationException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"GetLists<{typeof(TEntity).Name}>失败(PageLamand)", ex);
+                throw new Exception(ex.Message);
             }
         }
 
         public virtual IQueryable GetLists<TEntity>(int pageIndex, int pageSize, out int totalCount, Expression<Func<TEntity, bool>> whereLambda, bool isAsc, Expression<Func<TEntity, bool>> orderByLambda) where TEntity : BaseModel
         {
-            if (whereLambda == null)
+            try
             {
-                totalCount = this.Set<TEntity>().Count();
-                return this.Set<TEntity>().OrderBy(t => t.Fid).Skip(pageSize * (pageIndex - 1)).Take(pageSize).AsQueryable();
-            }
-            else
-            {
-                if (orderByLambda == null)
+                if (whereLambda == null)
                 {
-                    totalCount = this.Set<TEntity>().Where(whereLambda).Count();
-                    return this.Set<TEntity>().OrderBy(t=>t.Fid).Where(whereLambda).OrderBy(t => t.Fid).Skip(pageSize * (pageIndex - 1)).Take(pageSize).AsQueryable();
+                    totalCount = this.Set<TEntity>().Count();
+                    return this.Set<TEntity>().OrderBy(t => t.Fid).Skip(pageSize * (pageIndex - 1)).Take(pageSize).AsQueryable();
                 }
                 else
                 {
-                    totalCount = this.Set<TEntity>().Where(whereLambda).Count();
-                    if(isAsc)
-                        return this.Set<TEntity>().Where(whereLambda).OrderBy(orderByLambda).Skip(pageSize * (pageIndex - 1)).Take(pageSize).AsQueryable();
+                    if (orderByLambda == null)
+                    {
+                        totalCount = this.Set<TEntity>().Where(whereLambda).Count();
+                        return this.Set<TEntity>().OrderBy(t => t.Fid).Where(whereLambda).OrderBy(t => t.Fid).Skip(pageSize * (pageIndex - 1)).Take(pageSize).AsQueryable();
+                    }
                     else
-                        return this.Set<TEntity>().Where(whereLambda).OrderByDescending(orderByLambda).Skip(pageSize * (pageIndex - 1)).Take(pageSize).AsQueryable();
+                    {
+                        totalCount = this.Set<TEntity>().Where(whereLambda).Count();
+                        if (isAsc)
+                            return this.Set<TEntity>().Where(whereLambda).OrderBy(orderByLambda).Skip(pageSize * (pageIndex - 1)).Take(pageSize).AsQueryable();
+                        else
+                            return this.Set<TEntity>().Where(whereLambda).OrderByDescending(orderByLambda).Skip(pageSize * (pageIndex - 1)).Take(pageSize).AsQueryable();
+                    }
                 }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                _log.Error($"GetLists<{typeof(TEntity).Name}>失败(PageLamand)", ex);
+                throw new DbEntityValidationException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"GetLists<{typeof(TEntity).Name}>失败(PageLamand)", ex);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -133,10 +233,12 @@ namespace NL.Framework.DAL
             }
             catch (DbEntityValidationException ex)
             {
+                _log.Error($"Insert<{typeof(TEntity).Name}>失败", ex);
                 throw new Exception(ex.Message);
             }
             catch (Exception ex)
             {
+                _log.Error($"Insert<{typeof(TEntity).Name}>失败", ex);
                 throw new Exception(ex.Message);
             }
         }
@@ -153,23 +255,50 @@ namespace NL.Framework.DAL
             }
             catch (DbEntityValidationException ex)
             {
+                _log.Error($"InsertList<{typeof(TEntity).Name}>失败", ex);
                 throw new Exception(ex.Message);
             }
             catch (Exception ex)
             {
-
+                _log.Error($"InsertList<{typeof(TEntity).Name}>失败", ex);
                 throw new Exception(ex.Message);
             }
         }
 
         public virtual bool IsExist<TEntity>(Expression<Func<TEntity, bool>> where) where TEntity : BaseModel
         {
-            return this.Set<TEntity>().Any(where);
+            try
+            {
+                return this.Set<TEntity>().Any(where);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                _log.Error($"IsExist<{typeof(TEntity).Name}>失败", ex);
+                throw new Exception(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"IsExist<{typeof(TEntity).Name}>失败", ex);
+                throw new Exception(ex.Message);
+            }
         }
 
         public virtual bool IsExist<TEntity>(Guid fid) where TEntity : BaseModel
         {
-            return this.Set<TEntity>().Find(fid) != null;
+            try
+            {
+                return this.Set<TEntity>().Find(fid) != null;
+            }
+            catch (DbEntityValidationException ex)
+            {
+                _log.Error($"IsExist<{typeof(TEntity).Name}>失败", ex);
+                throw new Exception(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"IsExist<{typeof(TEntity).Name}>失败", ex);
+                throw new Exception(ex.Message);
+            }
         }
 
         public virtual int Update<TEntity>(TEntity ent) where TEntity : BaseModel
@@ -182,10 +311,12 @@ namespace NL.Framework.DAL
             }
             catch (DbEntityValidationException ex)
             {
+                _log.Error($"Update<{typeof(TEntity).Name}>失败", ex);
                 throw new Exception(ex.Message);
             }
             catch (Exception ex)
             {
+                _log.Error($"Update<{typeof(TEntity).Name}>失败", ex);
                 throw new Exception(ex.Message);
             }
         }
@@ -212,23 +343,74 @@ namespace NL.Framework.DAL
 
         public virtual TEntity GetEntity<TEntity>(Guid fid) where TEntity : BaseModel
         {
-            return this.Set<TEntity>().Find(fid);
+            try
+            {
+                return this.Set<TEntity>().Find(fid);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                _log.Error($"GetEntity<{typeof(TEntity).Name}>失败", ex);
+                throw new Exception(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"GetEntity<{typeof(TEntity).Name}>失败", ex);
+                throw new Exception(ex.Message);
+            }
         }
 
         public virtual TEntity GetEntity<TEntity>(Expression<Func<TEntity, bool>> where) where TEntity : BaseModel
         {
-            //return this.Set<TEntity>().Where(where).FirstOrDefault();
-            return this.Set<TEntity>().Where(where).FirstOrDefault();
+            try
+            {
+                return this.Set<TEntity>().Where(where).FirstOrDefault();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                _log.Error($"GetEntity<{typeof(TEntity).Name}>失败", ex);
+                throw new Exception(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"GetEntity<{typeof(TEntity).Name}>失败", ex);
+                throw new Exception(ex.Message);
+            }
         }
 
         public List<TEntity> GetLists<TEntity>(string sql)
         {
-            return this.Database.SqlQuery<TEntity>(sql).ToList();
+            try
+            {
+                return this.Database.SqlQuery<TEntity>(sql).ToList();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                _log.Error($"GetLists<{typeof(TEntity).Name}>失败(List)", ex);
+                throw new DbEntityValidationException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"GetLists<{typeof(TEntity).Name}>失败(List)", ex);
+                throw new Exception(ex.Message);
+            }
         }
 
         public List<TEntity> GetLists<TEntity>(string sql, params SqlParameter[] sqlParameters)
         {
-            return this.Database.SqlQuery<TEntity>(sql).ToList();
+            try
+            {
+                return this.Database.SqlQuery<TEntity>(sql).ToList();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                _log.Error($"GetLists<{typeof(TEntity).Name}>失败(List)", ex);
+                throw new DbEntityValidationException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"GetLists<{typeof(TEntity).Name}>失败(List)", ex);
+                throw new Exception(ex.Message);
+            }
         }
 
         #region 事务
@@ -241,37 +423,63 @@ namespace NL.Framework.DAL
 
         public int Commit()
         {
-            int result = 0;
-            if (Transaction == null)
+            try
             {
-                result += this.SaveChanges();
-
-                DbContextTransaction transaction = this.Database.CurrentTransaction;
-                if (transaction != null)
+                int result = 0;
+                if (Transaction == null)
                 {
-                    transaction.Commit();
-                    transaction.Dispose();
-                    result += 1;
+                    result += this.SaveChanges();
+
+                    DbContextTransaction transaction = this.Database.CurrentTransaction;
+                    if (transaction != null)
+                    {
+                        transaction.Commit();
+                        transaction.Dispose();
+                        result += 1;
+                    }
                 }
+                return result;
             }
-            return result;
+            catch (DbEntityValidationException ex)
+            {
+                _log.Error($"Commit", ex);
+                throw new DbEntityValidationException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"Commit", ex);
+                throw new Exception(ex.Message);
+            }
         }
 
         public void Rollback()
         {
-            if (Transaction == null)
+            try
             {
-
-                DbContextTransaction transaction = this.Database.CurrentTransaction;
-                if (transaction != null)
+                if (Transaction == null)
                 {
-                    transaction.Rollback();
-                    transaction.Dispose();
+
+                    DbContextTransaction transaction = this.Database.CurrentTransaction;
+                    if (transaction != null)
+                    {
+                        transaction.Rollback();
+                        transaction.Dispose();
+                    }
+                }
+                else
+                {
+                    throw new Exception("事务异常");
                 }
             }
-            else
+            catch (DbEntityValidationException ex)
             {
-                throw new Exception("事务异常");
+                _log.Error($"Rollback失败", ex);
+                throw new DbEntityValidationException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"Rollback失败", ex);
+                throw new Exception(ex.Message);
             }
         }
         public int UsingTransaction(Action<IDbContext> action)
@@ -287,12 +495,14 @@ namespace NL.Framework.DAL
                 catch (DbEntityValidationException ex)
                 {
                     tran.Rollback();
+                    _log.Error($"UsingTransaction失败", ex);
                     return 0;
                     throw new Exception(ex.Message);
                 }
                 catch (Exception ex)
                 {
                     tran.Rollback();
+                    _log.Error($"UsingTransaction失败", ex);
                     return 0;
                     throw new Exception(ex.Message);
                 }
@@ -312,12 +522,14 @@ namespace NL.Framework.DAL
                 catch (DbEntityValidationException ex)
                 {
                     tran.Rollback();
+                    _log.Error($"UsingTransaction失败", ex);
                     return 0;
                     throw new Exception(ex.Message);
                 }
                 catch (Exception ex)
                 {
                     tran.Rollback();
+                    _log.Error($"UsingTransaction失败", ex);
                     return 0;
                     throw new Exception(ex.Message);
                 }
@@ -329,7 +541,23 @@ namespace NL.Framework.DAL
 
         public bool ExecuteSqlCommand(string sql, params object[] paras)
         {
-            throw new NotImplementedException();
+            try
+            {
+                int i = this.Database.ExecuteSqlCommand(sql, paras);
+                return i > 0 ? true : false;
+            }
+            catch (DbEntityValidationException ex)
+            {
+                _log.Error($"ExecuteSqlCommand失败：{sql}", ex);
+                return false;
+                throw new Exception(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"ExecuteSqlCommand失败：{sql}", ex);
+                return false;
+                throw new Exception(ex.Message);
+            }
         }
 
         public bool ExcuteSqlCommandAsync(string sql, params object[] paras)

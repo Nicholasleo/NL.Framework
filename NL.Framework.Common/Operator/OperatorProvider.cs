@@ -43,7 +43,7 @@ namespace NL.Framework.Common
             }
             catch (Exception ex)
             {
-                ent = null;
+                ent = null; 
                 return ent;
             }
         }

@@ -18,5 +18,7 @@ namespace NL.Framework.IBLL
     public interface ILoginBll : IBaseBll
     {
         LoginStatusEnt CheckUserLogin(LoginEnt loginEnt);
+
+        bool Test(string sql);
     }
 }

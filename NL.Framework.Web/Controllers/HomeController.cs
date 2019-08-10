@@ -17,6 +17,10 @@ namespace NL.Framework.Web.Controllers
             _IMenuBll = menuBll;
         }
 
+        public HomeController()
+        {
+        }
+
         public ActionResult Index()
         {
             LoginUserEnt ent = OperatorProvider.Provider.GetCurrent();

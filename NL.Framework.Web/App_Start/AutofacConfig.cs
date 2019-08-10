@@ -3,10 +3,9 @@ using Autofac.Configuration;
 using Autofac.Integration.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
-using NL.Framework.BLL;
-using NL.Framework.DAL;
-using NL.Framework.IBLL;
-using NL.Framework.IDAL;
+using NL.Framework.Common.Log;
+//using NL.Framework.IBLL;
+//using NL.Framework.IDAL;
 using System.Reflection;
 using System.Web.Mvc;
 //***********************************************************
@@ -81,6 +80,9 @@ namespace NL.Framework.Web.App_Start
             Assembly dal = Assembly.Load("NL.Framework.DAL");
             //创建dal中的所有类的实例以此类的实现接口存储
             builder.RegisterTypes(dal.GetTypes()).AsImplementedInterfaces();
+
+
+            builder.RegisterType<Logger>().As<ILogger>();
 
             //创建一个Autofac的容器
             var container = builder.Build();
