@@ -10,8 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 //***********************************************************
 //    作者：Nicholas Leo
@@ -116,6 +114,7 @@ namespace NL.Framework.BLL
                     where m.MenuId.Equals(menu.Fid) && rol.RoleCode.Equals("SuperAdmin")
                     select new
                     {
+                        Fid = f.Fid,
                         FunctionName = f.FunctionName,
                         FunctionEvent = f.FunctionEvent
                     };
@@ -123,6 +122,7 @@ namespace NL.Framework.BLL
             foreach (var item in r.ToList())
             {
                 FunctionModel m = new FunctionModel();
+                m.Fid = item.Fid;
                 m.FunctionEvent = item.FunctionEvent;
                 m.FunctionName = item.FunctionName;
                 flist.Add(m);

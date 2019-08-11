@@ -89,6 +89,7 @@ layui.define(['table','NLFrameAjax', 'form'], function (exports) {
 
                     //监听提交
                     iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
+                        form.render();
                         var field = data.field; //获取提交的字段
                         if (field.RoleId == "") {
                             layer.open({
@@ -233,8 +234,8 @@ layui.define(['table','NLFrameAjax', 'form'], function (exports) {
 
                     //监听提交
                     iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
+                        form.render();
                         var field = data.field; //获取提交的字段
-
                         //提交 Ajax 成功后，静态更新表格中的数据
                         nAjax.NLPost({
                             url: '/System/UpdateMenu',
@@ -322,8 +323,8 @@ layui.define(['table','NLFrameAjax', 'form'], function (exports) {
 
                     //监听提交
                     iframeWindow.layui.form.on('submit(LAY-user-role-submit)', function (data) {
+                        form.render();
                         var field = data.field; //获取提交的字段
-
                         //提交 Ajax 成功后，静态更新表格中的数据
                         nAjax.NLPost({
                             url: '/System/UpdateRole',

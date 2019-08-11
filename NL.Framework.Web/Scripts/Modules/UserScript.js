@@ -65,8 +65,6 @@
                     var iframeWindow = window['layui-layer-iframe' + index]
                         , submitID = 'LAY-user-add-submit'
                         , submit = layero.find('iframe').contents().find('#' + submitID);
-                    var success = false;
-                    var postResult = {};
                     //监听提交
                     iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
                         var field = data.field; //获取提交的字段

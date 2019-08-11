@@ -181,6 +181,7 @@ namespace NL.Framework.BLL
                     where m.MenuId.Equals(menu.Fid) && rol.RoleCode.Equals(OperatorProvider.Provider.GetCurrent().RoleCode)
                     select new
                     {
+                        Fid = f.Fid,
                         FunctionName = f.FunctionName,
                         FunctionEvent = f.FunctionEvent
                     };
@@ -188,6 +189,7 @@ namespace NL.Framework.BLL
             foreach (var item in r.ToList())
             {
                 FunctionModel m = new FunctionModel();
+                m.Fid = item.Fid;
                 m.FunctionEvent = item.FunctionEvent;
                 m.FunctionName = item.FunctionName;
                 flist.Add(m);
