@@ -28,7 +28,7 @@ namespace NL.Framework.DAL
 
         public NLFrameContext(ILogger logger) : base("name=DbConn")
         {
-            _log = logger;
+            this._log = logger;
             try
             {
                 Database.SetInitializer(new DropCreateDatabaseIfModelChanges<NLFrameContext>());

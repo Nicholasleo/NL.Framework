@@ -6,7 +6,9 @@
 //    说明：
 //    版权所有：个人
 //***********************************************************
+using Newtonsoft.Json;
 using NL.Framework.Common;
+using NL.Framework.Common.Log;
 using NL.Framework.IBLL;
 using NL.Framework.IDAL;
 using NL.Framework.Model;
@@ -22,8 +24,10 @@ namespace NL.Framework.BLL
     public class RightBll : IRightBll
     {
         private readonly IDbContext _context;
-        public RightBll(IDbContext db)
+        private readonly ILogger _ILogger;
+        public RightBll(IDbContext db,ILogger logger)
         {
+            _ILogger = logger;
             _context = db;
         }
         public List<TreeBaseEnt> GetTreeLists(Guid roleFid)
@@ -127,7 +131,12 @@ namespace NL.Framework.BLL
             }
             catch (Exception ex)
             {
+                _ILogger.Error("获取权限树异常", ex);
                 throw new Exception(ex.Message);
+            }
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"获取菜单列表：{JsonConvert.SerializeObject(lists)}");
             }
             return lists;
         }
@@ -206,6 +215,10 @@ namespace NL.Framework.BLL
                     db.Insert<RoleMenuFunctionModel>(roleMenuFunctions);
                 }
             });
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"角色授权：{JsonConvert.SerializeObject(data)}");
+            }
             return _context.UsingTransaction(action);
         }
     }

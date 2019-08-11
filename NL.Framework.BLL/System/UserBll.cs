@@ -1,4 +1,6 @@
-﻿using NL.Framework.Common;
+﻿using Newtonsoft.Json;
+using NL.Framework.Common;
+using NL.Framework.Common.Log;
 using NL.Framework.IBLL;
 using NL.Framework.IDAL;
 using NL.Framework.Model;
@@ -21,11 +23,13 @@ using System.Threading.Tasks;
 //***********************************************************
 namespace NL.Framework.BLL
 {
-    public class UserBll : IUserBll
+    public class UserBll : CommonBll,IUserBll
     {
         private readonly IDbContext _context;
-        public UserBll(IDbContext db)
+        private readonly ILogger _ILogger;
+        public UserBll(IDbContext db,ILogger logger) : base(db,logger)
         {
+            _ILogger = logger;
             _context = db;
         }
         public AjaxResultEnt AddUser(UserEditEnt model)
@@ -75,6 +79,10 @@ namespace NL.Framework.BLL
                 };
                 db.Insert<UserRoleModel>(userRole);
             });
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"添加用户：{JsonConvert.SerializeObject(model)}");
+            }
             int flg = _context.UsingTransaction(action);
             if(result.Code == 100 && flg > 0) { 
                 result.Code = 200;
@@ -86,12 +94,16 @@ namespace NL.Framework.BLL
         public int DeleteUser(Guid fid)
         {
             UserModel model = _context.GetEntity<UserModel>(fid);
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"删除用户：{JsonConvert.SerializeObject(model)}");
+            }
             if (model.UserCode.ToLower().Equals("admin") || model.UserCode.ToLower().Equals("nicholasleo"))
                 return 0;
             return _context.Delete<UserModel>(fid);
         }
 
-        public List<FunctionModel> GetMenuFunction()
+        public override List<FunctionModel> GetMenuFunction()
         {
             MenuModel menu = _context.GetEntity<MenuModel>(t => t.MenuName == "用户管理");
             var r = from f in _context.Set<FunctionModel>()
@@ -115,12 +127,21 @@ namespace NL.Framework.BLL
                 m.FunctionName = item.FunctionName;
                 flist.Add(m);
             }
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"获取菜单功能：{JsonConvert.SerializeObject(flist)}");
+            }
             return flist;
         }
 
         public IQueryable GetUserAll()
         {
-            return _context.GetLists<UserModel>();
+            IQueryable data = _context.GetLists<UserModel>();
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"获取全部用户：{JsonConvert.SerializeObject(data)}");
+            }
+            return data;
         }
 
 
@@ -163,12 +184,21 @@ namespace NL.Framework.BLL
             {
                 result.Add(item);
             }
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"获取用户列表（分页）：{JsonConvert.SerializeObject(result)}");
+            }
             return result;
         }
 
         public UserModel GetUserModel(Guid fid)
         {
-            return _context.GetEntity<UserModel>(fid);
+            UserModel model = _context.GetEntity<UserModel>(fid);
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"获取用户实体：{JsonConvert.SerializeObject(model)}");
+            }
+            return model;
         }
 
         public UserEditEnt GetUserEidtModel(Guid fid)
@@ -204,12 +234,21 @@ namespace NL.Framework.BLL
                 ModifyTime = model.ModifyTime,
                 ModifyPerson = model.ModifyPerson
             };
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"获取用户实体：{JsonConvert.SerializeObject(ent)}");
+            }
             return ent;
         }
 
         public UserRoleModel GetUserRoleModel(Guid fid)
         {
-            return _context.GetEntity<UserRoleModel>(t=>t.UserId.Equals(fid));
+            UserRoleModel ent = _context.GetEntity<UserRoleModel>(t => t.UserId.Equals(fid));
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"获取用户角色实体：{JsonConvert.SerializeObject(ent)}");
+            }
+            return ent;
         }
 
         public int UpdateUser(UserEditEnt model)
@@ -235,6 +274,10 @@ namespace NL.Framework.BLL
                     userModel.UserName = model.UserName;
                     //userModel.UserPwd = model.UserPwd;
                     userModel.WeChat = model.WeChat;
+                    if (OperatorProvider.Provider.IsDebug)
+                    {
+                        _ILogger.Debug($"用户修改：{JsonConvert.SerializeObject(userModel)}");
+                    }
                     db.Update(userModel);
                 }
                 //更新角色绑定
@@ -259,28 +302,12 @@ namespace NL.Framework.BLL
             return _context.UsingTransaction(action);
         }
 
-        public List<FunctionModel> GetMenuFunction(Guid menuFid, Guid roleFid)
-        {
-            return CommonBll.GetMenuFunction(_context, menuFid, roleFid);
-        }
-
-        public List<FunctionModel> GetMenuFunction(Guid menuFid, string roleCode)
-        {
-            return CommonBll.GetMenuFunction(_context, menuFid, roleCode);
-        }
-
-        public List<FunctionModel> GetMenuFunction(string menuName, string roleCode)
-        {
-            return CommonBll.GetMenuFunction(_context, menuName, roleCode);
-        }
-
-        public List<FunctionModel> GetMenuFunction(string menuName, Guid roleFid)
-        {
-            return CommonBll.GetMenuFunction(_context, menuName, roleFid);
-        }
-
         public AjaxResultEnt DeleteUser(List<UserModel> users)
         {
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"删除用户：{JsonConvert.SerializeObject(users)}");
+            }
             AjaxResultEnt result = new AjaxResultEnt();
             result.Code = 503;
             result.Message = "删除用户失败！";
@@ -333,6 +360,10 @@ namespace NL.Framework.BLL
                 user.ModifyTime = DateTime.Now;
                 user.ModifyPerson = OperatorProvider.Provider.GetCurrent().UserName;
                 db.Update<UserModel>(user);
+                if (OperatorProvider.Provider.IsDebug)
+                {
+                    _ILogger.Debug($"修改用户角色绑定：{JsonConvert.SerializeObject(ent)}");
+                }
                 return result;
             });
             int i = _context.UsingTransaction<AjaxResultEnt>(func);

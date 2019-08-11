@@ -45,6 +45,11 @@ namespace NL.Framework.Common
         public const string NLFRAME_SYSTEM_LOG = "IsLog";
 
         /// <summary>
+        /// 启用系统调试
+        /// </summary>
+        public const string NLFRAME_SYSTEM_DEBUG = "IsDebug";
+
+        /// <summary>
         /// IP过滤
         /// </summary>
         public const string NLFRAME_SYSTEM_IPFILTER = "IsIPFilter";

@@ -6,17 +6,15 @@
 //    说明：
 //    版权所有：个人
 //***********************************************************
+using Newtonsoft.Json;
 using NL.Framework.Common;
-using NL.Framework.Common.Cache;
+using NL.Framework.Common.Log;
 using NL.Framework.IBLL;
 using NL.Framework.IDAL;
 using NL.Framework.Model;
 using NL.Framework.Model.System;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NL.Framework.BLL
 {
@@ -24,14 +22,21 @@ namespace NL.Framework.BLL
     {
 
         private readonly IDbContext _context;
-        public LoginBll(IDbContext db)
+        private readonly ILogger _ILogger;
+        public LoginBll(IDbContext db,ILogger logger)
         {
+            _ILogger = logger;
             _context = db;
         }
 
         public LoginStatusEnt CheckUserLogin(LoginEnt loginEnt)
         {
             LoginStatusEnt res = new LoginStatusEnt();
+
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"用户登陆：{JsonConvert.SerializeObject(loginEnt)}");
+            }
             if (string.IsNullOrEmpty(loginEnt.UserCode))
             {
                 res.Code = 404;

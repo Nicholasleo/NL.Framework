@@ -48,6 +48,13 @@ namespace NL.Framework.Common
             }
         }
 
+        public bool IsDebug
+        {
+            get {
+                return Configs.GetValue(SystemParameters.NLFRAME_SYSTEM_DEBUG).ToLower() == "true" ? true : false;
+            }
+        }
+
         public void AddCurrent(LoginUserEnt userInfo)
         {
             if (LoginProvider == "Cookie")

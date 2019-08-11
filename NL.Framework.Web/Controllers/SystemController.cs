@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NL.Framework.Common;
+using NL.Framework.Common.Log;
 using NL.Framework.IBLL;
 using NL.Framework.Model;
 using System;
@@ -18,7 +19,8 @@ namespace NL.Framework.Web.Controllers
         public SystemController(IRoleBll roleBll
             , IUserBll userBll
             , IRightBll rightBll
-            , IMenuBll menuBll)
+            , IMenuBll menuBll
+            , ILogger logger)
         {
             _IRoleBll = roleBll;
             _IUserBll = userBll;

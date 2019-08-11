@@ -6,7 +6,9 @@
 //    说明：
 //    版权所有：个人
 //***********************************************************
+using Newtonsoft.Json;
 using NL.Framework.Common;
+using NL.Framework.Common.Log;
 using NL.Framework.IBLL;
 using NL.Framework.IDAL;
 using NL.Framework.Model;
@@ -20,11 +22,14 @@ using System.Threading.Tasks;
 
 namespace NL.Framework.BLL
 {
-    public class MenuBll : IMenuBll
+    public class MenuBll : CommonBll,IMenuBll
     {
         private readonly IDbContext _context;
-        public MenuBll(IDbContext db)
+        private readonly ILogger _ILogger;
+        public MenuBll(IDbContext db
+            ,ILogger logger) : base(db,logger)
         {
+            _ILogger = logger;
             _context = db;
         }
 
@@ -33,6 +38,10 @@ namespace NL.Framework.BLL
             if (_context.IsExist<MenuModel>(model.Fid))
                 return 0;
             model.CreateTime = DateTime.Now;
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"添加菜单：{JsonConvert.SerializeObject(model)}");
+            }
             return _context.Insert(model);
         }
 
@@ -49,6 +58,10 @@ namespace NL.Framework.BLL
                 menuModel.MenuUrl = model.MenuUrl;
                 menuModel.ModifyPerson = OperatorProvider.Provider.GetCurrent().UserName;
                 menuModel.ModifyTime = DateTime.Now;
+                if (OperatorProvider.Provider.IsDebug)
+                {
+                    _ILogger.Debug($"修改菜单：{JsonConvert.SerializeObject(model)}");
+                }
                 return _context.Update(menuModel);
             }
             return 0;
@@ -71,7 +84,10 @@ namespace NL.Framework.BLL
                     }
                 }
             });
-
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"删除菜单：{JsonConvert.SerializeObject(meuns)}");
+            }
             int state = _context.UsingTransaction(action) > 0 ? 200 : 404;
             result.Code = state;
             if (state == 200)
@@ -126,6 +142,11 @@ namespace NL.Framework.BLL
                     menuList.Add(nva);
                 }
             }
+
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"获取菜单列表：{JsonConvert.SerializeObject(menuList.OrderBy(t => t.MenuIndex).ToList())}");
+            }
             return menuList.OrderBy(t=>t.MenuIndex).ToList();
         }
 
@@ -140,10 +161,14 @@ namespace NL.Framework.BLL
             {
                 result.Add(item);
             }
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"获取菜单列表：{JsonConvert.SerializeObject(result)}");
+            }
             return result;
         }
 
-        public List<FunctionModel> GetMenuFunction()
+        public override List<FunctionModel> GetMenuFunction()
         {
             MenuModel menu = _context.GetEntity<MenuModel>(t => t.MenuName == "菜单管理");
             var r = from f in _context.Set<FunctionModel>()
@@ -167,37 +192,31 @@ namespace NL.Framework.BLL
                 m.FunctionName = item.FunctionName;
                 flist.Add(m);
             }
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"获取菜单功能：{JsonConvert.SerializeObject(flist)}");
+            }
             return flist;
-        }
-
-        public List<FunctionModel> GetMenuFunction(Guid menuFid, Guid roleFid)
-        {
-            return CommonBll.GetMenuFunction(_context, menuFid, roleFid);
-        }
-
-        public List<FunctionModel> GetMenuFunction(Guid menuFid, string roleCode)
-        {
-            return CommonBll.GetMenuFunction(_context, menuFid, roleCode);
-        }
-
-        public List<FunctionModel> GetMenuFunction(string menuName, string roleCode)
-        {
-            return CommonBll.GetMenuFunction(_context, menuName, roleCode);
-        }
-
-        public List<FunctionModel> GetMenuFunction(string menuName, Guid roleFid)
-        {
-            return CommonBll.GetMenuFunction(_context, menuName, roleFid);
         }
 
         public IQueryable GetParentMenu()
         {
-            return _context.GetLists<MenuModel>(t => t.MenuParentId.Equals(Guid.Empty));
+            IQueryable result = _context.GetLists<MenuModel>(t => t.MenuParentId.Equals(Guid.Empty));
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"获取一级菜单：{JsonConvert.SerializeObject(result)}");
+            }
+            return result;
         }
 
         public MenuModel GetMenuModel(Guid fid)
         {
-            return _context.GetEntity<MenuModel>(fid);
+            MenuModel model = _context.GetEntity<MenuModel>(fid);
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"获取菜单：{JsonConvert.SerializeObject(model)}");
+            }
+            return model;
         }
     }
 }

@@ -6,32 +6,41 @@
 //    说明：
 //    版权所有：个人
 //***********************************************************
+using Newtonsoft.Json;
+using NL.Framework.Common;
+using NL.Framework.Common.Log;
 using NL.Framework.IBLL;
 using NL.Framework.IDAL;
 using NL.Framework.Model.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NL.Framework.BLL
 {
-    public  static partial class CommonBll
+    public  abstract class CommonBll : ISystemBaseBll
     {
-        public static List<FunctionModel> GetMenuFunction(this IDbContext db, Guid menuFid,Guid roleFid)
+        private readonly IDbContext _IDbContext;
+        private readonly ILogger _ILogger;
+        public CommonBll(IDbContext db,ILogger logger)
         {
-            MenuModel menu = db.GetEntity<MenuModel>(t => t.Fid.Equals(menuFid));
-            var r = from f in db.Set<FunctionModel>()
-                    join fm in db.Set<RoleMenuFunctionModel>()
+            _ILogger = logger;
+            _IDbContext = db;
+        }
+        public virtual List<FunctionModel> GetMenuFunction(Guid menuFid,Guid roleFid)
+        {
+            MenuModel menu = _IDbContext.GetEntity<MenuModel>(t => t.Fid.Equals(menuFid));
+            var r = from f in _IDbContext.Set<FunctionModel>()
+                    join fm in _IDbContext.Set<RoleMenuFunctionModel>()
                     on f.Fid equals fm.FunctionId
-                    join m in db.Set<RoleMenuModel>()
+                    join m in _IDbContext.Set<RoleMenuModel>()
                     on fm.RoleMenuId equals m.Fid
-                    join rol in db.Set<RoleModel>()
+                    join rol in _IDbContext.Set<RoleModel>()
                     on m.RoleId equals rol.Fid
                     where m.MenuId.Equals(menu.Fid) && rol.Fid.Equals(roleFid)
                     select new
                     {
+                        Fid = f.Fid,
                         FunctionName = f.FunctionName,
                         FunctionEvent = f.FunctionEvent
                     };
@@ -39,26 +48,32 @@ namespace NL.Framework.BLL
             foreach (var item in r.ToList())
             {
                 FunctionModel m = new FunctionModel();
+                m.Fid = item.Fid;
                 m.FunctionEvent = item.FunctionEvent;
                 m.FunctionName = item.FunctionName;
                 flist.Add(m);
+            }
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"获取菜单功能：{JsonConvert.SerializeObject(flist)}");
             }
             return flist;
         }
 
-        public static List<FunctionModel> GetMenuFunction(this IDbContext db, string menuName, Guid roleFid)
+        public virtual List<FunctionModel> GetMenuFunction(string menuName, Guid roleFid)
         {
-            MenuModel menu = db.GetEntity<MenuModel>(t => t.MenuName.Equals(menuName));
-            var r = from f in db.Set<FunctionModel>()
-                    join fm in db.Set<RoleMenuFunctionModel>()
+            MenuModel menu = _IDbContext.GetEntity<MenuModel>(t => t.MenuName.Equals(menuName));
+            var r = from f in _IDbContext.Set<FunctionModel>()
+                    join fm in _IDbContext.Set<RoleMenuFunctionModel>()
                     on f.Fid equals fm.FunctionId
-                    join m in db.Set<RoleMenuModel>()
+                    join m in _IDbContext.Set<RoleMenuModel>()
                     on fm.RoleMenuId equals m.Fid
-                    join rol in db.Set<RoleModel>()
+                    join rol in _IDbContext.Set<RoleModel>()
                     on m.RoleId equals rol.Fid
                     where m.MenuId.Equals(menu.Fid) && rol.Fid.Equals(roleFid)
                     select new
                     {
+                        Fid = f.Fid,
                         FunctionName = f.FunctionName,
                         FunctionEvent = f.FunctionEvent
                     };
@@ -67,24 +82,30 @@ namespace NL.Framework.BLL
             {
                 FunctionModel m = new FunctionModel();
                 m.FunctionEvent = item.FunctionEvent;
+                m.Fid = item.Fid;
                 m.FunctionName = item.FunctionName;
                 flist.Add(m);
             }
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"获取菜单功能：{JsonConvert.SerializeObject(flist)}");
+            }
             return flist;
         }
-        public static List<FunctionModel> GetMenuFunction(this IDbContext db, Guid menuFid, string roleCode)
+        public virtual List<FunctionModel> GetMenuFunction(Guid menuFid, string roleCode)
         {
-            MenuModel menu = db.GetEntity<MenuModel>(t => t.Fid.Equals(menuFid));
-            var r = from f in db.Set<FunctionModel>()
-                    join fm in db.Set<RoleMenuFunctionModel>()
+            MenuModel menu = _IDbContext.GetEntity<MenuModel>(t => t.Fid.Equals(menuFid));
+            var r = from f in _IDbContext.Set<FunctionModel>()
+                    join fm in _IDbContext.Set<RoleMenuFunctionModel>()
                     on f.Fid equals fm.FunctionId
-                    join m in db.Set<RoleMenuModel>()
+                    join m in _IDbContext.Set<RoleMenuModel>()
                     on fm.RoleMenuId equals m.Fid
-                    join rol in db.Set<RoleModel>()
+                    join rol in _IDbContext.Set<RoleModel>()
                     on m.RoleId equals rol.Fid
                     where m.MenuId.Equals(menu.Fid) && rol.RoleCode.Equals(roleCode)
                     select new
                     {
+                        Fid = f.Fid,
                         FunctionName = f.FunctionName,
                         FunctionEvent = f.FunctionEvent
                     };
@@ -93,24 +114,30 @@ namespace NL.Framework.BLL
             {
                 FunctionModel m = new FunctionModel();
                 m.FunctionEvent = item.FunctionEvent;
+                m.Fid = item.Fid;
                 m.FunctionName = item.FunctionName;
                 flist.Add(m);
             }
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"获取菜单功能：{JsonConvert.SerializeObject(flist)}");
+            }
             return flist;
         }
-        public static List<FunctionModel> GetMenuFunction(this IDbContext db, string menuName, string roleCode)
+        public virtual List<FunctionModel> GetMenuFunction(string menuName, string roleCode)
         {
-            MenuModel menu = db.GetEntity<MenuModel>(t => t.MenuName.Equals(menuName));
-            var r = from f in db.Set<FunctionModel>()
-                    join fm in db.Set<RoleMenuFunctionModel>()
+            MenuModel menu = _IDbContext.GetEntity<MenuModel>(t => t.MenuName.Equals(menuName));
+            var r = from f in _IDbContext.Set<FunctionModel>()
+                    join fm in _IDbContext.Set<RoleMenuFunctionModel>()
                     on f.Fid equals fm.FunctionId
-                    join m in db.Set<RoleMenuModel>()
+                    join m in _IDbContext.Set<RoleMenuModel>()
                     on fm.RoleMenuId equals m.Fid
-                    join rol in db.Set<RoleModel>()
+                    join rol in _IDbContext.Set<RoleModel>()
                     on m.RoleId equals rol.Fid
                     where m.MenuId.Equals(menu.Fid) && rol.RoleCode.Equals(roleCode)
                     select new
                     {
+                        Fid = f.Fid,
                         FunctionName = f.FunctionName,
                         FunctionEvent = f.FunctionEvent
                     };
@@ -119,8 +146,46 @@ namespace NL.Framework.BLL
             {
                 FunctionModel m = new FunctionModel();
                 m.FunctionEvent = item.FunctionEvent;
+                m.Fid = item.Fid;
                 m.FunctionName = item.FunctionName;
                 flist.Add(m);
+            }
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"获取菜单功能：{JsonConvert.SerializeObject(flist)}");
+            }
+            return flist;
+        }
+
+        public virtual List<FunctionModel> GetMenuFunction()
+        {
+            MenuModel menu = _IDbContext.GetEntity<MenuModel>(t => t.MenuName == "菜单管理");
+            var r = from f in _IDbContext.Set<FunctionModel>()
+                    join fm in _IDbContext.Set<RoleMenuFunctionModel>()
+                    on f.Fid equals fm.FunctionId
+                    join m in _IDbContext.Set<RoleMenuModel>()
+                    on fm.RoleMenuId equals m.Fid
+                    join rol in _IDbContext.Set<RoleModel>()
+                    on m.RoleId equals rol.Fid
+                    where m.MenuId.Equals(menu.Fid) && rol.RoleCode.Equals(OperatorProvider.Provider.GetCurrent().RoleCode)
+                    select new
+                    {
+                        Fid = f.Fid,
+                        FunctionName = f.FunctionName,
+                        FunctionEvent = f.FunctionEvent
+                    };
+            List<FunctionModel> flist = new List<FunctionModel>();
+            foreach (var item in r.ToList())
+            {
+                FunctionModel m = new FunctionModel();
+                m.FunctionEvent = item.FunctionEvent;
+                m.Fid = item.Fid;
+                m.FunctionName = item.FunctionName;
+                flist.Add(m);
+            }
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"获取菜单功能：{JsonConvert.SerializeObject(flist)}");
             }
             return flist;
         }

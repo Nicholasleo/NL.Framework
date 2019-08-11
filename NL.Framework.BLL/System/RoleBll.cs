@@ -6,7 +6,9 @@
 //    说明：
 //    版权所有：个人
 //***********************************************************
+using Newtonsoft.Json;
 using NL.Framework.Common;
+using NL.Framework.Common.Log;
 using NL.Framework.IBLL;
 using NL.Framework.IDAL;
 using NL.Framework.Model.System;
@@ -17,28 +19,38 @@ using System.Linq.Expressions;
 
 namespace NL.Framework.BLL
 {
-    public class RoleBll : IRoleBll
+    public class RoleBll : CommonBll,IRoleBll
     {
         private readonly IDbContext _context;
+        private readonly ILogger _ILogger;
 
-        public RoleBll(IDbContext db)
+        public RoleBll(IDbContext db,ILogger logger) : base(db, logger)
         {
+            _ILogger = logger;
             _context = db;
         }
         public int AddRole(RoleModel model)
         {
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"新增角色：{JsonConvert.SerializeObject(model)}");
+            }
             return _context.Insert<RoleModel>(model);
         }
 
         public int DeleteRole(RoleModel model)
         {
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"删除角色：{JsonConvert.SerializeObject(model)}");
+            }
             //不允许删除超级管理员
             if (model.RoleCode.Equals("SuperAdmin"))
                 return 0;
             return _context.Delete<RoleModel>(model.Fid);
         }
 
-        public List<FunctionModel> GetMenuFunction()
+        public override List<FunctionModel> GetMenuFunction()
         {
             MenuModel menu = _context.GetEntity<MenuModel>(t => t.MenuName == "角色管理");
             var r = from f in _context.Set<FunctionModel>()
@@ -62,27 +74,11 @@ namespace NL.Framework.BLL
                 m.FunctionName = item.FunctionName;
                 flist.Add(m);
             }
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"获取菜单功能：{JsonConvert.SerializeObject(flist)}");
+            }
             return flist;
-        }
-
-        public List<FunctionModel> GetMenuFunction(Guid menuFid, Guid roleFid)
-        {
-            return CommonBll.GetMenuFunction(_context, menuFid, roleFid);
-        }
-
-        public List<FunctionModel> GetMenuFunction(Guid menuFid, string roleCode)
-        {
-            return CommonBll.GetMenuFunction(_context, menuFid, roleCode);
-        }
-
-        public List<FunctionModel> GetMenuFunction(string menuName, string roleCode)
-        {
-            return CommonBll.GetMenuFunction(_context, menuName, roleCode);
-        }
-
-        public List<FunctionModel> GetMenuFunction(string menuName, Guid roleFid)
-        {
-            return CommonBll.GetMenuFunction(_context, menuName, roleFid);
         }
 
         public IQueryable GetRoleAll()
