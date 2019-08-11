@@ -1,5 +1,6 @@
 ﻿using NL.Framework.Common;
 using NL.Framework.Common.Log;
+using NL.Framework.Common.Office;
 using NL.Framework.IBLL;
 using NL.Framework.Model;
 using NL.Framework.Model.System;
@@ -12,10 +13,12 @@ namespace NL.Framework.Web.Controllers
     {
         private readonly ILoginBll _ILoginBll = null;
         private readonly ISystemInit _ISystemInit;
+        private readonly IExcel _IExcel;
 
         private readonly ILogger _log;
-        public LoginController(ISystemInit systemInit, ILoginBll loginBll,ILogger logger)
+        public LoginController(ISystemInit systemInit, ILoginBll loginBll,ILogger logger,IExcel excel)
         {
+            _IExcel = excel;
             _ISystemInit = systemInit;
             _ILoginBll = loginBll;
             _log = logger;
@@ -35,6 +38,10 @@ namespace NL.Framework.Web.Controllers
             _ISystemInit.InitUser();
             //初始化用户角色
             _ISystemInit.InitUserRole();
+            //System.Data.DataTable dt = _IExcel.GetTableFromExcel("E:\\QQPCmgr\\Desktop\\123.xlsx");
+            //if (dt != null)
+            //{
+            //}
             //_log.Info("测试");
             //try
             //{

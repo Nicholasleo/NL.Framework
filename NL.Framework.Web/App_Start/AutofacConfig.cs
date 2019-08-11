@@ -4,6 +4,8 @@ using Autofac.Integration.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using NL.Framework.Common.Log;
+using NL.Framework.Common.Office;
+using NL.Framework.Common.Office.Excel;
 //using NL.Framework.IBLL;
 //using NL.Framework.IDAL;
 using System.Reflection;
@@ -83,6 +85,7 @@ namespace NL.Framework.Web.App_Start
 
 
             builder.RegisterType<Logger>().As<ILogger>();
+            builder.RegisterType<Excel>().As<IExcel>();
 
             //创建一个Autofac的容器
             var container = builder.Build();
