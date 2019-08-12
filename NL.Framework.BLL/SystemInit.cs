@@ -251,6 +251,7 @@ namespace NL.Framework.BLL
             foreach (FunctionModel item in list)
             {
                 RoleMenuFunctionModel m = new RoleMenuFunctionModel();
+                m.Fid = Guid.NewGuid();
                 m.FunctionId = item.Fid;
                 m.RoleMenuId = tempId;
                 m.CreatePerson = "NicholasLeo";

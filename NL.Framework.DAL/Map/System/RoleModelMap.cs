@@ -12,32 +12,20 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NL.Framework.DAL.Map
 {
-    public class RoleModelMap : EntityTypeConfiguration<RoleModel>
+    public class RoleModelMap : BaseModelMap<RoleModel>
     {
-        public RoleModelMap()
+        public RoleModelMap() : base()
         {
             ToTable(TableName._ROLE);
 
-            HasKey(t => t.Fid);
-
-            Property(t => t.Fid).HasColumnName("RoleId").HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(t => t.Fid).HasColumnName("RoleId");
 
             Property(t => t.RoleName).HasColumnType("NVARCHAR").HasMaxLength(50);
 
             Property(t => t.RoleCode).HasColumnType("NVARCHAR").HasMaxLength(200);
 
             Property(t => t.Description).HasColumnType("NVARCHAR").HasMaxLength(200);
-
-            Property(t => t.CreateTime).HasColumnType("DATETIME2");
-
-            Property(t => t.CreatePerson).HasColumnType("NVARCHAR").HasMaxLength(30);
-
-            Property(t => t.ModifyPerson).HasColumnType("NVARCHAR").HasMaxLength(30);
-
-            Property(t => t.ModifyTime).HasColumnType("DATETIME2");
-
-            //HasOptional(t => t.RoleMenuModel).WithOptionalDependent(l => l.RoleModel).Map(t=>t.MapKey("RoleId"));
-
+            
             HasMany(t => t.UserRoleModels).WithRequired(t => t.RoleModel).HasForeignKey(t => t.RoleId);
 
             HasMany(t => t.RoleMenuModels).WithRequired(t => t.RoleModel).HasForeignKey(t => t.RoleId);

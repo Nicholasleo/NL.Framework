@@ -12,32 +12,17 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NL.Framework.DAL.Map
 {
-    public class FunctionModelMap : EntityTypeConfiguration<FunctionModel>
+    public class FunctionModelMap : BaseModelMap<FunctionModel>
     {
-        public FunctionModelMap()
+        public FunctionModelMap() : base()
         {
             ToTable(TableName._FUNCTION);
 
-            HasKey(t => t.Fid);
-
-            Property(t => t.Fid).HasColumnName("FunctionId").HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(t => t.Fid).HasColumnName("FunctionId");
 
             Property(t => t.FunctionName).HasColumnType("NVARCHAR").HasMaxLength(50);
 
-            Property(t => t.CreateTime).HasColumnType("DATETIME2");
-
-            Property(t => t.CreatePerson).HasColumnType("NVARCHAR").HasMaxLength(30);
-
-            Property(t => t.ModifyPerson).HasColumnType("NVARCHAR").HasMaxLength(30);
-
-            Property(t => t.ModifyTime).HasColumnType("DATETIME2");
-
-            //HasOptional(x => x.RoleMenuFunctionModel).WithOptionalDependent(l => l.FunctionModel).Map(t=>t.MapKey("FunctionId"));
             HasMany(t => t.RoleMenuFunctionModels).WithRequired(t => t.FunctionModel).HasForeignKey(t => t.FunctionId);
-
-            //HasMany(t => t.RoleModels).WithMany(t => t.MenuModels).Map(t => t.ToTable(TableName._ROLEMENU).MapLeftKey("MenuId").MapRightKey("RoleId"));
-
-            //HasMany(t => t.FunctionModels).WithMany(t => t.MenuModels).Map(t => t.ToTable(TableName._ROLEMENUFUNCTION).MapLeftKey("MenuId").MapRightKey("FunctionId"));
 
         }
     }

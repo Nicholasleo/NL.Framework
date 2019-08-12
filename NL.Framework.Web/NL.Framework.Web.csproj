@@ -448,6 +448,7 @@
     <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\dtree\icons.json" />
     <Content Include="Views\System\UserBind.cshtml" />
     <Content Include="Views\System\UserAdd.cshtml" />
+    <Content Include="Views\Login\_404.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NL.Framework.Common\NL.Framework.Common.csproj">

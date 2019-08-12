@@ -60,6 +60,7 @@
     <Compile Include="System\RoleMenuModel.cs" />
     <Compile Include="System\RoleModel.cs" />
     <Compile Include="System\SystemBaseModel.cs" />
+    <Compile Include="System\SystemConfigModel.cs" />
     <Compile Include="System\UserModel.cs" />
     <Compile Include="System\UserRoleModel.cs" />
     <Compile Include="TreeDataEnt.cs" />

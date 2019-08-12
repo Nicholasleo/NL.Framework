@@ -21,12 +21,20 @@ namespace NL.Framework.Model.System
         /// </summary>
         public Guid ParentId { get; set; }
         /// <summary>
+        /// 查询标识
+        /// </summary>
+        public string OptionsCode { get; set; }
+        /// <summary>
         /// 显示名称
         /// </summary>
         public string MyName { get; set; }
         /// <summary>
         /// 属性值
         /// </summary>
-        public int MyValue { get; set; }
+        public Guid MyValue { get; set; }
+        /// <summary>
+        /// 级别 默认为根节点0
+        /// </summary>
+        public int Level { get; set; }
     }
 }

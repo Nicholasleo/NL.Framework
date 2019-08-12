@@ -12,31 +12,15 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NL.Framework.DAL.Map
 {
-    public class UserRoleModelMap : EntityTypeConfiguration<UserRoleModel>
+    public class UserRoleModelMap : BaseModelMap<UserRoleModel>
     {
-        public UserRoleModelMap()
+        public UserRoleModelMap() : base()
         {
             ToTable(TableName._USERROLE);
-
-            HasKey(t => t.Fid);
-
-            Property(t => t.Fid).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-
-            //HasIndex(t => t.UserId).IsUnique();
-
-            //HasIndex(t => t.RoleId).IsUnique();
 
             Property(t => t.UserId);
 
             Property(t => t.RoleId);
-
-            Property(t => t.CreateTime).HasColumnType("DATETIME2");
-
-            Property(t => t.CreatePerson).HasColumnType("NVARCHAR").HasMaxLength(30);
-
-            Property(t => t.ModifyPerson).HasColumnType("NVARCHAR").HasMaxLength(30);
-
-            Property(t => t.ModifyTime).HasColumnType("DATETIME2");
 
         }
     }

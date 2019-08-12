@@ -94,10 +94,65 @@ namespace NL.Framework.BLL
                 result.Message = $"删除【{menuname.TrimEnd(',')}】成功！";
             return result;
         }
+        /// <summary>
+        /// 超级管理员
+        /// </summary>
+        /// <returns></returns>
+        private List<NvaMenus> GetMenuList()
+        {
+            List<NvaMenus> menuList = new List<NvaMenus>();
+            //获取根节点 -- 通过角色获取菜单
+            var roots = from menu in _context.Set<MenuModel>()
+                        where menu.MenuParentId.Equals(Guid.Empty)
+                        select menu;
+            //var roots = _context.GetLists<MenuModel>(t => t.MenuParentId.Equals(Guid.Empty));
+            //通过根节点获取对应的子节点
+            foreach (MenuModel root in roots.AsEnumerable())
+            {
+                if (root.MenuIsShow == 1)
+                {
+                    NvaMenus nva = new NvaMenus();
+                    nva.MenuName = root.MenuName;
+                    nva.MenuUrl = root.MenuUrl;
+                    nva.MenuIcon = root.MenuIcon;
+                    nva.MenuIndex = root.MenuIndex;
+                    nva.Fid = root.Fid;
+                    List<MenuModel> childMenus = new List<MenuModel>();
+                    //var childs = _context.GetLists<MenuModel>(t => t.MenuParentId.Equals(root.Fid));
+                    var childs = from menu in _context.Set<MenuModel>()
+                                 where menu.MenuParentId.Equals(root.Fid)
+                                 select menu;
+                    foreach (MenuModel child in childs.AsEnumerable())
+                    {
+                        if (child.MenuIsShow == 1)
+                        {
+                            MenuModel menu = new MenuModel();
+                            menu.Fid = child.Fid;
+                            menu.MenuParentId = child.MenuParentId;
+                            menu.MenuName = child.MenuName;
+                            menu.MenuUrl = child.MenuUrl;
+                            menu.MenuIndex = child.MenuIndex;
+                            childMenus.Add(menu);
+                        }
+                    }
+                    nva.ChildMenus = childMenus.OrderBy(t => t.MenuIndex).ToList();
+                    menuList.Add(nva);
+                }
+            }
+
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"获取菜单列表：{JsonConvert.SerializeObject(menuList.OrderBy(t => t.MenuIndex).ToList())}");
+            }
+            return menuList.OrderBy(t => t.MenuIndex).ToList();
+        }
 
         public List<NvaMenus> GetMenuList(Guid roleid)
         {
             IQueryable menus = _context.GetLists<MenuModel>();
+            RoleModel role = _context.GetEntity<RoleModel>(roleid);
+            if (role.RoleCode.ToLower() == "superadmin")
+                return GetMenuList();
 
             List<NvaMenus> menuList = new List<NvaMenus>();
             //获取根节点 -- 通过角色获取菜单

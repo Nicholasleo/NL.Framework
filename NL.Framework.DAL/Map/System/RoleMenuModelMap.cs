@@ -17,25 +17,13 @@ using System.Threading.Tasks;
 //***********************************************************
 namespace NL.Framework.DAL.Map.System
 {
-    public class RoleMenuModelMap : EntityTypeConfiguration<RoleMenuModel>
+    public class RoleMenuModelMap : BaseModelMap<RoleMenuModel>
     {
-        public RoleMenuModelMap()
+        public RoleMenuModelMap() : base()
         {
             ToTable(TableName._ROLEMENU);
 
-            HasKey(t => t.Fid);
-
-            Property(t => t.Fid).HasColumnName("RoleMenuId").HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-
-            Property(t => t.CreateTime).HasColumnType("DATETIME2");
-
-            Property(t => t.CreatePerson).HasColumnType("NVARCHAR").HasMaxLength(30);
-
-            Property(t => t.ModifyPerson).HasColumnType("NVARCHAR").HasMaxLength(30);
-
-            Property(t => t.ModifyTime).HasColumnType("DATETIME2");
-
-            //HasOptional(t => t.RoleModel).WithOptionalPrincipal(l => l.RoleMenuModel).Map(t=>t.MapKey("RoleMenuId"));
+            Property(t => t.Fid).HasColumnName("RoleMenuId");
 
             HasMany(t => t.RoleMenuFunctionModels).WithRequired(t => t.RoleMenuModel).HasForeignKey(t => t.RoleMenuId);
         }

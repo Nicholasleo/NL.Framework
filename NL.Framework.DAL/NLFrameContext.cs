@@ -7,6 +7,7 @@
 //    版权所有：个人
 //***********************************************************
 using NL.Framework.Common.Log;
+using NL.Framework.DAL.Map;
 using NL.Framework.IDAL;
 using NL.Framework.Model;
 using System;
@@ -43,6 +44,19 @@ namespace NL.Framework.DAL
                 _log.Error($"连接数据库失败{typeof(NLFrameContext).Name}", ex);
                 throw new Exception(ex.Message);
             }
+        }
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            var typesToRegister = Assembly.GetExecutingAssembly().GetTypes()
+                .Where(type => !string.IsNullOrEmpty(type.Namespace))
+                .Where(type => type.BaseType != null && type.BaseType.IsGenericType && type.BaseType.GetGenericTypeDefinition() == typeof(BaseModelMap<>));
+
+            foreach (var item in typesToRegister)
+            {
+                dynamic configurationInstance = Activator.CreateInstance(item);
+                modelBuilder.Configurations.Add(configurationInstance);
+            }
+            base.OnModelCreating(modelBuilder);
         }
 
         public virtual int Delete<TEntity>(Guid fid) where TEntity : BaseModel
@@ -321,20 +335,6 @@ namespace NL.Framework.DAL
             }
         }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            var typesToRegister = Assembly.GetExecutingAssembly().GetTypes()
-                .Where(type => !string.IsNullOrEmpty(type.Namespace))
-                .Where(type => type.BaseType != null && type.BaseType.IsGenericType && type.BaseType.GetGenericTypeDefinition() == typeof(EntityTypeConfiguration<>));
-
-            foreach (var item in typesToRegister)
-            {
-                dynamic configurationInstance = Activator.CreateInstance(item);
-                modelBuilder.Configurations.Add(configurationInstance);
-            }
-            base.OnModelCreating(modelBuilder);
-
-        }
 
         public virtual new DbSet<TEntity> Set<TEntity>() where TEntity : BaseModel
         {

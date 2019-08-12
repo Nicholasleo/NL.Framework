@@ -12,15 +12,13 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NL.Framework.DAL.Map
 {
-    public class MenuModelMap : EntityTypeConfiguration<MenuModel>
+    public class MenuModelMap : BaseModelMap<MenuModel>
     {
-        public MenuModelMap()
+        public MenuModelMap() : base()
         {
             ToTable(TableName._MENU);
 
-            HasKey(t => t.Fid);
-
-            Property(t => t.Fid).HasColumnName("MenuId").HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(t => t.Fid).HasColumnName("MenuId");
 
             Property(t => t.MenuName).HasColumnType("NVARCHAR").HasMaxLength(50);
 
@@ -35,14 +33,6 @@ namespace NL.Framework.DAL.Map
             Property(t => t.MenuIsShow);
 
             Property(t => t.MenuIndex);
-
-            Property(t => t.CreateTime).HasColumnType("DATETIME2");
-
-            Property(t => t.CreatePerson).HasColumnType("NVARCHAR").HasMaxLength(30);
-
-            Property(t => t.ModifyPerson).HasColumnType("NVARCHAR").HasMaxLength(30);
-
-            Property(t => t.ModifyTime).HasColumnType("DATETIME2");
 
             HasMany(t => t.RoleMenuModels).WithRequired(t => t.MenuModel).HasForeignKey(t => t.MenuId);
             //HasOptional(t => t.RoleMenuModel).WithOptionalDependent(l => l.MenuModel).Map(t=>t.MapKey("MenuId"));

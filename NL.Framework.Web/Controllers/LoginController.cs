@@ -16,44 +16,36 @@ namespace NL.Framework.Web.Controllers
         private readonly IExcel _IExcel;
 
         private readonly ILogger _log;
-        public LoginController(ISystemInit systemInit, ILoginBll loginBll,ILogger logger,IExcel excel)
+        public LoginController(ISystemInit systemInit, ILoginBll loginBll, ILogger logger, IExcel excel)
         {
             _IExcel = excel;
             _ISystemInit = systemInit;
             _ILoginBll = loginBll;
             _log = logger;
         }
+
+        public ActionResult _404()
+        {
+            Response.Status = "404 Not Found";
+            Response.StatusCode = 404;
+            return View();
+        }
+
         // GET: Login
         public ActionResult Index()
         {
-            //初始化菜单
+            ////初始化菜单
             //_ISystemInit.InitMenu();
-            //初始化功能
+            ////初始化功能
             //_ISystemInit.InitFunction();
-            //初始化菜单功能关系
-            //_ISystemInit.InitMenuFunction();
-            //初始化角色
+            ////初始化角色
             _ISystemInit.InitRole();
             //初始化用户
             _ISystemInit.InitUser();
             //初始化用户角色
             _ISystemInit.InitUserRole();
-            //System.Data.DataTable dt = _IExcel.GetTableFromExcel("E:\\QQPCmgr\\Desktop\\123.xlsx");
-            //if (dt != null)
-            //{
-            //}
-            //_log.Info("测试");
-            //try
-            //{
-            //    bool r = _ILoginBll.Test("SELECT 1 FROM T_Sys_User");
-            //    _log.Debug("调试");
-            //    string s = "";
-            //    int i = Int32.Parse(s);
-            //}
-            //catch (Exception ex)
-            //{
-            //    _log.Error("错误信息：", ex);
-            //}
+            ////初始化菜单功能关系
+            _ISystemInit.InitMenuFunction();
             return View();
         }
 

@@ -12,15 +12,13 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NL.Framework.DAL.Map
 {
-    public class UserModelMap : EntityTypeConfiguration<UserModel>
+    public class UserModelMap : BaseModelMap<UserModel>
     {
-        public UserModelMap()
+        public UserModelMap() : base()
         {
             ToTable(TableName._USER);
 
-            HasKey(t => t.Fid);
-
-            Property(t => t.Fid).HasColumnName("UserId").HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(t => t.Fid).HasColumnName("UserId");
 
             Property(t => t.UserName).HasColumnType("NVARCHAR").HasMaxLength(50);
 
@@ -46,16 +44,6 @@ namespace NL.Framework.DAL.Map
             Property(t => t.LastLoginTime).HasColumnType("DATETIME2");
             Property(t => t.State);
             Property(t => t.Description).HasColumnType("NVARCHAR").HasMaxLength(300);
-
-            Property(t => t.CreateTime).HasColumnType("DATETIME2");
-
-            Property(t => t.CreatePerson).HasColumnType("NVARCHAR").HasMaxLength(30);
-
-            Property(t => t.ModifyPerson).HasColumnType("NVARCHAR").HasMaxLength(30);
-
-            Property(t => t.ModifyTime).HasColumnType("DATETIME2");
-
-            //HasOptional(t => t.UserRoleModel).WithOptionalDependent(l => l.UserModel).Map(t=>t.MapKey("UserId"));
             HasMany(t => t.UserRoleModels).WithRequired(t => t.UserModel).HasForeignKey(t => t.UserId);
 
         }

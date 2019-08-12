@@ -48,6 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Map\BaseModelMap.cs" />
+    <Compile Include="Map\System\DropDownOptionsModelMap.cs" />
     <Compile Include="Map\System\RoleMenuFunctionModelMap.cs" />
     <Compile Include="Map\System\RoleMenuModelMap.cs" />
     <Compile Include="Map\System\RoleModelMap.cs" />

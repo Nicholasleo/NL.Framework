@@ -33,6 +33,16 @@ namespace NL.Framework.DAL
         /// </summary>
         public const string _FUNCTION = "Sys_Function";
         /// <summary>
+        /// 系统下拉框配置表
+        /// </summary>
+        public const string _DROPDOWN = "Sys_Dropdown";
+
+
+
+
+
+
+        /// <summary>
         /// 菜单-功能关系表
         /// </summary>
         public const string _MENUFUNCTION = "Sys_MenuFunction";
