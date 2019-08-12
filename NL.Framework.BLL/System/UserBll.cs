@@ -21,133 +21,31 @@ using System.Linq.Expressions;
 //***********************************************************
 namespace NL.Framework.BLL
 {
-    public class UserBll : CommonBll,IUserBll
+    public class UserBll : CommonBll<UserModel>,IUserBll
     {
+
+        #region Fields
         private readonly IDbContext _context;
         private readonly ILogger _ILogger;
-        public UserBll(IDbContext db,ILogger logger) : base(db,logger)
+        private static AjaxResultEnt result = new AjaxResultEnt
+        {
+            Code = 404,
+            Message = "用户操作错误！"
+        };
+        #endregion
+
+        #region Ctor
+        public UserBll(IDbContext db, ILogger logger) : base(db, logger)
         {
             _ILogger = logger;
             _context = db;
         }
-        public AjaxResultEnt AddUser(UserEditEnt model)
+        #endregion
+
+        #region Override
+        public override List<UserModel> GetLists(int page, int limit, out int total, object obj)
         {
-            AjaxResultEnt result = new AjaxResultEnt();
-            result.Code = 100;
-            Action<IDbContext> action = new Action<IDbContext>((IDbContext db) => {
-                if (db.IsExist<UserModel>(t => t.UserCode.ToLower().Equals(model.UserCode))) {
-                    result.Code = 503;
-                    result.Message = $"{model.UserCode}已存在！";
-                    return;
-                }
-                if (db.IsExist<UserModel>(t => t.IdCard.ToLower().Equals(model.IdCard)))
-                {
-                    result.Code = 503;
-                    result.Message = $"{model.IdCard}已存在！";
-                    return;
-                }
-                UserModel userModel = new UserModel
-                {
-                    UserAge = model.UserAge,
-                    UserName = model.UserName,
-                    UserCode = model.UserCode,
-                    UserPwd = model.UserPwd,
-                    Address = model.Address,
-                    CreatePerson = model.CreatePerson,
-                    CreateTime = DateTime.Now,
-                    Description = model.Description,
-                    Email = model.Email,
-                    Gender = model.Gender,
-                    IdCard = model.IdCard,
-                    IsAdmin = model.IsAdmin,
-                    IsDelete = model.IsDelete,
-                    QQ = model.QQ,
-                    WeChat = model.WeChat,
-                    MobilePhone = model.MobilePhone,
-                    State = model.State
-                };
-                db.Insert<UserModel>(userModel);
-                Guid userId = db.GetEntity<UserModel>(t => t.UserCode.Equals(model.UserCode)).Fid;
-                UserRoleModel userRole = new UserRoleModel
-                {
-                    UserId = userId,
-                    RoleId = model.RoleId,
-                    CreatePerson = model.CreatePerson,
-                    CreateTime = DateTime.Now
-                };
-                db.Insert<UserRoleModel>(userRole);
-            });
-            if (OperatorProvider.Provider.IsDebug)
-            {
-                _ILogger.Debug($"添加用户：{JsonConvert.SerializeObject(model)}");
-            }
-            int flg = _context.UsingTransaction(action);
-            if(result.Code == 100 && flg > 0) { 
-                result.Code = 200;
-                result.Message = "用户添加成功！";
-            }
-            return result;
-        }
-
-        public int DeleteUser(Guid fid)
-        {
-            UserModel model = _context.GetEntity<UserModel>(fid);
-            if (OperatorProvider.Provider.IsDebug)
-            {
-                _ILogger.Debug($"删除用户：{JsonConvert.SerializeObject(model)}");
-            }
-            if (model.UserCode.ToLower().Equals("admin") || model.UserCode.ToLower().Equals("nicholasleo"))
-                return 0;
-            return _context.Delete<UserModel>(fid);
-        }
-
-        public override List<FunctionModel> GetMenuFunction()
-        {
-            MenuModel menu = _context.GetEntity<MenuModel>(t => t.MenuName == "用户管理");
-            var r = from f in _context.Set<FunctionModel>()
-                    join fm in _context.Set<RoleMenuFunctionModel>()
-                    on f.Fid equals fm.FunctionId
-                    join m in _context.Set<RoleMenuModel>()
-                    on fm.RoleMenuId equals m.Fid
-                    join rol in _context.Set<RoleModel>()
-                    on m.RoleId equals rol.Fid
-                    where m.MenuId.Equals(menu.Fid) && rol.RoleCode.Equals("SuperAdmin")
-                    select new
-                    {
-                        Fid = f.Fid,
-                        FunctionName = f.FunctionName,
-                        FunctionEvent = f.FunctionEvent
-                    };
-            List<FunctionModel> flist = new List<FunctionModel>();
-            foreach (var item in r.ToList())
-            {
-                FunctionModel m = new FunctionModel();
-                m.Fid = item.Fid;
-                m.FunctionEvent = item.FunctionEvent;
-                m.FunctionName = item.FunctionName;
-                flist.Add(m);
-            }
-            if (OperatorProvider.Provider.IsDebug)
-            {
-                _ILogger.Debug($"获取菜单功能：{JsonConvert.SerializeObject(flist)}");
-            }
-            return flist;
-        }
-
-        public IQueryable GetUserAll()
-        {
-            IQueryable data = _context.GetLists<UserModel>();
-            if (OperatorProvider.Provider.IsDebug)
-            {
-                _ILogger.Debug($"获取全部用户：{JsonConvert.SerializeObject(data)}");
-            }
-            return data;
-        }
-
-
-
-        public List<UserModel> GetUserLists(int page, int limit, out int total, UserPageEnt pageEnt)
-        {
+            UserPageEnt pageEnt = obj as UserPageEnt;
             Expression<Func<UserModel, bool>> where = null;
             if (!string.IsNullOrEmpty(pageEnt.UserCode))
             {
@@ -190,8 +88,42 @@ namespace NL.Framework.BLL
             }
             return result;
         }
-
-        public UserModel GetUserModel(Guid fid)
+        public override AjaxResultEnt Delete(Guid fid)
+        {
+            UserModel model = _context.GetEntity<UserModel>(fid);
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"删除用户：{JsonConvert.SerializeObject(model)}");
+            }
+            if (model.UserCode.ToLower().Equals("admin") || model.UserCode.ToLower().Equals("nicholasleo"))
+            {
+                result.Code = 400;
+                result.Message = "系统超级管理员用户无法删除!";
+                return result;
+            }
+            int i = _context.Delete<UserModel>(fid);
+            if (i > 0)
+            {
+                result.Code = 200;
+                result.Message = $"删除用户【{model.UserName}】成功!";
+            }
+            else
+            {
+                result.Code = 503;
+                result.Message = $"用户【{model.UserName}】删除失败!";
+            }
+            return result;
+        }
+        public override IQueryable GetQueryable()
+        {
+            IQueryable data = _context.GetLists<UserModel>();
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"获取全部用户：{JsonConvert.SerializeObject(data)}");
+            }
+            return data;
+        }
+        public override UserModel GetModel(Guid fid)
         {
             UserModel model = _context.GetEntity<UserModel>(fid);
             if (OperatorProvider.Provider.IsDebug)
@@ -200,13 +132,136 @@ namespace NL.Framework.BLL
             }
             return model;
         }
+        public override AjaxResultEnt Delete(List<UserModel> users)
+        {
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"删除用户：{JsonConvert.SerializeObject(users)}");
+            }
+            AjaxResultEnt result = new AjaxResultEnt();
+            result.Code = 503;
+            result.Message = "删除用户失败！";
+            string username = "";
+            Action<IDbContext> action = new Action<IDbContext>((IDbContext db) => {
+                foreach (UserModel model in users)
+                {
+                    if (model.UserCode.ToLower().Equals("admin") || model.UserCode.ToLower().Equals("nicholasleo"))
+                        continue;
+                    int i = db.Delete<UserModel>(model.Fid);
+                    if (i > 0)
+                        username += model.UserName + ",";
+                }
+            });
+
+            int state = _context.UsingTransaction(action) > 0 ? 200 : 404;
+            result.Code = state;
+            if (state == 200)
+                result.Message = $"删除【{username.TrimEnd(',')}】成功！";
+
+            return result;
+        }
+        public override List<FunctionModel> GetMenuFunction()
+        {
+            MenuModel menu = _context.GetEntity<MenuModel>(t => t.MenuName == "用户管理");
+            var r = from f in _context.Set<FunctionModel>()
+                    join fm in _context.Set<RoleMenuFunctionModel>()
+                    on f.Fid equals fm.FunctionId
+                    join m in _context.Set<RoleMenuModel>()
+                    on fm.RoleMenuId equals m.Fid
+                    join rol in _context.Set<RoleModel>()
+                    on m.RoleId equals rol.Fid
+                    where m.MenuId.Equals(menu.Fid) && rol.RoleCode.Equals("SuperAdmin")
+                    select new
+                    {
+                        Fid = f.Fid,
+                        FunctionName = f.FunctionName,
+                        FunctionEvent = f.FunctionEvent
+                    };
+            List<FunctionModel> flist = new List<FunctionModel>();
+            foreach (var item in r.ToList())
+            {
+                FunctionModel m = new FunctionModel();
+                m.Fid = item.Fid;
+                m.FunctionEvent = item.FunctionEvent;
+                m.FunctionName = item.FunctionName;
+                flist.Add(m);
+            }
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"获取菜单功能：{JsonConvert.SerializeObject(flist)}");
+            }
+            return flist;
+        }
+        #endregion
+
+        #region Private
+        public AjaxResultEnt AddUser(UserEditEnt model)
+        {
+            AjaxResultEnt result = new AjaxResultEnt();
+            result.Code = 100;
+            Action<IDbContext> action = new Action<IDbContext>((IDbContext db) => {
+                if (db.IsExist<UserModel>(t => t.UserCode.ToLower().Equals(model.UserCode)))
+                {
+                    result.Code = 503;
+                    result.Message = $"{model.UserCode}已存在！";
+                    return;
+                }
+                if (db.IsExist<UserModel>(t => t.IdCard.ToLower().Equals(model.IdCard)))
+                {
+                    result.Code = 503;
+                    result.Message = $"{model.IdCard}已存在！";
+                    return;
+                }
+                UserModel userModel = new UserModel
+                {
+                    UserAge = model.UserAge,
+                    UserName = model.UserName,
+                    UserCode = model.UserCode,
+                    UserPwd = model.UserPwd,
+                    Address = model.Address,
+                    CreatePerson = OperatorProvider.Provider.GetCurrent().UserName,
+                    CreateTime = DateTime.Now,
+                    Description = model.Description,
+                    Email = model.Email,
+                    Gender = model.Gender,
+                    IdCard = model.IdCard,
+                    IsAdmin = model.IsAdmin,
+                    IsDelete = model.IsDelete,
+                    QQ = model.QQ,
+                    WeChat = model.WeChat,
+                    MobilePhone = model.MobilePhone,
+                    State = model.State
+                };
+                db.Insert<UserModel>(userModel);
+                Guid userId = db.GetEntity<UserModel>(t => t.UserCode.Equals(model.UserCode)).Fid;
+                UserRoleModel userRole = new UserRoleModel
+                {
+                    UserId = userId,
+                    RoleId = model.RoleId,
+                    CreatePerson = OperatorProvider.Provider.GetCurrent().UserName,
+                    CreateTime = DateTime.Now
+                };
+                db.Insert<UserRoleModel>(userRole);
+            });
+            if (OperatorProvider.Provider.IsDebug)
+            {
+                _ILogger.Debug($"添加用户：{JsonConvert.SerializeObject(model)}");
+            }
+            int flg = _context.UsingTransaction(action);
+            if (result.Code == 100 && flg > 0)
+            {
+                result.Code = 200;
+                result.Message = "用户添加成功！";
+            }
+            return result;
+        }
 
         public UserEditEnt GetUserEidtModel(Guid fid)
         {
             Guid roleid = Guid.Empty;
             UserModel model = _context.GetEntity<UserModel>(fid);
             UserRoleModel uModel = _context.GetEntity<UserRoleModel>(t => t.UserId.Equals(fid));
-            if(uModel != null)
+            if (uModel != null)
                 roleid = uModel.RoleId;
             UserEditEnt ent = new UserEditEnt
             {
@@ -251,7 +306,7 @@ namespace NL.Framework.BLL
             return ent;
         }
 
-        public int UpdateUser(UserEditEnt model)
+        public AjaxResultEnt UpdateUser(UserEditEnt model)
         {
             Action<IDbContext> action = new Action<IDbContext>((IDbContext db) => {
                 UserModel userModel = db.GetEntity<UserModel>(model.Fid);
@@ -299,37 +354,20 @@ namespace NL.Framework.BLL
                     db.Insert(userRole);
                 }
             });
-            return _context.UsingTransaction(action);
-        }
-
-        public AjaxResultEnt DeleteUser(List<UserModel> users)
-        {
-            if (OperatorProvider.Provider.IsDebug)
+            int i = _context.UsingTransaction(action);
+            if (i > 0)
             {
-                _ILogger.Debug($"删除用户：{JsonConvert.SerializeObject(users)}");
+                result.Code = 200;
+                result.Message = "修改用户成功!";
             }
-            AjaxResultEnt result = new AjaxResultEnt();
-            result.Code = 503;
-            result.Message = "删除用户失败！";
-            string username = "";
-            Action<IDbContext> action = new Action<IDbContext>((IDbContext db) => {
-                foreach (UserModel model in users)
-                {
-                    if (model.UserCode.ToLower().Equals("admin") || model.UserCode.ToLower().Equals("nicholasleo"))
-                        continue;
-                    int i = db.Delete<UserModel>(model.Fid);
-                    if(i > 0)
-                        username += model.UserName + ",";
-                }
-            });
-
-            int state = _context.UsingTransaction(action) > 0 ? 200 : 404;
-            result.Code = state;
-            if (state == 200)
-                result.Message = $"删除【{username.TrimEnd(',')}】成功！";
-
+            else
+            {
+                result.Code = 503;
+                result.Message = "修改用户失败!";
+            }
             return result;
         }
+
         public AjaxResultEnt UpdateUserRole(UserRoleEnt ent)
         {
             AjaxResultEnt result = new AjaxResultEnt();
@@ -376,5 +414,10 @@ namespace NL.Framework.BLL
                 return result;
             }
         }
+        
+        #endregion
+
+        #region Methods
+        #endregion
     }
 }

@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="IBaseBll.cs" />
     <Compile Include="ISystemBaseBll.cs" />
+    <Compile Include="System\IDropdownBll.cs" />
     <Compile Include="System\ILoginBll.cs" />
     <Compile Include="System\IMenuBll.cs" />
     <Compile Include="ISystemInit.cs" />

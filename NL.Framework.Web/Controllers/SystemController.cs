@@ -16,6 +16,8 @@ namespace NL.Framework.Web.Controllers
         private readonly IRightBll _IRightBll;
 
         private static LoginUserEnt ent;
+
+        private static AjaxResultEnt resData = new AjaxResultEnt();
         public SystemController(IRoleBll roleBll
             , IUserBll userBll
             , IRightBll rightBll

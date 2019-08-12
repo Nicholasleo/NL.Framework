@@ -203,6 +203,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\SystemController.cs" />
+    <Compile Include="Controllers\System\DropDownController.cs" />
     <Compile Include="Controllers\System\MenuController.cs" />
     <Compile Include="Controllers\System\RightController.cs" />
     <Compile Include="Controllers\System\RoleController.cs" />
@@ -411,6 +412,8 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\DropDown\" />
+    <Folder Include="Views\Drop\" />
     <Folder Include="Views\Menu\" />
     <Folder Include="Views\Right\" />
     <Folder Include="Views\Role\" />
@@ -448,7 +451,7 @@
     <Content Include="Scripts\layui\src\layuiadmin\layui\css\modules\dtree\icons.json" />
     <Content Include="Views\System\UserBind.cshtml" />
     <Content Include="Views\System\UserAdd.cshtml" />
-    <Content Include="Views\Login\_404.cshtml" />
+    <Content Include="Views\Login\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NL.Framework.Common\NL.Framework.Common.csproj">

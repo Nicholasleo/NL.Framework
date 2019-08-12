@@ -11,6 +11,7 @@ using NL.Framework.Common;
 using NL.Framework.Common.Log;
 using NL.Framework.IBLL;
 using NL.Framework.IDAL;
+using NL.Framework.Model;
 using NL.Framework.Model.System;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ using System.Linq;
 
 namespace NL.Framework.BLL
 {
-    public  abstract class CommonBll : ISystemBaseBll
+    public  abstract class CommonBll<T> : ISystemBaseBll<T> where T : BaseModel
     {
         private readonly IDbContext _IDbContext;
         private readonly ILogger _ILogger;
@@ -27,6 +28,7 @@ namespace NL.Framework.BLL
             _ILogger = logger;
             _IDbContext = db;
         }
+
         public virtual List<FunctionModel> GetMenuFunction(Guid menuFid,Guid roleFid)
         {
             MenuModel menu = _IDbContext.GetEntity<MenuModel>(t => t.Fid.Equals(menuFid));
@@ -189,5 +191,45 @@ namespace NL.Framework.BLL
             }
             return flist;
         }
+
+        #region CRUD
+        public virtual T GetModel(Guid fid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual AjaxResultEnt Update(T model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual AjaxResultEnt Create(T model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual AjaxResultEnt Delete(Guid fid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual AjaxResultEnt Delete(List<T> lists)
+        {
+            throw new NotImplementedException();
+        }
+        public virtual IQueryable GetQueryable()
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual List<T> GetLists(int page, int limit, out int total, object obj)
+        {
+            throw new NotImplementedException();
+        }
+        public virtual List<T> GetLists()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
     }
 }

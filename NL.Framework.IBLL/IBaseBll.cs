@@ -6,12 +6,6 @@
 //    说明：
 //    版权所有：个人
 //***********************************************************
-using NL.Framework.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NL.Framework.IBLL
 {

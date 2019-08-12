@@ -12,8 +12,6 @@ using NL.Framework.Model.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NL.Framework.BLL
 {
@@ -51,7 +49,8 @@ namespace NL.Framework.BLL
                     FunctionEvent = "export"
                }
             };
-            _context.Insert(list);
+            if(!_context.IsExist<FunctionModel>(t=>t.FunctionName.Equals("新增")))
+                _context.Insert(list);
         }
 
         public void InitUser()

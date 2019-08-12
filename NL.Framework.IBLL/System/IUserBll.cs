@@ -2,8 +2,6 @@
 using NL.Framework.Model.NLFrameEnt;
 using NL.Framework.Model.System;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 //***********************************************************
 //    作者：Nicholas Leo
@@ -15,17 +13,12 @@ using System.Linq;
 //***********************************************************
 namespace NL.Framework.IBLL
 {
-    public interface IUserBll: ISystemBaseBll,IBaseBll
+    public interface IUserBll: ISystemBaseBll<UserModel>,IBaseBll
     {
-        List<UserModel> GetUserLists(int page, int limit, out int total, UserPageEnt pageEnt);
-        UserModel GetUserModel(Guid fid);
         UserEditEnt GetUserEidtModel(Guid fid);
         UserRoleModel GetUserRoleModel(Guid fid);
-        IQueryable GetUserAll();
         AjaxResultEnt UpdateUserRole(UserRoleEnt ent);
         AjaxResultEnt AddUser(UserEditEnt model);
-        int DeleteUser(Guid fid);
-        AjaxResultEnt DeleteUser(List<UserModel> users);
-        int UpdateUser(UserEditEnt model);
+        AjaxResultEnt UpdateUser(UserEditEnt model);
     }
 }

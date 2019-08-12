@@ -48,12 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IBaseDal.cs" />
     <Compile Include="IDbContext.cs" />
-    <Compile Include="System\IFunctionDal.cs" />
-    <Compile Include="System\IMenuDal.cs" />
-    <Compile Include="System\IRoleDal.cs" />
-    <Compile Include="System\IUserDal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

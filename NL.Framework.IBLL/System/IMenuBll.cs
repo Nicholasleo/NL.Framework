@@ -10,20 +10,11 @@ using NL.Framework.Model;
 using NL.Framework.Model.System;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NL.Framework.IBLL
 {
-    public interface IMenuBll : ISystemBaseBll, IBaseBll
+    public interface IMenuBll : ISystemBaseBll<MenuModel>, IBaseBll
     {
         List<NvaMenus> GetMenuList(Guid roleid);
-        IQueryable GetParentMenu();
-        List<MenuModel> GetMenuLists(int page, int limit, out int total, string filtter = "");
-        MenuModel GetMenuModel(Guid fid);
-        AjaxResultEnt DeleteMenu(List<MenuModel> meuns);
-        int UpdateMenu(MenuModel model);
-        int AddMenu(MenuModel model);
     }
 }

@@ -21,7 +21,7 @@ namespace NL.Framework.Web.Controllers
         public ActionResult RoleIndex(Guid id)
         {
             PageModels model = new PageModels();
-            model.RoleLists = _IRoleBll.GetRoleAll();
+            model.RoleLists = _IRoleBll.GetQueryable();
             model.FunctionLists = _IRoleBll.GetMenuFunction(id, ent.RoleId).AsQueryable();
             return View(model);
         }
@@ -33,7 +33,7 @@ namespace NL.Framework.Web.Controllers
 
         public ActionResult RoleEdit(Guid fid)
         {
-            RoleModel model = _IRoleBll.GetRoleModel(fid);
+            RoleModel model = _IRoleBll.GetModel(fid);
             return View(model);
         }
 
@@ -43,7 +43,7 @@ namespace NL.Framework.Web.Controllers
         {
             AjaxResultData<RoleModel> result = new AjaxResultData<RoleModel>();
             int total = 0;
-            List<RoleModel> data = _IRoleBll.GetRolesLists(page, limit, out total, role);
+            List<RoleModel> data = _IRoleBll.GetLists(page, limit, out total, role);
             string json = JsonConvert.SerializeObject(data);
             result.data = json;
             result.count = total.ToString();
@@ -53,40 +53,24 @@ namespace NL.Framework.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult DeleteRole(RoleModel model)
+        public JsonResult DeleteRole(List<RoleModel> model)
         {
-            ResultData result = new ResultData();
-            int i = _IRoleBll.DeleteRole(model);
-            result.code = i;
-            result.msg = i > 0 ? "删除成功！" : "删除失败！";
-            result.data = new TokenData { access_token = Guid.NewGuid().ToString() };
-            return Json(result);
+            resData = _IRoleBll.Delete(model);
+            return Json(resData);
         }
 
         [HttpPost]
         public JsonResult UpdateRole(RoleModel model)
         {
-            model.ModifyPerson = OperatorProvider.Provider.GetCurrent().UserName;
-            model.ModifyTime = DateTime.Now;
-            ResultData result = new ResultData();
-            int i = _IRoleBll.UpdateRole(model);
-            result.code = i;
-            result.msg = i > 0 ? "修改成功！" : "修改失败！";
-            result.data = new TokenData { access_token = Guid.NewGuid().ToString() };
-            return Json(result);
+            resData = _IRoleBll.Update(model);
+            return Json(resData);
         }
 
         [HttpPost]
         public JsonResult AddRole(RoleModel model)
         {
-            model.CreateTime = DateTime.Now;
-            model.CreatePerson = OperatorProvider.Provider.GetCurrent().UserName;
-            ResultData result = new ResultData();
-            int i = _IRoleBll.AddRole(model);
-            result.code = i;
-            result.msg = i > 0 ? "添加成功！" : "添加失败！";
-            result.data = new TokenData { access_token = Guid.NewGuid().ToString() };
-            return Json(result);
+            resData  = _IRoleBll.Create(model);
+            return Json(resData);
         }
     }
 }

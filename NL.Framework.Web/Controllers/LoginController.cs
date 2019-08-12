@@ -24,20 +24,27 @@ namespace NL.Framework.Web.Controllers
             _log = logger;
         }
 
-        public ActionResult _404()
+        public ActionResult NotFound()
         {
             Response.Status = "404 Not Found";
             Response.StatusCode = 404;
             return View();
         }
 
+        public ActionResult Error()
+        {
+            Response.Status = "503 Service Unavailable";
+            Response.StatusCode = 503;
+            return View("~/Views/Shared/Error.cshtml");
+        }
+
         // GET: Login
         public ActionResult Index()
         {
             ////初始化菜单
-            //_ISystemInit.InitMenu();
+            _ISystemInit.InitMenu();
             ////初始化功能
-            //_ISystemInit.InitFunction();
+            _ISystemInit.InitFunction();
             ////初始化角色
             _ISystemInit.InitRole();
             //初始化用户
@@ -45,7 +52,7 @@ namespace NL.Framework.Web.Controllers
             //初始化用户角色
             _ISystemInit.InitUserRole();
             ////初始化菜单功能关系
-            _ISystemInit.InitMenuFunction();
+            //_ISystemInit.InitMenuFunction();
             return View();
         }
 
@@ -59,8 +66,6 @@ namespace NL.Framework.Web.Controllers
         [HttpGet]
         public ActionResult LogOut()
         {
-            //Common.Cache.Session.SetSession("NLFRAME_LOGIN_TOKEN", null);
-            //DataPools.Instance.SetLoginInfo(null);
             OperatorProvider.Provider.RemoveCurrent();
             return new RedirectResult("/Login/Index");
         }

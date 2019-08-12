@@ -19,30 +19,28 @@ namespace NL.Framework.Web.Controllers
     public partial class SystemController
     {
         private static IQueryable _ParentMenuList = null;
-
-        private AjaxResultEnt resData = new AjaxResultEnt();
         public ActionResult MenuIndex(Guid id)
         {
             PageModels model = new PageModels();
             model.FunctionLists = _IMenuBll.GetMenuFunction(id,ent.RoleId).AsQueryable();
-            model.MenuLists = _IMenuBll.GetParentMenu();
+            model.MenuLists = _IMenuBll.GetQueryable();
             return View(model);
         }
 
         public ActionResult MenuEdit(Guid fid)
         {
-            //if (_ParentMenuList == null)
-                _ParentMenuList = _IMenuBll.GetParentMenu();
+            if (_ParentMenuList == null)
+                _ParentMenuList = _IMenuBll.GetQueryable();
             MenuEditModel model = new MenuEditModel();
             //MenuModel model = new MenuModel();
-            model.Menu = _IMenuBll.GetMenuModel(fid);
+            model.Menu = _IMenuBll.GetModel(fid);
             model.ParentMenuList = _ParentMenuList;
             return View(model);
         }
 
         public ActionResult MenuAdd()
         {
-            IQueryable model = _IMenuBll.GetParentMenu();
+            IQueryable model = _IMenuBll.GetQueryable();
             return View(model);
         }
 
@@ -51,7 +49,7 @@ namespace NL.Framework.Web.Controllers
         {
             AjaxResultData<MenuModel> result = new AjaxResultData<MenuModel>();
             int total = 0;
-            List<MenuModel> data = _IMenuBll.GetMenuLists(page, limit, out total, filtter);
+            List<MenuModel> data = _IMenuBll.GetLists(page, limit, out total, filtter);
             string json = JsonConvert.SerializeObject(data);
             result.data = json;
             result.count = total.ToString();
@@ -63,34 +61,22 @@ namespace NL.Framework.Web.Controllers
         [HttpPost]
         public ActionResult DeleteMenu(List<MenuModel> model)
         {
-            resData = _IMenuBll.DeleteMenu(model);
+            resData = _IMenuBll.Delete(model);
             return Json(resData);
         }
 
         [HttpPost]
         public JsonResult UpdateMenu(MenuModel model)
         {
-            model.ModifyPerson = OperatorProvider.Provider.GetCurrent().UserName;
-            model.ModifyTime = DateTime.Now;
-            ResultData result = new ResultData();
-            int i = _IMenuBll.UpdateMenu(model);
-            result.code = i;
-            result.msg = i > 0 ? "修改成功！" : "修改失败！";
-            result.data = new TokenData { access_token = Guid.NewGuid().ToString() };
-            return Json(result);
+            resData = _IMenuBll.Update(model);
+            return Json(resData);
         }
 
         [HttpPost]
         public JsonResult AddMenu(MenuModel model)
         {
-            model.CreateTime = DateTime.Now;
-            model.CreatePerson = OperatorProvider.Provider.GetCurrent().UserName;
-            ResultData result = new ResultData();
-            int i = _IMenuBll.AddMenu(model);
-            result.code = i;
-            result.msg = i > 0 ? "添加成功！" : "添加失败！";
-            result.data = new TokenData { access_token = Guid.NewGuid().ToString() };
-            return Json(result);
+            resData = _IMenuBll.Create(model);
+            return Json(resData);
         }
     }
 }

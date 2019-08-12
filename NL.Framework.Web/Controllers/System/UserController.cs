@@ -24,7 +24,7 @@ namespace NL.Framework.Web.Controllers
         public ActionResult UserIndex(Guid id)
         {
             if (_RoleLists == null || _RoleLists.Count <= 0)
-                _RoleLists = _IRoleBll.GetRolesLists();
+                _RoleLists = _IRoleBll.GetLists();
             PageModels model = new PageModels();
             model.FunctionLists = _IUserBll.GetMenuFunction(id, ent.RoleId).AsQueryable();
             return View(model);
@@ -65,7 +65,7 @@ namespace NL.Framework.Web.Controllers
                 Email = Email
             };
             int total = 0;
-            List<UserModel> data = _IUserBll.GetUserLists(page, limit, out total, pageEnt);
+            List<UserModel> data = _IUserBll.GetLists(page, limit, out total, pageEnt);
             string json = JsonConvert.SerializeObject(data);
             result.data = json;
             result.count = total.ToString();
@@ -77,42 +77,29 @@ namespace NL.Framework.Web.Controllers
         [HttpPost]
         public JsonResult DeleteUser(List<UserModel> data)
         {
-            //ResultData result = new ResultData();
-            //int i =_IUserBll.DeleteUser(fid);
-            //result.code = i;
-            //result.msg = i > 0 ? "删除成功！" : "删除失败！";
-            //result.data = new TokenData { access_token = Guid.NewGuid().ToString() };
-            AjaxResultEnt result = _IUserBll.DeleteUser(data);
-            return Json(result);
+            resData = _IUserBll.Delete(data);
+            return Json(resData);
         }
 
         [HttpPost]
         public JsonResult UpdateUser(UserEditEnt model)
         {
-            model.ModifyPerson = OperatorProvider.Provider.GetCurrent().UserName;
-            model.ModifyTime = DateTime.Now;
-            ResultData result = new ResultData();
-            int i = _IUserBll.UpdateUser(model);
-            result.code = i;
-            result.msg = i > 0 ? "修改成功！" : "修改失败！";
-            result.data = new TokenData { access_token = Guid.NewGuid().ToString() };
-            return Json(result);
+            resData = _IUserBll.UpdateUser(model);
+            return Json(resData);
         }
 
         [HttpPost]
         public JsonResult AddUser(UserEditEnt model)
         {
-            AjaxResultEnt result = new AjaxResultEnt();
-            model.CreatePerson = OperatorProvider.Provider.GetCurrent().UserName;
-            result = _IUserBll.AddUser(model);
-            return Json(result);
+            resData = _IUserBll.AddUser(model);
+            return Json(resData);
         }
 
         [HttpPost]
         public JsonResult UpdateUserRole(UserRoleEnt data)
         {
-            AjaxResultEnt result = _IUserBll.UpdateUserRole(data);
-            return Json(result);
+            resData = _IUserBll.UpdateUserRole(data);
+            return Json(resData);
         }
     }
 }

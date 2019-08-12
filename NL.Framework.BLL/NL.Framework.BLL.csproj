@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommonBll.cs" />
+    <Compile Include="System\DropdownBll.cs" />
     <Compile Include="System\LoginBll.cs" />
     <Compile Include="System\MenuBll.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
