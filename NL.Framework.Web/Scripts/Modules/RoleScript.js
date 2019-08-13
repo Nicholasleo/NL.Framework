@@ -1,5 +1,5 @@
 ﻿layui.config({
-    base: '../Scripts/layui/src/layuiadmin/' //静态资源所在路径
+    base: '../Scripts/layui/src/nlframe/' //静态资源所在路径
 }).extend({
     index: 'lib/index' //主入口模块
 }).use(['index', 'NLFrameAjax', 'table'], function () {
@@ -165,7 +165,7 @@
             });
         }
     }
-    $('.layui-btn.layuiadmin-btn-role').on('click', function () {
+    $('.layui-btn.nlframe-btn-common').on('click', function () {
         var type = $(this).data('type');
         active[type] ? active[type].call(this) : '';
     });

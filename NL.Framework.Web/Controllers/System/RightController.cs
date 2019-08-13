@@ -37,12 +37,8 @@ namespace NL.Framework.Web.Controllers
         [HttpPost]
         public JsonResult SaveRightInfo(RightSaveEnt data)
         {
-            ResultData result = new ResultData();
-            int i = _IRightBll.SaveRoleRight(data);
-            result.code = i;
-            result.msg = i > 0 ? "授权成功！" : "授权失败！";
-            result.data = new TokenData { access_token = Guid.NewGuid().ToString() };
-            return Json(result);
+            resData = _IRightBll.SaveRoleRight(data);
+            return Json(resData);
         }
     }
 }

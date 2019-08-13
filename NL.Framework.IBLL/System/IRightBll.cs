@@ -16,6 +16,6 @@ namespace NL.Framework.IBLL
     {
         List<RightTreeBaseEnt> GetTreeLists(Guid roleFid);
 
-        int SaveRoleRight(RightSaveEnt data);
+        AjaxResultEnt SaveRoleRight(RightSaveEnt data);
     }
 }

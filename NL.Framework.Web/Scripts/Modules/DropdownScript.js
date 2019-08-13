@@ -1,5 +1,5 @@
 ﻿layui.config({
-    base: '../Scripts/layui/src/layuiadmin/' //静态资源所在路径
+    base: '../Scripts/layui/src/nlframe/' //静态资源所在路径
 }).extend({
     index: 'lib/index' //主入口模块
 }).use(['index', 'table', 'dtree', 'NLFrameAjax'], function () {
@@ -18,7 +18,7 @@
             , { field: 'FID', width: 10, title: 'ID', hide: true, sort: true }
             , { field: 'OptionsCode', title: '代码' }
             , { field: 'MyName', title: '显示名称' }
-            , { field: 'MyValue', hide: true,title: '属性值' }
+            , { field: 'MyValue', hide: true, title: '属性值' }
             , { field: 'Level', title: '级别' }
             , { field: 'CreatePerson', title: '创建人', align: 'center' }
             , { field: 'CreateTime', title: '创建时间', templet: '<div>{{ layui.laytpl.toDateString(d.CreateTime) }}</div>', align: 'center' }
@@ -49,14 +49,61 @@
         var Dtree = dtree.render({
             elem: '#rightTree',
             method: 'GET',
-            initLevel: "1",
-            line: true,
-            iconfont: ["dtreefont", "layui-icon"] ,
-            record: true,
+            //dataFormat: "list",  //配置data的风格为list
             toolbar: true,
-            scroll:'#toolBarDiv',
-            url: "/System/GetDropDownTree?fid=" + fid,
-            toolbarFun: toolBarFun
+            toolbarShow: [], // 默认按钮制空
+            toolbarExt: [{
+                toolbarId: "nodeAdd", icon: "dtree-icon-wefill", title: "新增节点",
+                handler: function (node, $div) {
+                    layer.open({
+                        type: 2
+                        , title: '添加下拉项'
+                        , content: '/System/DropDownAdd?parentid=' + node.nodeId + '&name=' + node.context
+                        , area: ['500px', '480px']
+                        , btn: ['确定', '取消']
+                        , yes: function (index, layero) {
+                            var iframeWindow = window['layui-layer-iframe' + index]
+                                , submit = layero.find('iframe').contents().find("#LAY-drop-down-submit");
+                            //监听提交
+                            iframeWindow.layui.form.on('submit(LAY-drop-down-submit)', function (data) {
+                                var field = data.field; //获取提交的字段
+                                //提交 Ajax 成功后，静态更新表格中的数据
+                                nAjax.NLPost({
+                                    url: '/System/AddDropDown',
+                                    data: field,
+                                    successfn: function (res) {
+                                        if (res.Code == 200) {
+                                            var json = { "id": res.ExtMsg, "title": field.MyName, "parentId": node.nodeId };
+                                            //请求成功后，重载DTree1
+                                            Dtree.partialRefreshAdd($div, json);
+                                        }
+                                        layer.msg(res.Message);
+                                    }
+                                });
+                                layer.close(index); //关闭弹层
+                                return false;
+                            });
+
+                            submit.trigger('click');
+                        }
+                    });
+                }
+            },
+            {
+                toolbarId: "nodeEdit", icon: "dtree-icon-bianji", title: "编辑节点",
+                handler: function (node, $div) {
+
+                }
+            },
+            {
+                toolbarId: "nodeDelete", icon: "dtree-icon-roundclose", title: "删除节点",
+                handler: function (node, $div) {
+
+                }
+            }
+            ],
+            scroll: '#toolBarDiv',
+            url: "/System/GetDropDownTree?fid=" + fid
         });
 
         //标注选中样式
@@ -65,54 +112,9 @@
         form.render('radio');
     });
 
-    var toolBarFun = {
-        addTreeNode: function (treeNode, $div) {
-            //nAjax.NLPost({
-            //    url: '/System/DeleteMenu',
-            //    data: JSON.stringify(pData),
-            //    listParam: true,
-            //    successfn: function (res) {
-            //        if (res.Code == 200) {
-            //            //请求成功后，重载table
-            //            table.reload('LAY-useradmin-menu'); //数据刷新
-            //        }
-            //        layer.msg(res.Message);
-            //    }
-            //});
-        },
-        editTreeNode: function (treeNode, $div) {
-            //nAjax.NLPost({
-            //    url: '/System/DeleteMenu',
-            //    data: JSON.stringify(pData),
-            //    listParam: true,
-            //    successfn: function (res) {
-            //        if (res.Code == 200) {
-            //            //请求成功后，重载table
-            //            table.reload('LAY-useradmin-menu'); //数据刷新
-            //        }
-            //        layer.msg(res.Message);
-            //    }
-            //});
-        },
-        delTreeNode: function (treeNode, $div) {
-            //nAjax.NLPost({
-            //    url: '/System/DeleteMenu',
-            //    data: JSON.stringify(pData),
-            //    listParam: true,
-            //    successfn: function (res) {
-            //        if (res.Code == 200) {
-            //            //请求成功后，重载table
-            //            table.reload('LAY-useradmin-menu'); //数据刷新
-            //        }
-            //        layer.msg(res.Message);
-            //    }
-            //});
-        }
-    };
-
     var active = {
         delete: function () {
-            var checkStatus = table.checkStatus('LAY-useradmin-menu')
+            var checkStatus = table.checkStatus('LAY-dropdown-manage')
                 , checkData = checkStatus.data; //得到选中的数据
 
             if (checkData.length === 0) {
@@ -139,7 +141,7 @@
             layer.open({
                 type: 2
                 , title: '添加下拉项'
-                , content: '/System/DropDownAdd'
+                , content: '/System/DropDownAdd?parentid=00000000-0000-0000-0000-000000000000'
                 , area: ['500px', '480px']
                 , btn: ['确定', '取消']
                 , yes: function (index, layero) {
@@ -170,7 +172,7 @@
         }
     };
 
-    $('.layui-btn.layuiadmin-btn-menu').on('click', function () {
+    $('.layui-btn.nlframe-btn-common').on('click', function () {
         var type = $(this).data('type');
         active[type] ? active[type].call(this) : '';
     });

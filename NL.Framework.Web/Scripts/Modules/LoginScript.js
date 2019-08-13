@@ -1,5 +1,5 @@
 ﻿layui.config({
-    base: '../Scripts/layui/src/layuiadmin/' //静态资源所在路径
+    base: '../Scripts/layui/src/nlframe/' //静态资源所在路径
 }).extend({
     index: 'lib/index' //主入口模块
 }).use(['index', 'NLFrameAjax', 'user','form'], function () {

@@ -9,6 +9,12 @@ using System.Web.Mvc;
 
 namespace NL.Framework.Web.Controllers
 {
+    public class DropDownFlgEnt
+    {
+        public bool IsParent { get; set; }
+        public string ParentName { get; set; }
+        public Guid ParentId { get; set; }
+    }
     public partial class SystemController
     {
         // GET: DropDown
@@ -19,6 +25,23 @@ namespace NL.Framework.Web.Controllers
             model.MenuLists = this.ParentMenuList;
             return View(model);
         }
+
+        //public ActionResult DropDownAdd()
+        //{
+        //    DropDownFlgEnt ent = new DropDownFlgEnt();
+        //    ent.ParentId = Guid.Empty;
+        //    ent.IsParent = true;
+        //    return View(ent);
+        //}
+        public ActionResult DropDownAdd(Guid parentid,string name = "")
+        {
+            DropDownFlgEnt ent = new DropDownFlgEnt();
+            ent.ParentId = parentid;
+            ent.ParentName = name;
+            ent.IsParent = parentid == Guid.Empty;
+            return View(ent);
+        }
+
 
         [HttpGet]
         public JsonResult GetDropDownList(int page,int limit,string filtter = "")
@@ -38,7 +61,7 @@ namespace NL.Framework.Web.Controllers
         public JsonResult GetDropDownTree(Guid fid)
         {
             DropdownTreeEnt resultDt = new DropdownTreeEnt();
-            List<BaseTreeEnt> result = _IDropdownBll.GetTreeLists(fid);
+            List<DropDownTreeEnt> result = _IDropdownBll.GetTreeLists(fid);
             resultDt.TreeData = result;
             if (result != null && result.Count > 0)
             {
@@ -50,6 +73,13 @@ namespace NL.Framework.Web.Controllers
             }
             string json = JsonConvert.SerializeObject(resultDt);
             return Json(json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult AddDropDown(DropDownOptionsModel model)
+        {
+            resData = _IDropdownBll.Create(model);
+            return Json(resData);
         }
     }
 }

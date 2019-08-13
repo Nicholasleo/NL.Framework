@@ -24,6 +24,7 @@ namespace NL.Framework.Model
     {
         public int Code { get; set; }
         public string Message { get; set; }
+        public object ExtMsg { get; set; }
     }
 
     public class LoginStatusEnt : AjaxResultEnt

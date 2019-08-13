@@ -10,19 +10,19 @@ namespace NL.Framework.Web
         {
 
             bundles.Add(new ScriptBundle("~/bundles/layui").Include(
-                                   "~/Scripts/layui/src/layuiadmin/layui/layui.js"));
+                                   "~/Scripts/layui/src/nlframe/layui/layui.js"));
 
             bundles.Add(new StyleBundle("~/bundles/css").Include(
-                      "~/Scripts/layui/src/layuiadmin/layui/css/layui.css",
-                      "~/Scripts/layui/src/layuiadmin/style/admin.css",
-                      "~/Scripts/layui/src/layuiadmin/layui/css/modules/layui-icon-extend/iconfont.css"));
+                      "~/Scripts/layui/src/nlframe/layui/css/layui.css",
+                      "~/Scripts/layui/src/nlframe/style/admin.css",
+                      "~/Scripts/layui/src/nlframe/layui/css/modules/layui-icon-extend/iconfont.css"));
 
             bundles.Add(new StyleBundle("~/bundles/logincss").Include(
-                      "~/Scripts/layui/src/layuiadmin/style/login.css"));
+                      "~/Scripts/layui/src/nlframe/style/login.css"));
 
             bundles.Add(new StyleBundle("~/bundles/dtree").Include(
-                      "~/Scripts/layui/src/layuiadmin/style/dtree.css",
-                      "~/Scripts/layui/src/layuiadmin/layui/css/modules/dtree/dtreefont.css"));
+                      "~/Scripts/layui/src/nlframe/style/dtree.css",
+                      "~/Scripts/layui/src/nlframe/layui/css/modules/dtree/dtreefont.css"));
 
 
         }

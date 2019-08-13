@@ -15,6 +15,6 @@ namespace NL.Framework.IBLL
 {
     public interface IDropdownBll : ISystemBaseBll<DropDownOptionsModel>,IBaseBll
     {
-        List<BaseTreeEnt> GetTreeLists(Guid fid);
+        List<DropDownTreeEnt> GetTreeLists(Guid fid);
     }
 }

@@ -119,12 +119,14 @@ namespace NL.Framework.BLL
                             new CheckArr(_status)
                         };
                         m.Childrens = mChilds;
+                        m.Leaf = mChilds.Count > 0;
                         childs.Add(m);
                     }
                     treeData.CheckArrs = new List<CheckArr> {
                         new CheckArr(GetCheckStatus(_flgList))
                     };
                     treeData.Childrens = childs;
+                    treeData.Leaf = childs.Count > 0;
                     lists.Add(treeData);
 
                 }
@@ -188,8 +190,9 @@ namespace NL.Framework.BLL
 
 
 
-        public int SaveRoleRight(RightSaveEnt data)
+        public AjaxResultEnt SaveRoleRight(RightSaveEnt data)
         {
+            AjaxResultEnt result = new AjaxResultEnt();
             Action<IDbContext> action = new Action<IDbContext>((IDbContext db) => {
                 Guid roleId = data.RoleId;
                 List<RoleMenuModel> roleMenus = new List<RoleMenuModel>();
@@ -238,7 +241,18 @@ namespace NL.Framework.BLL
             {
                 _ILogger.Debug($"角色授权：{JsonConvert.SerializeObject(data)}");
             }
-            return _context.UsingTransaction(action);
+            int i = _context.UsingTransaction(action);
+            if (i > 0)
+            {
+                result.Code = 200;
+                result.Message = "角色授权成功!";
+            }
+            else
+            {
+                result.Code = 503;
+                result.Message = "角色授权失败!";
+            }
+            return result;
         }
     }
 }

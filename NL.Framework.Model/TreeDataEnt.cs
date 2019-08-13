@@ -44,14 +44,6 @@ namespace NL.Framework.Model
             this.Spread = _spread;
         }
 
-        [JsonProperty(PropertyName = "spread")]
-        [DefaultValue(true)]
-        public bool Spread { get; set; }
-
-        [JsonProperty(PropertyName = "last")]
-        [DefaultValue(false)]
-        public bool Last { get; set; }
-
         [JsonProperty(PropertyName = "hide")]
         [DefaultValue(false)]
         public bool Hide { get; set; }
@@ -63,6 +55,9 @@ namespace NL.Framework.Model
 
         [JsonProperty(PropertyName = "checkArr")]
         public List<CheckArr> CheckArrs { get; set; }
+
+        [JsonProperty(PropertyName = "children")]
+        public List<RightTreeBaseEnt> Childrens { get; set; }
     }
 
     public class CheckArr

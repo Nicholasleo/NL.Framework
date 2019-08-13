@@ -18,7 +18,13 @@ namespace NL.Framework.Model
         public TreeDataStatusEnt DataStatus { get; set; }
 
         [JsonProperty(PropertyName = "data")]
-        public List<BaseTreeEnt> TreeData { get; set; }
+        public List<DropDownTreeEnt> TreeData { get; set; }
+    }
+
+    public class DropDownTreeEnt : BaseTreeEnt
+    {
+        [JsonProperty(PropertyName = "children")]
+        public List<DropDownTreeEnt> Childrens { get; set; }
     }
 
     public class BaseTreeEnt
@@ -30,11 +36,17 @@ namespace NL.Framework.Model
         [JsonProperty(PropertyName = "title")]
         public string Name { get; set; }
 
+        [JsonProperty(PropertyName = "leaf")]
+        public bool Leaf { get; set; }
+
+        [JsonProperty(PropertyName = "last")]
+        public bool Last { get; set; }
+
 
         [JsonProperty(PropertyName = "parentId")]
         public Guid ParentId { get; set; }
 
-        [JsonProperty(PropertyName = "children")]
-        public List<RightTreeBaseEnt> Childrens { get; set; }
+        [JsonProperty(PropertyName = "spread")]
+        public bool Spread { get; set; }
     }
 }

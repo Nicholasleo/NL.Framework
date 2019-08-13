@@ -10,7 +10,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">菜单名称</label>
             <div class="layui-input-block">
-                <input type="text" name="MenuName" id="LAY-user-login-username" class="layui-input">
+                <input type="text" name="MenuName" lay-verify="required"  class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
@@ -61,7 +61,7 @@
     </div>
 <script>
   layui.config({
-    base: '../Scripts/layui/src/layuiadmin/' //静态资源所在路径
+    base: '../Scripts/layui/src/nlframe/' //静态资源所在路径
   }).extend({
     index: 'lib/index' //主入口模块
   }).use(['index', 'form'], function(){
