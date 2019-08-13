@@ -35,7 +35,6 @@ namespace NL.Framework.DAL.Map
             Property(t => t.MenuIndex);
 
             HasMany(t => t.RoleMenuModels).WithRequired(t => t.MenuModel).HasForeignKey(t => t.MenuId);
-            //HasOptional(t => t.RoleMenuModel).WithOptionalDependent(l => l.MenuModel).Map(t=>t.MapKey("MenuId"));
 
         }
     }

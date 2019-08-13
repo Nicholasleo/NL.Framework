@@ -6,11 +6,15 @@
 //    说明：
 //    版权所有：个人
 //***********************************************************
+using NL.Framework.Model;
 using NL.Framework.Model.System;
+using System;
+using System.Collections.Generic;
 
 namespace NL.Framework.IBLL
 {
     public interface IDropdownBll : ISystemBaseBll<DropDownOptionsModel>,IBaseBll
     {
+        List<BaseTreeEnt> GetTreeLists(Guid fid);
     }
 }

@@ -2,7 +2,7 @@
     base: '../Scripts/layui/src/layuiadmin/' //静态资源所在路径
 }).extend({
     index: 'lib/index' //主入口模块
-}).use(['index', 'useradmin', 'NLFrameAjax','table'], function () {
+}).use(['index', 'NLFrameAjax','table'], function () {
     var $ = layui.$
         , nAjax = layui.NLFrameAjax
         , form = layui.form

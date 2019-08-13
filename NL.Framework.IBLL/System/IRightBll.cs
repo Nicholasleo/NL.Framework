@@ -14,7 +14,7 @@ namespace NL.Framework.IBLL
 {
     public interface IRightBll : IBaseBll
     {
-        List<TreeBaseEnt> GetTreeLists(Guid roleFid);
+        List<RightTreeBaseEnt> GetTreeLists(Guid roleFid);
 
         int SaveRoleRight(RightSaveEnt data);
     }

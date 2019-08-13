@@ -18,23 +18,19 @@ namespace NL.Framework.Web.Controllers
 
     public partial class SystemController
     {
-        private static IQueryable _ParentMenuList = null;
         public ActionResult MenuIndex(Guid id)
         {
             PageModels model = new PageModels();
             model.FunctionLists = _IMenuBll.GetMenuFunction(id,ent.RoleId).AsQueryable();
-            model.MenuLists = _IMenuBll.GetQueryable();
+            model.MenuLists = this.ParentMenuList;
             return View(model);
         }
 
         public ActionResult MenuEdit(Guid fid)
         {
-            if (_ParentMenuList == null)
-                _ParentMenuList = _IMenuBll.GetQueryable();
             MenuEditModel model = new MenuEditModel();
-            //MenuModel model = new MenuModel();
             model.Menu = _IMenuBll.GetModel(fid);
-            model.ParentMenuList = _ParentMenuList;
+            model.ParentMenuList = this.ParentMenuList;
             return View(model);
         }
 

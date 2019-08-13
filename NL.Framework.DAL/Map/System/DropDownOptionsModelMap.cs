@@ -7,13 +7,7 @@
 //    版权所有：个人
 //***********************************************************
 using NL.Framework.Model.System;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.ModelConfiguration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NL.Framework.DAL.Map.System
 {
@@ -22,7 +16,19 @@ namespace NL.Framework.DAL.Map.System
         public DropDownOptionsModelMap() : base()
         {
             ToTable(TableName._DROPDOWN);
-            Property(t => t.Fid).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
+            Property(t => t.ParentId);
+
+            Property(t => t.OptionsCode).HasMaxLength(50).HasColumnType("NVARCHAR");
+
+            //索引键，唯一存在
+            HasIndex(t => t.OptionsCode).IsUnique();
+
+            Property(t => t.MyName).HasColumnType("NVARCHAR").HasMaxLength(100);
+
+            Property(t => t.MyValue);
+
+            Property(t=>t.Level).HasColumnName("INT").HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
         }
     }
 }

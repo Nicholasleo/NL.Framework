@@ -1,10 +1,5 @@
-﻿using NL.Framework.Common;
-using NL.Framework.Common.Log;
-using NL.Framework.Common.Office;
-using NL.Framework.IBLL;
+﻿using NL.Framework.IBLL;
 using NL.Framework.Model;
-using NL.Framework.Model.System;
-using System;
 using System.Web.Mvc;
 
 namespace NL.Framework.Web.Controllers
@@ -13,44 +8,36 @@ namespace NL.Framework.Web.Controllers
     {
         private readonly ILoginBll _ILoginBll = null;
         private readonly ISystemInit _ISystemInit;
-        private readonly IExcel _IExcel;
-
-        private readonly ILogger _log;
-        public LoginController(ISystemInit systemInit, ILoginBll loginBll, ILogger logger, IExcel excel)
+        public LoginController(ISystemInit systemInit, ILoginBll loginBll)
         {
-            _IExcel = excel;
             _ISystemInit = systemInit;
             _ILoginBll = loginBll;
-            _log = logger;
         }
 
         public ActionResult NotFound()
         {
-            Response.Status = "404 Not Found";
-            Response.StatusCode = 404;
             return View();
         }
 
         public ActionResult Error()
         {
-            Response.Status = "503 Service Unavailable";
-            Response.StatusCode = 503;
             return View("~/Views/Shared/Error.cshtml");
         }
 
         // GET: Login
         public ActionResult Index()
         {
-            ////初始化菜单
-            _ISystemInit.InitMenu();
-            ////初始化功能
-            _ISystemInit.InitFunction();
             ////初始化角色
             _ISystemInit.InitRole();
             //初始化用户
             _ISystemInit.InitUser();
             //初始化用户角色
             _ISystemInit.InitUserRole();
+            ////初始化菜单
+            _ISystemInit.InitMenu();
+            ////初始化功能
+            _ISystemInit.InitFunction();
+            _ISystemInit.InitDropDown();
             ////初始化菜单功能关系
             //_ISystemInit.InitMenuFunction();
             return View();
@@ -66,7 +53,7 @@ namespace NL.Framework.Web.Controllers
         [HttpGet]
         public ActionResult LogOut()
         {
-            OperatorProvider.Provider.RemoveCurrent();
+            _ILoginBll.LogOut();
             return new RedirectResult("/Login/Index");
         }
     }

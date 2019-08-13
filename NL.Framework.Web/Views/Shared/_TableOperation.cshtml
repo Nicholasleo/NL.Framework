@@ -1,0 +1,17 @@
+﻿@using NL.Framework.Model.System
+@using NL.Framework.Web.Controllers
+@model PageModels
+@{
+    foreach (FunctionModel item in Model.FunctionLists)
+    {
+        if (item.FunctionEvent.Equals("edit"))
+        {
+            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="@item.FunctionEvent"><i class="layui-icon layui-icon-edit"></i>@item.FunctionName</a>
+        }
+
+        if (item.FunctionEvent.Equals("delete"))
+        {
+            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="@item.FunctionEvent"><i class="layui-icon layui-icon-delete"></i>@item.FunctionName</a>
+        }
+    }
+}

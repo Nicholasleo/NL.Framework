@@ -47,15 +47,7 @@
 
         <div class="layui-card-body">
             <div style="padding-bottom: 10px;">
-                @{
-                    foreach (FunctionModel item in Model.FunctionLists)
-                    {
-                        if (!item.FunctionEvent.Equals("edit"))
-                        {
-                            <button class="layui-btn layuiadmin-btn-useradmin" data-type="@item.FunctionEvent">@item.FunctionName</button>
-                        }
-                    }
-                }
+                @Html.Partial("~/Views/Shared/_ButtonsOperation.cshtml", Model)
             </div>
 
             <table id="LAY-user-manage" lay-filter="LAY-user-manage"></table>

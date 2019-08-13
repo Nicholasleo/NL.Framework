@@ -20,7 +20,7 @@ namespace NL.Framework.Web.Controllers
         public JsonResult GetMenuFuncTree(Guid fid)
         {
             TreeDataEnt resultDt = new TreeDataEnt();
-            List<TreeBaseEnt> result = _IRightBll.GetTreeLists(fid);
+            List<RightTreeBaseEnt> result = _IRightBll.GetTreeLists(fid);
             resultDt.TreeData = result;
             if (result != null && result.Count > 0)
             {

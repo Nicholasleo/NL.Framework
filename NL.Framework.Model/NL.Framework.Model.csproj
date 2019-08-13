@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseModel.cs" />
+    <Compile Include="BaseTreeEnt.cs" />
     <Compile Include="NLFrameEnt\LoginUserEnt.cs" />
     <Compile Include="NLFrameEnt\RightSaveEnt.cs" />
     <Compile Include="NLFrameEnt\UserPageEnt.cs" />

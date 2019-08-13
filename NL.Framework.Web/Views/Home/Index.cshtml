@@ -20,12 +20,12 @@
                 <!--顶部左区域-->
                 <ul class="layui-nav layui-layout-left">
                     <li class="layui-nav-item layadmin-flexible" lay-unselect="">
-                        <a href="javascript:;" layadmin-event="flexible" title="侧边伸缩">
+                        <a href="javascript:;" nlframe-event="flexible" title="侧边伸缩">
                             <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
                         </a>
                     </li>
                     <li class="layui-nav-item" lay-unselect="">
-                        <a href="javascript:;" layadmin-event="refresh" title="刷新">
+                        <a href="javascript:;" nlframe-event="refresh" title="刷新">
                             <i class="layui-icon layui-icon-refresh-3"></i>
                         </a>
                     </li>
@@ -33,22 +33,22 @@
                 <!--顶部右区域-->
                 <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
                     <li class="layui-nav-item layui-hide-xs" lay-unselect>
-                        <a href="javascript:;" layadmin-event="theme" title="换肤">
+                        <a href="javascript:;" nlframe-event="theme" title="换肤">
                             <i class="layui-icon layui-icon-theme"></i>
                         </a>
                     </li>
                     <li class="layui-nav-item layui-hide-xs" lay-unselect>
-                        <a href="javascript:;" layadmin-event="note" title="便签">
+                        <a href="javascript:;" nlframe-event="note" title="便签">
                             <i class="layui-icon layui-icon-note"></i>
                         </a>
                     </li>
                     <li class="layui-nav-item layui-hide-xs" lay-unselect>
-                        <a href="javascript:;" layadmin-event="fullscreen" title="全屏">
+                        <a href="javascript:;" nlframe-event="fullscreen" title="全屏">
                             <i class="layui-icon layui-icon-screen-full"></i>
                         </a>
                     </li>
                     @*<li class="layui-nav-item layui-hide-xs" lay-unselect>
-                        <a href="javascript:;" layadmin-event="clearCache" title="清除缓存">
+                        <a href="javascript:;" nlframe-event="clearCache" title="清除缓存">
                             <i class="layui-icon layui-icon-screen-full"></i>
                         </a>
                     </li>*@
@@ -59,16 +59,16 @@
                         <dl class="layui-nav-child">
                             <dd><a lay-href="@Url.Action("Index","Login")">基本资料</a></dd>
                             <dd><a href="">修改密码</a></dd>
-                            <dd><a href="@Url.Action("LogOut","Login")">退出系统</a></dd>
+                            <dd><a nlframe-href="@Url.Action("LogOut","Login")">退出系统</a></dd>
                         </dl>
                     </li>
                     @*<li class="layui-nav-item"><a href="">退出系统</a></li>*@
 
                     <li class="layui-nav-item layui-hide-xs" lay-unselect>
-                        <a href="javascript:;" layadmin-event="about" title="关于"><i class="layui-icon layui-icon-more-vertical"></i></a>
+                        <a href="javascript:;" nlframe-event="about" title="关于"><i class="layui-icon layui-icon-more-vertical"></i></a>
                     </li>
                     <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-unselect>
-                        <a href="javascript:;" layadmin-event="more" title="更多"><i class="layui-icon layui-icon-more-vertical"></i></a>
+                        <a href="javascript:;" nlframe-event="more" title="更多"><i class="layui-icon layui-icon-more-vertical"></i></a>
                     </li>
                 </ul>
             </div>
@@ -120,16 +120,16 @@
 
             <!--页标签-->
             <div class="layadmin-pagetabs" id="LAY_app_tabs">
-                <div class="layui-icon layadmin-tabs-control layui-icon-prev" layadmin-event="leftPage"></div>
-                <div class="layui-icon layadmin-tabs-control layui-icon-next" layadmin-event="rightPage"></div>
+                <div class="layui-icon layadmin-tabs-control layui-icon-prev" nlframe-event="leftPage"></div>
+                <div class="layui-icon layadmin-tabs-control layui-icon-next" nlframe-event="rightPage"></div>
                 <div class="layui-icon layadmin-tabs-control layui-icon-down">
                     <ul class="layui-nav layadmin-tabs-select" lay-filter="layadmin-pagetabs-nav">
                         <li class="layui-nav-item" lay-unselect>
                             <a href="javascript:;"><span class="layui-nav-more"></span></a>
                             <dl class="layui-nav-child layui-anim-fadein layui-anim layui-anim-upbit">
-                                <dd layadmin-event="closeThisTabs"><a href="javascript:;">关闭当前标签页</a></dd>
-                                <dd layadmin-event="closeOtherTabs"><a href="javascript:;">关闭其它标签页</a></dd>
-                                <dd layadmin-event="closeAllTabs"><a href="javascript:;">关闭全部标签页</a></dd>
+                                <dd nlframe-event="closeThisTabs"><a href="javascript:;">关闭当前标签页</a></dd>
+                                <dd nlframe-event="closeOtherTabs"><a href="javascript:;">关闭其它标签页</a></dd>
+                                <dd nlframe-event="closeAllTabs"><a href="javascript:;">关闭全部标签页</a></dd>
                             </dl>
                         </li>
                     </ul>

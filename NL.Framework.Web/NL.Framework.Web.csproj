@@ -390,6 +390,8 @@
     <Content Include="Scripts\layui\src\layuiadmin\tpl\system\theme.html" />
     <Content Include="Scripts\layui\src\layuiadmin\tpl\system\说明.txt" />
     <Content Include="Scripts\layui\src\layuiadmin\tpl\说明.txt" />
+    <Content Include="Scripts\Modules\DropdownScript.js" />
+    <Content Include="Scripts\Modules\LoginScript.js" />
     <Content Include="Scripts\Modules\RightScript.js" />
     <Content Include="Scripts\Modules\MenuScript.js" />
     <Content Include="Scripts\Modules\UserScript.js" />
@@ -452,6 +454,9 @@
     <Content Include="Views\System\UserBind.cshtml" />
     <Content Include="Views\System\UserAdd.cshtml" />
     <Content Include="Views\Login\NotFound.cshtml" />
+    <Content Include="Views\System\DropDown.cshtml" />
+    <Content Include="Views\Shared\_ButtonsOperation.cshtml" />
+    <Content Include="Views\Shared\_TableOperation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NL.Framework.Common\NL.Framework.Common.csproj">

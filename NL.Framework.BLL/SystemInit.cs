@@ -29,6 +29,10 @@ namespace NL.Framework.BLL
             List<FunctionModel> list = new List<FunctionModel>
             {
                new FunctionModel{
+                   FunctionName = "查看",
+                    FunctionEvent = "view"
+               },
+               new FunctionModel{
                    FunctionName = "新增",
                     FunctionEvent = "add"
                },
@@ -148,6 +152,7 @@ namespace NL.Framework.BLL
             List<MenuModel> list = new List<MenuModel>();
             if (!_context.IsExist<MenuModel>(t => t.MenuName.Equals("系统管理菜单")))
             {
+                ///icon-yunyinggongzuotai
                 MenuModel menu = new MenuModel
                 {
                     MenuName = "系统管理菜单",
@@ -197,6 +202,16 @@ namespace NL.Framework.BLL
                     MenuIndex = 4,
                     MenuIsShow = 1,
                     MenuUrl = "/System/RightIndex",
+                    MenuParentId = root.Fid
+                };
+                list.Add(menu);
+                menu = new MenuModel
+                {
+                    MenuName = "下拉管理",
+                    MenuIcon = "layui-icon-right",
+                    MenuIndex = 4,
+                    MenuIsShow = 1,
+                    MenuUrl = "/System/DropDown",
                     MenuParentId = root.Fid
                 };
                 list.Add(menu);
@@ -291,6 +306,20 @@ namespace NL.Framework.BLL
             userRole.CreateTime = DateTime.Now;
             if(!_context.IsExist<UserRoleModel>(t=>t.UserId.Equals(user.Fid) && t.RoleId.Equals(role.Fid)))
                 _context.Insert<UserRoleModel>(userRole);
+        }
+
+        public void InitDropDown()
+        {
+            DropDownOptionsModel model = new DropDownOptionsModel();
+            model.ParentId = Guid.Empty;
+            model.MyName = "地区设置";
+            model.MyValue = Guid.NewGuid();
+            model.OptionsCode = "AreaSetting";
+            model.Level = 0;
+            model.CreatePerson = "NicholasLeo";
+            model.CreateTime = DateTime.Now;
+            if (!_context.IsExist<DropDownOptionsModel>(t => t.OptionsCode.Equals("AreaSetting")))
+                _context.Insert<DropDownOptionsModel>(model);
         }
     }
 }

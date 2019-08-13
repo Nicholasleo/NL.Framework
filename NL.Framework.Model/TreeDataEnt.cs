@@ -22,7 +22,7 @@ namespace NL.Framework.Model
         public TreeDataStatusEnt DataStatus { get; set; }
 
         [JsonProperty(PropertyName = "data")]
-        public List<TreeBaseEnt> TreeData { get; set; }
+        public List<RightTreeBaseEnt> TreeData { get; set; }
     }
 
     public class TreeDataStatusEnt
@@ -36,22 +36,13 @@ namespace NL.Framework.Model
         public string Message { get; set; }
     }
 
-    public class TreeBaseEnt
+    public class RightTreeBaseEnt : BaseTreeEnt
     {
         private bool _spread = true;
-        public TreeBaseEnt()
+        public RightTreeBaseEnt()
         {
             this.Spread = _spread;
         }
-
-        [JsonProperty(PropertyName = "id")]
-        public Guid Id { get; set; }
-
-        [JsonProperty(PropertyName = "title")]
-        public string Name { get; set; }
-
-        [JsonProperty(PropertyName = "parentId")]
-        public Guid ParentId { get; set; }
 
         [JsonProperty(PropertyName = "spread")]
         [DefaultValue(true)]
@@ -72,9 +63,6 @@ namespace NL.Framework.Model
 
         [JsonProperty(PropertyName = "checkArr")]
         public List<CheckArr> CheckArrs { get; set; }
-
-        [JsonProperty(PropertyName = "children")]
-        public List<TreeBaseEnt> Childrens { get; set; }
     }
 
     public class CheckArr

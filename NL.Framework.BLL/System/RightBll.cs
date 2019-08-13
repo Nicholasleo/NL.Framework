@@ -28,9 +28,10 @@ namespace NL.Framework.BLL
             _ILogger = logger;
             _context = db;
         }
-        public List<TreeBaseEnt> GetTreeLists(Guid roleFid)
+        public List<RightTreeBaseEnt> GetTreeLists(Guid roleFid)
         {
-            List<TreeBaseEnt> lists = new List<TreeBaseEnt>();
+            List<RightTreeBaseEnt> lists = new List<RightTreeBaseEnt>();
+
             try
             {
                 //获取所有的功能
@@ -63,21 +64,21 @@ namespace NL.Framework.BLL
                 foreach (MenuModel root in roots)
                 {
                     List<string> _flgList = new List<string>();
-                    TreeBaseEnt treeData = new TreeBaseEnt();
+                    RightTreeBaseEnt treeData = new RightTreeBaseEnt();
                     string _status = "0";
                     treeData.Id = root.Fid;
                     treeData.Name = root.MenuName;
                     treeData.ParentId = root.MenuParentId;
-                    List<TreeBaseEnt> childs = new List<TreeBaseEnt>();
+                    List<RightTreeBaseEnt> childs = new List<RightTreeBaseEnt>();
                     IQueryable menus = _context.GetLists<MenuModel>(t => t.MenuParentId.Equals(root.Fid));
                     //子菜单
                     foreach (MenuModel menu in menus)
                     {
-                        TreeBaseEnt m = new TreeBaseEnt();
+                        RightTreeBaseEnt m = new RightTreeBaseEnt();
                         m.Id = menu.Fid;
                         m.Name = menu.MenuName;
                         m.ParentId = menu.MenuParentId;
-                        List<TreeBaseEnt> mChilds = new List<TreeBaseEnt>();
+                        List<RightTreeBaseEnt> mChilds = new List<RightTreeBaseEnt>();
                         int funcNum = 0;
                         List<Guid> _fun = new List<Guid>();
                         try
@@ -89,7 +90,7 @@ namespace NL.Framework.BLL
                             foreach (FunctionModel func in functions)
                             {
                                 funcNum++;
-                                TreeBaseEnt baseEnt = new TreeBaseEnt();
+                                RightTreeBaseEnt baseEnt = new RightTreeBaseEnt();
                                 baseEnt.Id = func.Fid;
                                 baseEnt.Name = func.FunctionName;
                                 baseEnt.ParentId = menu.Fid;
@@ -125,6 +126,7 @@ namespace NL.Framework.BLL
                     };
                     treeData.Childrens = childs;
                     lists.Add(treeData);
+
                 }
             }
             catch (Exception ex)
@@ -137,6 +139,25 @@ namespace NL.Framework.BLL
                 _ILogger.Debug($"获取菜单列表：{JsonConvert.SerializeObject(lists)}");
             }
             return lists;
+        }
+
+        private List<RightTreeBaseEnt> GetChildNodes(Guid id)
+        {
+            List<RightTreeBaseEnt> list = new List<RightTreeBaseEnt>();
+            IQueryable nodes = _context.GetLists<MenuModel>(t => t.MenuParentId.Equals(id));
+            if (nodes != null)
+            {
+                foreach (MenuModel node in nodes)
+                {
+                    RightTreeBaseEnt treeData = new RightTreeBaseEnt();
+                    treeData.Id = node.Fid;
+                    treeData.Name = node.MenuName;
+                    treeData.ParentId = node.MenuParentId;
+                    treeData.Childrens = GetChildNodes(node.Fid);
+                    list.Add(treeData);
+                }
+            }
+            return list;
         }
 
 

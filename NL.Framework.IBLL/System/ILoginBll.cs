@@ -14,6 +14,9 @@ namespace NL.Framework.IBLL
     {
         LoginStatusEnt CheckUserLogin(LoginEnt loginEnt);
 
+        void LogOut();
+        void Error();
+        void NotFound();
         bool Test(string sql);
     }
 }

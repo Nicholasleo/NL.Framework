@@ -28,15 +28,7 @@
         </div>
         <div class="layui-card-body">
             <div style="padding-bottom: 10px;">
-                @{
-                    foreach (FunctionModel item in Model.FunctionLists)
-                    {
-                        if (!item.FunctionEvent.Equals("edit"))
-                        { 
-                            <button class="layui-btn layuiadmin-btn-role" data-type="@item.FunctionEvent">@item.FunctionName</button>
-                        }
-                    }
-                }
+                @Html.Partial("~/Views/Shared/_ButtonsOperation.cshtml", Model)
             </div>
 
             <table id="LAY-user-back-role" lay-filter="LAY-user-back-role"></table>
@@ -48,20 +40,7 @@
                 {{#  } }}
             </script>*@
             <script type="text/html" id="table-useradmin-admin">
-                @{
-                    foreach (FunctionModel item in Model.FunctionLists)
-                    {
-                        if (item.FunctionEvent.Equals("edit"))
-                        {
-                            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="@item.FunctionEvent"><i class="layui-icon layui-icon-edit"></i>@item.FunctionName</a>
-                        }
-
-                        if (item.FunctionEvent.Equals("delete"))
-                        {
-                            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="@item.FunctionEvent"><i class="layui-icon layui-icon-edit"></i>@item.FunctionName</a>
-                        }
-                    }
-                }
+                @Html.Partial("~/Views/Shared/_TableOperation.cshtml", Model)
             </script>
         </div>
     </div>

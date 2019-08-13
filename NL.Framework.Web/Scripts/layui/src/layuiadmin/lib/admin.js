@@ -772,11 +772,24 @@ layui.define('view', function(exports){
   });
   
   //点击事件
-  $body.on('click', '*[layadmin-event]', function(){
+  $body.on('click', '*[nlframe-event]', function(){
     var othis = $(this)
-    ,attrEvent = othis.attr('layadmin-event');
+    ,attrEvent = othis.attr('nlframe-event');
     events[attrEvent] && events[attrEvent].call(this, othis);
   });
+
+  //点击事件 系统退出清除缓存
+  $body.on('click', '*[nlframe-href]', function () {
+      var othis = $(this)   
+          , attrEvent = othis.attr('nlframe-href');
+      layui.data(setter.tableName, {
+          key: setter.LOGIN_KEY
+          , remove: true
+      });
+      setter.LOGIN_KEY = '';
+      location.href = attrEvent;
+  });
+
   
   //tips
   $body.on('mouseenter', '*[lay-tips]', function(){

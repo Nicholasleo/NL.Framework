@@ -10,12 +10,6 @@ using System.Web.Mvc;
 
 namespace NL.Framework.Web.Controllers
 {
-    public class PageModels
-    {
-        public IQueryable RoleLists { get; set; }
-        public IQueryable MenuLists { get; set; }
-        public IQueryable FunctionLists { get; set; }
-    }
     public partial class SystemController
     {
         public ActionResult RoleIndex(Guid id)

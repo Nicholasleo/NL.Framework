@@ -131,6 +131,23 @@ namespace NL.Framework.BLL
             return res;
         }
 
+        public void Error()
+        {
+            //Response.Status = "503 Service Unavailable";
+            //Response.StatusCode = 503;
+        }
+
+        public void LogOut()
+        {
+            OperatorProvider.Provider.RemoveCurrent();
+        }
+
+        public void NotFound()
+        {
+            //Response.Status = "404 Not Found";
+            //Response.StatusCode = 503;
+        }
+
         public bool Test(string sql)
         {
             return _context.ExecuteSqlCommand(sql);

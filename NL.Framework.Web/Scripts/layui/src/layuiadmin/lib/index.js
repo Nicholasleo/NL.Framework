@@ -12,6 +12,7 @@ layui.extend({
   
   //打开标签页
   ,openTabsPage = function(url, text, menuid){
+
     //遍历页签选项卡
     var matchTo
     ,tabs = $('#LAY_app_tabsheader>li')

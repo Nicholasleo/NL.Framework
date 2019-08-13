@@ -1,0 +1,12 @@
+﻿@using NL.Framework.Model.System
+@using NL.Framework.Web.Controllers
+@model PageModels
+@{
+    foreach (FunctionModel item in Model.FunctionLists)
+    {
+        if (!item.FunctionEvent.Equals("edit") && !item.FunctionEvent.Equals("view"))
+        {
+            <button class="layui-btn layuiadmin-btn-useradmin" data-type="@item.FunctionEvent">@item.FunctionName</button>
+        }
+    }
+}
