@@ -451,6 +451,7 @@
     <Content Include="Views\Shared\_ButtonsOperation.cshtml" />
     <Content Include="Views\Shared\_TableOperation.cshtml" />
     <Content Include="Views\System\DropDownAdd.cshtml" />
+    <Content Include="Views\System\DropDownEidt.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NL.Framework.Common\NL.Framework.Common.csproj">

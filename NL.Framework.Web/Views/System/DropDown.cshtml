@@ -17,13 +17,13 @@
                         <div class="layui-form layui-card-header layuiadmin-card-header-auto">
                             <div class="layui-form-item">
                                 <div class="layui-inline">
-                                    <label class="layui-form-label">登录名</label>
+                                    <label class="layui-form-label">名称</label>
                                     <div class="layui-input-block">
-                                        <input type="text" name="UserCode" placeholder="请输入" autocomplete="off" class="layui-input">
+                                        <input type="text" name="MyName" placeholder="请输入" autocomplete="off" class="layui-input">
                                     </div>
                                 </div>
                                 <div class="layui-inline">
-                                    <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="LAY-user-front-search">
+                                    <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="LAY-drop-down-search">
                                         <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
                                     </button>
                                 </div>
@@ -31,7 +31,7 @@
                         </div>
                         <div class="layui-card-body">
                             <div style="padding-bottom: 10px;">
-                                @Html.Partial("~/Views/Shared/_ButtonsOperation.cshtml", Model);
+                                @Html.Partial("~/Views/Shared/_ButtonsOperation.cshtml", Model)
                             </div>
                             <table id="LAY-dropdown-manage" lay-filter="LAY-dropdown-manage"></table>
                             <script type="text/html" id="table-system-dropdown">

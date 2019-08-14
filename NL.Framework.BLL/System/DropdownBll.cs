@@ -42,6 +42,7 @@ namespace NL.Framework.BLL
             }
             model.CreatePerson = OperatorProvider.Provider.GetCurrent().UserName;
             model.CreateTime = DateTime.Now;
+            model.MyValue = Guid.NewGuid();
             Guid fid = Guid.NewGuid();
             model.Fid = fid;
             result.ExtMsg = fid;
@@ -60,13 +61,66 @@ namespace NL.Framework.BLL
 
         }
 
+        public override AjaxResultEnt Update(DropDownOptionsModel model)
+        {
+            AjaxResultEnt result = new AjaxResultEnt();
+            if (!_context.IsExist<DropDownOptionsModel>(model.Fid))
+            {
+                result.Code = 404;
+                result.Message = $"【{model.MyName}】节点不存在!";
+                return result;
+            }
+            model.ModifyPerson = OperatorProvider.Provider.GetCurrent().UserName;
+            model.ModifyTime = DateTime.Now;
+            int i = _context.Update<DropDownOptionsModel>(model);
+            if (i > 0)
+            {
+                result.Code = 200;
+                result.Message = $"保存成功!";
+            }
+            else
+            {
+                result.Code = 503;
+                result.Message = $"保存失败!";
+            }
+            return result;
+        }
+
+        public override AjaxResultEnt Delete(Guid fid)
+        {
+            AjaxResultEnt result = new AjaxResultEnt();
+            if (!_context.IsExist<DropDownOptionsModel>(fid))
+            {
+                result.Code = 404;
+                result.Message = $"节点不存在，无法删除!";
+                return result;
+            }
+            if (_context.Delete<DropDownOptionsModel>(fid) > 0)
+            {
+                result.Code = 200;
+                result.Message = $"删除成功!";
+            }
+            else
+            {
+                result.Code = 503;
+                result.Message = $"删除失败!";
+            }
+            return result;
+        }
+
+        public override DropDownOptionsModel GetModel(Guid fid)
+        {
+            return _context.GetEntity<DropDownOptionsModel>(fid);
+        }
+
         public override List<DropDownOptionsModel> GetLists(int page, int limit, out int total, object obj)
         {
             string filtter = obj.ToString();
             Expression<Func<DropDownOptionsModel, bool>> where = null;
-            if (!string.IsNullOrEmpty(filtter))
-                where = t => t.Fid.ToString().Equals(filtter) || t.ParentId.ToString().Equals(filtter);
             where = t => t.ParentId.Equals(Guid.Empty);
+            if (!string.IsNullOrEmpty(filtter))
+                where = ExpressionHelp.ExpressionAnd(where, (t => t.MyName.Equals(filtter)));
+                //where = t => t.MyName.ToString().Equals(filtter);
             IQueryable data = _context.GetLists<DropDownOptionsModel>(page, limit, out total, where);
             List<DropDownOptionsModel> result = new List<DropDownOptionsModel>();
             foreach (DropDownOptionsModel item in data)

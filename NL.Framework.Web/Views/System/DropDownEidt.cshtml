@@ -1,0 +1,59 @@
+﻿@model  NL.Framework.Model.System.DropDownOptionsModel
+@{
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+}
+
+    <div class="layui-form" lay-filter="layuiadmin-form-dropdown" id="layuiadmin-form-dropdown" style="padding: 20px 30px 0 0;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">查询标识</label>
+            <div class="layui-input-block">
+                <input type="text" name="OptionsCode" lay-verify="required" disabled placeholder="请输入查询标识 如：AreaSetting" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">显示名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="MyName" autocomplete="off" lay-verify="required" placeholder="请输入显示名称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item" layui-hide>
+            <label class="layui-form-label">级别</label>
+            <div class="layui-input-block">
+                <input type="text" name="Level" lay-verify="required" value="0" autocomplete="off" placeholder="请输入级别" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-hide">
+            <input type="text" name="MyValue" class="layui-input">
+        </div>
+        <div class="layui-form-item layui-hide">
+            <input type="text" name="Fid" class="layui-input">
+        </div>
+        <div class="layui-form-item layui-hide">
+            <input type="text" name="ParentId" class="layui-input">
+        </div>
+        <div class="layui-form-item layui-hide">
+            <button class="layui-btn" lay-submit lay-filter="LAY-drop-down-submit" id="LAY-drop-down-submit">提交</button>
+        </div>
+    </div>
+<script>
+  layui.config({
+    base: '../Scripts/layui/src/nlframe/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form'], function(){
+    var $ = layui.$
+          , form = layui.form;
+      form.render();
+      form.val('layuiadmin-form-dropdown', {
+          'Level': '@Model.Level',
+          'OptionsCode': '@Model.OptionsCode',
+          'MyName': '@Model.MyName',
+          'MyValue': '@Model.MyValue',
+          'Fid': '@Model.Fid',
+          'ParentId':'@Model.ParentId'
+      });
+  })
+</script>
+
+
+

@@ -25,14 +25,6 @@ namespace NL.Framework.Web.Controllers
             model.MenuLists = this.ParentMenuList;
             return View(model);
         }
-
-        //public ActionResult DropDownAdd()
-        //{
-        //    DropDownFlgEnt ent = new DropDownFlgEnt();
-        //    ent.ParentId = Guid.Empty;
-        //    ent.IsParent = true;
-        //    return View(ent);
-        //}
         public ActionResult DropDownAdd(Guid parentid,string name = "")
         {
             DropDownFlgEnt ent = new DropDownFlgEnt();
@@ -40,6 +32,11 @@ namespace NL.Framework.Web.Controllers
             ent.ParentName = name;
             ent.IsParent = parentid == Guid.Empty;
             return View(ent);
+        }
+        public ActionResult DropDownEidt(Guid fid)
+        {
+            DropDownOptionsModel model = _IDropdownBll.GetModel(fid);
+            return View(model);
         }
 
 
@@ -79,6 +76,19 @@ namespace NL.Framework.Web.Controllers
         public JsonResult AddDropDown(DropDownOptionsModel model)
         {
             resData = _IDropdownBll.Create(model);
+            return Json(resData);
+        }
+
+        [HttpPost]
+        public JsonResult SaveEdit(DropDownOptionsModel model)
+        {
+            resData = _IDropdownBll.Update(model);
+            return Json(resData);
+        }
+        [HttpPost]
+        public JsonResult DeleteNode(Guid fid)
+        {
+            resData = _IDropdownBll.Delete(fid);
             return Json(resData);
         }
     }

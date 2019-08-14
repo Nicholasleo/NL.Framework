@@ -39,6 +39,18 @@
         , text: '对不起，加载出现异常！'
     });
 
+
+    //搜索菜单
+    form.on('submit(LAY-drop-down-search)', function (data) {
+        console.log(data);
+        //执行重载
+        table.reload('LAY-dropdown-manage', {
+            where: {
+                filtter: data.field.MyName
+            }
+        });
+    });
+
     var fid;
 
     //监听行单击事件（单击事件为：rowDouble）
@@ -57,7 +69,7 @@
                 handler: function (node, $div) {
                     layer.open({
                         type: 2
-                        , title: '添加下拉项'
+                        , title: '新增节点'
                         , content: '/System/DropDownAdd?parentid=' + node.nodeId + '&name=' + node.context
                         , area: ['500px', '480px']
                         , btn: ['确定', '取消']
@@ -92,13 +104,53 @@
             {
                 toolbarId: "nodeEdit", icon: "dtree-icon-bianji", title: "编辑节点",
                 handler: function (node, $div) {
+                    layer.open({
+                        type: 2
+                        , title: '编辑节点'
+                        , content: '/System/DropDownEidt?fid=' + node.nodeId
+                        , area: ['500px', '480px']
+                        , btn: ['确定', '取消']
+                        , yes: function (index, layero) {
+                            var iframeWindow = window['layui-layer-iframe' + index]
+                                , submit = layero.find('iframe').contents().find("#LAY-drop-down-submit");
+                            //监听提交
+                            iframeWindow.layui.form.on('submit(LAY-drop-down-submit)', function (data) {
+                                var field = data.field; //获取提交的字段
+                                //提交 Ajax 成功后，静态更新表格中的数据
+                                nAjax.NLPost({
+                                    url: '/System/SaveEdit',
+                                    data: field,
+                                    successfn: function (res) {
+                                        if (res.Code == 200) {
+                                            var json = { "id": field.Fid, "title": field.MyName, "parentId": field.ParentId };
+                                            //请求成功后，重载DTree1
+                                            Dtree.partialRefreshEdit($div, json);
+                                        }
+                                        layer.msg(res.Message);
+                                    }
+                                });
+                                layer.close(index); //关闭弹层
+                                return false;
+                            });
 
+                            submit.trigger('click');
+                        }
+                    });
                 }
             },
             {
                 toolbarId: "nodeDelete", icon: "dtree-icon-roundclose", title: "删除节点",
                 handler: function (node, $div) {
-
+                    nAjax.NLPost({
+                        url: '/System/DeleteNode',
+                        data: { fid: node.nodeId},
+                        successfn: function (res) {
+                            if (res.Code == 200) {
+                                Dtree.partialRefreshDel($div);
+                            }
+                            layer.msg(res.Message);
+                        }
+                    });
                 }
             }
             ],
