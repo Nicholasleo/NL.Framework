@@ -419,6 +419,7 @@
     <Content Include="Configs\database.config" />
     <Content Include="Configs\system.config" />
     <Content Include="Configs\log4net.config" />
+    <Content Include="Configs\China.json" />
     <None Include="packages.config" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Scripts\layui\src\nlframe\layui\css\modules\layim\html\getmsg.json" />

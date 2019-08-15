@@ -9,12 +9,14 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 
 namespace NL.Framework.Common.Json
 {
-    public static class Json
+    public static class NLFrameJson
     {
         public static object ToJson(this string Json)
         {
@@ -45,6 +47,16 @@ namespace NL.Framework.Common.Json
         public static JObject ToJObject(this string Json)
         {
             return Json == null ? JObject.Parse("{}") : JObject.Parse(Json.Replace("&nbsp;", ""));
+        }
+
+        public static List<T> FileToObject<T>(string filename) where T : new()
+        {
+            List<T> result = new List<T>();
+            using (StreamReader file = File.OpenText(filename))
+            {
+                string json = file.ReadToEnd();
+                return JsonConvert.DeserializeObject<List<T>>(json);
+            }
         }
     }
 }

@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="BaseModel.cs" />
     <Compile Include="BaseTreeEnt.cs" />
+    <Compile Include="NLFrameEnt\ChinaEnt.cs" />
     <Compile Include="NLFrameEnt\LoginUserEnt.cs" />
     <Compile Include="NLFrameEnt\RightSaveEnt.cs" />
     <Compile Include="NLFrameEnt\UserPageEnt.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="System\RoleModel.cs" />
     <Compile Include="System\SystemBaseModel.cs" />
     <Compile Include="System\SystemConfigModel.cs" />
+    <Compile Include="System\UserImageModel.cs" />
     <Compile Include="System\UserModel.cs" />
     <Compile Include="System\UserRoleModel.cs" />
     <Compile Include="TreeDataEnt.cs" />

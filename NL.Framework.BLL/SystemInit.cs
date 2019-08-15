@@ -6,8 +6,10 @@
 //    说明：
 //    版权所有：个人
 //***********************************************************
+using NL.Framework.Common.Json;
 using NL.Framework.IBLL;
 using NL.Framework.IDAL;
+using NL.Framework.Model;
 using NL.Framework.Model.System;
 using System;
 using System.Collections.Generic;
@@ -320,6 +322,99 @@ namespace NL.Framework.BLL
             model.CreateTime = DateTime.Now;
             if (!_context.IsExist<DropDownOptionsModel>(t => t.OptionsCode.Equals("AreaSetting")))
                 _context.Insert<DropDownOptionsModel>(model);
+
+            List<ChinaEnt> list = NLFrameJson.FileToObject<ChinaEnt>(AppDomain.CurrentDomain.BaseDirectory + "Configs\\China.json");
+            if (list != null)
+            {
+                model = _context.GetEntity<DropDownOptionsModel>(t => t.OptionsCode.Equals("AreaSetting"));
+                //List<DropDownOptionsModel> listData = GetChinaList(list, model.Fid);
+                //if(!_context.IsExist<DropDownOptionsModel>(t=>t.ParentId.Equals(model.Fid)))
+                //    _context.Insert<DropDownOptionsModel>(listData);
+                CreateChinaList(list, model.Fid);
+            }
+        }
+
+        private void CreateChinaList(List<ChinaEnt> list, Guid fid)
+        {
+            DropDownOptionsModel model = new DropDownOptionsModel();
+            DropDownOptionsModel tempEnt = new DropDownOptionsModel();
+            model.CreatePerson = "NicholasLeo";
+            model.CreateTime = DateTime.Now;
+            model.ParentId = fid;
+            model.MyName = "中华人民共和国";
+            model.MyValue = Guid.NewGuid();
+            model.OptionsCode = "China";
+            if(!_context.IsExist<DropDownOptionsModel>(t=>t.OptionsCode.Equals(model.OptionsCode)))
+                _context.Insert<DropDownOptionsModel>(model);
+            Guid gjid = _context.GetEntity<DropDownOptionsModel>(t => t.OptionsCode.Equals(model.OptionsCode)).Fid;
+            foreach (ChinaEnt ent in list)
+            {
+                try
+                {
+                    //省
+                    model = new DropDownOptionsModel();
+                    model.CreatePerson = "NicholasLeo";
+                    model.CreateTime = DateTime.Now;
+                    model.MyName = ent.Name;
+                    model.ParentId = gjid;
+                    model.MyValue = Guid.NewGuid();
+                    model.OptionsCode = ent.Code;
+                    if (!_context.IsExist<DropDownOptionsModel>(t => t.OptionsCode.Equals(model.OptionsCode)))
+                        _context.Insert<DropDownOptionsModel>(model);
+                    if (ent.City == null || ent.City.Count == 0)
+                        continue;
+                    List<CityEnt> cities = ent.City;
+                    Guid sfid = _context.GetEntity<DropDownOptionsModel>(t => t.OptionsCode.Equals(model.OptionsCode)).Fid;
+                    foreach (CityEnt city in cities)
+                    {
+                        try
+                        {
+                            //市
+                            model = new DropDownOptionsModel();
+                            model.CreatePerson = "NicholasLeo";
+                            model.CreateTime = DateTime.Now;
+                            model.ParentId = sfid;
+                            model.MyName = city.Name;
+                            model.MyValue = Guid.NewGuid();
+                            model.OptionsCode = city.Code;
+                            if (!_context.IsExist<DropDownOptionsModel>(t => t.OptionsCode.Equals(model.OptionsCode)))
+                                _context.Insert<DropDownOptionsModel>(model);
+                            if (city.Area == null || city.Area.Count == 0)
+                                continue;
+                            List<ChinaBaseEnt> areas = city.Area;
+                            Guid csid = _context.GetEntity<DropDownOptionsModel>(t => t.OptionsCode.Equals(model.OptionsCode)).Fid;
+                            foreach (ChinaBaseEnt item in areas)
+                            {
+                                try
+                                {
+                                    //县
+                                    model = new DropDownOptionsModel();
+                                    model.CreatePerson = "NicholasLeo";
+                                    model.CreateTime = DateTime.Now;
+                                    model.ParentId = csid;
+                                    model.MyName = item.Name;
+                                    model.MyValue = Guid.NewGuid();
+                                    model.OptionsCode = item.Code;
+                                    if (!_context.IsExist<DropDownOptionsModel>(t => t.OptionsCode.Equals(model.OptionsCode)))
+                                        _context.Insert<DropDownOptionsModel>(model);
+                                }
+                                catch (Exception ex)
+                                {
+                                    throw new Exception(ex.Message);
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new Exception(ex.Message);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }
         }
     }
 }

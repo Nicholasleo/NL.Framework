@@ -91,6 +91,9 @@ namespace NL.Framework.Model.System
         public string Description { get; set; }
 
         [JsonIgnore]
+        public virtual UserImageModel UserImage { get; set; }
+
+        [JsonIgnore]
         public virtual ICollection<UserRoleModel> UserRoleModels { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NL.Framework.Model;
+using NL.Framework.Model.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,10 @@ namespace NL.Framework.Web.Controllers
 {
     public partial class SystemController
     {
-        // GET: Right
-        public ActionResult Index()
+        public ActionResult RightIndex(Guid id)
         {
-            return View();
+            List<FunctionModel> right = _IMenuBll.GetMenuFunction(id, ent.RoleId);
+            return View(right);
         }
 
         [HttpGet]

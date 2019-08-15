@@ -1,5 +1,7 @@
 ﻿using NL.Framework.IBLL;
 using NL.Framework.Model;
+using NL.Framework.Model.NLFrameEnt;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace NL.Framework.Web.Controllers
@@ -27,15 +29,15 @@ namespace NL.Framework.Web.Controllers
         // GET: Login
         public ActionResult Index()
         {
-            ////初始化角色
+            //初始化角色
             _ISystemInit.InitRole();
             //初始化用户
             _ISystemInit.InitUser();
             //初始化用户角色
             _ISystemInit.InitUserRole();
-            ////初始化菜单
+            //初始化菜单
             _ISystemInit.InitMenu();
-            ////初始化功能
+            //初始化功能
             _ISystemInit.InitFunction();
             _ISystemInit.InitDropDown();
             ////初始化菜单功能关系

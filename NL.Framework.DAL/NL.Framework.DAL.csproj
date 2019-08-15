@@ -53,6 +53,7 @@
     <Compile Include="Map\System\RoleMenuFunctionModelMap.cs" />
     <Compile Include="Map\System\RoleMenuModelMap.cs" />
     <Compile Include="Map\System\RoleModelMap.cs" />
+    <Compile Include="Map\System\UserImageModelMap.cs" />
     <Compile Include="Map\System\UserModelMap.cs" />
     <Compile Include="Map\System\FunctionModelMap.cs" />
     <Compile Include="Map\System\MenuModelMap.cs" />

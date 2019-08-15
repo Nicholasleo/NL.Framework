@@ -49,9 +49,5 @@ namespace NL.Framework.Web.Controllers
         }
 
 
-        public ActionResult RightIndex()
-        {
-            return View();
-        }
     }
 }

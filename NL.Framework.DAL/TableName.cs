@@ -37,7 +37,10 @@ namespace NL.Framework.DAL
         /// </summary>
         public const string _DROPDOWN = "Sys_Dropdown";
 
-
+        /// <summary>
+        /// 用户头像表
+        /// </summary>
+        public const string _USERIMAGE = "Sys_UserImage";
 
 
 
