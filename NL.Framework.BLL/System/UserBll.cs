@@ -254,24 +254,12 @@ namespace NL.Framework.BLL
                     UserImageModel img = new UserImageModel
                     {
                         ImageUrl = model.ImageUrl,
-                        Fid = model.Fid,
-                        UserIcon = ImageHelper.ConvertToByte($"{basePath}{imagePath}{model.ImageUrl}")
+                        Fid = userId,
+                        UserIcon = ImageHelper.ConvertToByte($"{basePath}{imagePath}{model.ImageUrl}"),
+                        CreatePerson = OperatorProvider.Provider.GetCurrent().UserName,
+                        CreateTime = DateTime.Now
                     };
-                    if (db.IsExist<UserImageModel>(model.Fid))
-                    {
-                        UserImageModel temp = db.GetEntity<UserImageModel>(model.Fid);
-                        temp.ImageUrl = img.ImageUrl;
-                        temp.UserIcon = img.UserIcon;
-                        temp.ModifyPerson = OperatorProvider.Provider.GetCurrent().UserName;
-                        temp.ModifyTime = DateTime.Now;
-                        db.Update<UserImageModel>(temp);
-                    }
-                    else
-                    {
-                        img.CreatePerson = OperatorProvider.Provider.GetCurrent().UserName;
-                        img.CreateTime = DateTime.Now;
-                        db.Insert(img);
-                    }
+                    db.Insert(img);
                 }
             });
             if (OperatorProvider.Provider.IsDebug)

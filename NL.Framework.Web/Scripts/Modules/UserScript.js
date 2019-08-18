@@ -6,6 +6,7 @@
     var $ = layui.$
         , nAjax = layui.NLFrameAjax
         , form = layui.form
+        , layer = layui.layer
         , table = layui.table;
     //用户管理
     table.render({
