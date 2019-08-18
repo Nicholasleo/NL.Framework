@@ -54,18 +54,17 @@ namespace NL.Framework.Web.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetUserList(int page, int limit, string UserCode = "", string UserName = "", int Gender = 3, string Email = "")
+        public JsonResult GetUserList(int page, int limit, string UserCode = "", string UserName = "", int Gender = 3, string IdCard = "")
         {
             AjaxResultData<UserModel> result = new AjaxResultData<UserModel>();
             UserPageEnt pageEnt = new UserPageEnt
             {
-                UserCode = UserCode,
-                UserName = UserName,
+                UserCode = UserCode.Trim(),
+                UserName = UserName.Trim(),
                 Gender = Gender,
-                Email = Email
+                IdCard = IdCard.Trim()
             };
-            int total = 0;
-            List<UserModel> data = _IUserBll.GetLists(page, limit, out total, pageEnt);
+            List<UserModel> data = _IUserBll.GetLists(page, limit, out int total, pageEnt);
             string json = JsonConvert.SerializeObject(data);
             result.data = json;
             result.count = total.ToString();

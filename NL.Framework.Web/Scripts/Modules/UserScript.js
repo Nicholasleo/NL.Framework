@@ -176,6 +176,14 @@
         });
     });
 
+
+    $(document).keydown(function (e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            $("[lay-filter='LAY-user-front-search']").trigger("click");
+        }
+    });
+
     //事件
     var active = {
         delete: function () {

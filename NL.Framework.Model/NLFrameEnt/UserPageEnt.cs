@@ -20,6 +20,7 @@ namespace NL.Framework.Model.NLFrameEnt
         public string UserName { get; set; }
         public int Gender { get; set; }
         public string Email { get; set; }
+        public string IdCard { get; set; }
     }
 
     public class UserRoleEnt

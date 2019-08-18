@@ -55,14 +55,14 @@ namespace NL.Framework.BLL
             if (!string.IsNullOrEmpty(pageEnt.UserCode))
             {
                 if (where == null)
-                    where = t => t.UserCode.Equals(pageEnt.UserCode);
+                    where = t => t.UserCode.ToLower().Contains(pageEnt.UserCode.ToLower());
                 else
                     where = ExpressionHelp.ExpressionAnd(where, where);
             }
             if (!string.IsNullOrEmpty(pageEnt.UserName))
             {
                 if (where == null)
-                    where = t => t.UserName.Equals(pageEnt.UserName);
+                    where = t => t.UserName.ToLower().Contains(pageEnt.UserName.ToLower());
                 else
                     where = ExpressionHelp.ExpressionAnd(where, where);
             }
@@ -73,10 +73,10 @@ namespace NL.Framework.BLL
                 else
                     where = ExpressionHelp.ExpressionAnd(where, where);
             }
-            if (!string.IsNullOrEmpty(pageEnt.Email))
+            if (!string.IsNullOrEmpty(pageEnt.IdCard))
             {
                 if (where == null)
-                    where = t => t.Email.Equals(pageEnt.Email);
+                    where = t => t.IdCard.ToLower().Contains(pageEnt.IdCard.ToLower());
                 else
                     where = ExpressionHelp.ExpressionAnd(where, where);
             }
