@@ -78,5 +78,9 @@ namespace NL.Framework.Common
         /// DES加密、解密KEY
         /// </summary>
         public const string NLFRAME_DESENCRYPT_DESKEY = "NLFRAME_DESENCRYPT_2019";
+        /// <summary>
+        /// 头像上传路径配置
+        /// </summary>
+        public const string NLFRAME_SYSTEM_CONFIG_UPLOAD_USER = "UploadUserImg";
     }
 }

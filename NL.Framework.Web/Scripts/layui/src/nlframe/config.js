@@ -9,7 +9,8 @@ layui.define(['laytpl', 'layer', 'element', 'util'], function(exports){
     ,pageTabs: true //是否开启页面选项卡功能。iframe版推荐开启
       , name: 'NLFrame'
       , LOGIN_KEY:''
-    ,tableName: 'NLFrame' //本地存储表名
+      , tableName: 'NLFrame' //本地存储表名
+      , NLFRAME_CONFIG_USER_IMAGE:'NLFRAME_CONFIG_USER_IMAGE' //本地系统配置表名
     ,MOD_NAME: 'admin' //模块事件名
     ,debug: true //是否开启调试模式。如开启，接口异常时会抛出异常 URL 等信息
     //自定义请求字段

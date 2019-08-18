@@ -7,6 +7,7 @@
 //    版权所有：个人
 //***********************************************************
 using NL.Framework.Model.System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NL.Framework.DAL.Map.System
 {
@@ -16,11 +17,13 @@ namespace NL.Framework.DAL.Map.System
         {
             ToTable(TableName._USERIMAGE);
 
-            Property(t => t.Fid).HasColumnName("UserId");
+            Property(t => t.Fid).HasColumnName("UserId").HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             Property(t => t.UserIcon).HasColumnType("IMAGE");
 
-            //HasOptional(t => t.UserModel).WithRequired(t => t.UserImage);
+            Property(t => t.ImageUrl).HasMaxLength(200);
+
+            HasRequired(t => t.UserModel).WithOptional(t => t.UserImage);
         }
     }
 }

@@ -55,6 +55,8 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -67,6 +69,7 @@
     <Compile Include="Cache\Cookie.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="Config\Configs.cs" />
+    <Compile Include="Image\ImageHelper.cs" />
     <Compile Include="Licence.cs" />
     <Compile Include="Log\ILogger.cs" />
     <Compile Include="Log\Logger.cs" />

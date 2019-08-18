@@ -369,6 +369,7 @@
     <Content Include="Scripts\layui\src\nlframe\modules\set.js" />
     <Content Include="Scripts\layui\src\nlframe\modules\user.js" />
     <Content Include="Scripts\layui\src\nlframe\modules\useradmin.js" />
+    <Content Include="Scripts\layui\src\nlframe\modules\userinfo.js" />
     <Content Include="Scripts\layui\src\nlframe\modules\workorder.js" />
     <Content Include="Scripts\layui\src\nlframe\style\admin.css" />
     <Content Include="Scripts\layui\src\nlframe\style\dtree.css" />

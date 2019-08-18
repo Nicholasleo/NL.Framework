@@ -2,6 +2,7 @@
 using NL.Framework.Model.NLFrameEnt;
 using NL.Framework.Model.System;
 using System;
+using System.Web;
 
 //***********************************************************
 //    作者：Nicholas Leo
@@ -20,5 +21,6 @@ namespace NL.Framework.IBLL
         AjaxResultEnt UpdateUserRole(UserRoleEnt ent);
         AjaxResultEnt AddUser(UserEditEnt model);
         AjaxResultEnt UpdateUser(UserEditEnt model);
+        UploadFileEnt UploadImage(HttpFileCollectionBase fileInfo);
     }
 }

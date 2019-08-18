@@ -50,6 +50,7 @@
     <Compile Include="NLFrameEnt\ChinaEnt.cs" />
     <Compile Include="NLFrameEnt\LoginUserEnt.cs" />
     <Compile Include="NLFrameEnt\RightSaveEnt.cs" />
+    <Compile Include="NLFrameEnt\UploadFileEnt.cs" />
     <Compile Include="NLFrameEnt\UserPageEnt.cs" />
     <Compile Include="NvaMenus.cs" />
     <Compile Include="Pagination.cs" />

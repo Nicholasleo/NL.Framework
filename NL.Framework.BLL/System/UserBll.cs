@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using NL.Framework.Common;
+using NL.Framework.Common.Config;
 using NL.Framework.Common.Log;
+using NL.Framework.Common.Security;
 using NL.Framework.IBLL;
 using NL.Framework.IDAL;
 using NL.Framework.Model;
@@ -8,8 +10,11 @@ using NL.Framework.Model.NLFrameEnt;
 using NL.Framework.Model.System;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text.RegularExpressions;
+using System.Web;
 
 //***********************************************************
 //    作者：Nicholas Leo
@@ -242,6 +247,32 @@ namespace NL.Framework.BLL
                     CreateTime = DateTime.Now
                 };
                 db.Insert<UserRoleModel>(userRole);
+                if (!string.IsNullOrEmpty(model.ImageUrl))
+                {
+                    string basePath = AppDomain.CurrentDomain.BaseDirectory;
+                    string imagePath = Configs.GetValue(SystemParameters.NLFRAME_SYSTEM_CONFIG_UPLOAD_USER);
+                    UserImageModel img = new UserImageModel
+                    {
+                        ImageUrl = model.ImageUrl,
+                        Fid = model.Fid,
+                        UserIcon = ImageHelper.ConvertToByte($"{basePath}{imagePath}{model.ImageUrl}")
+                    };
+                    if (db.IsExist<UserImageModel>(model.Fid))
+                    {
+                        UserImageModel temp = db.GetEntity<UserImageModel>(model.Fid);
+                        temp.ImageUrl = img.ImageUrl;
+                        temp.UserIcon = img.UserIcon;
+                        temp.ModifyPerson = OperatorProvider.Provider.GetCurrent().UserName;
+                        temp.ModifyTime = DateTime.Now;
+                        db.Update<UserImageModel>(temp);
+                    }
+                    else
+                    {
+                        img.CreatePerson = OperatorProvider.Provider.GetCurrent().UserName;
+                        img.CreateTime = DateTime.Now;
+                        db.Insert(img);
+                    }
+                }
             });
             if (OperatorProvider.Provider.IsDebug)
             {
@@ -258,12 +289,17 @@ namespace NL.Framework.BLL
 
         public UserEditEnt GetUserEidtModel(Guid fid)
         {
+            UserEditEnt ent = new UserEditEnt();
             Guid roleid = Guid.Empty;
             UserModel model = _context.GetEntity<UserModel>(fid);
             UserRoleModel uModel = _context.GetEntity<UserRoleModel>(t => t.UserId.Equals(fid));
+            UserImageModel img = _context.GetEntity<UserImageModel>(fid);
+            string imgName = "";
             if (uModel != null)
                 roleid = uModel.RoleId;
-            UserEditEnt ent = new UserEditEnt
+            if (img != null)
+                imgName = img.ImageUrl;
+            ent = new UserEditEnt
             {
                 Fid = model.Fid,
                 RoleId = roleid,
@@ -276,6 +312,7 @@ namespace NL.Framework.BLL
                 Email = model.Email,
                 WeChat = model.WeChat,
                 QQ = model.QQ,
+                ImageUrl = imgName,
                 MobilePhone = model.MobilePhone,
                 Address = model.Address,
                 IsDelete = model.IsDelete,
@@ -353,6 +390,33 @@ namespace NL.Framework.BLL
                     userRole.CreateTime = DateTime.Now;
                     db.Insert(userRole);
                 }
+
+                if (!string.IsNullOrEmpty(model.ImageUrl))
+                {
+                    string basePath = AppDomain.CurrentDomain.BaseDirectory;
+                    string imagePath = Configs.GetValue(SystemParameters.NLFRAME_SYSTEM_CONFIG_UPLOAD_USER);
+                    UserImageModel img = new UserImageModel
+                    {
+                        ImageUrl = model.ImageUrl,
+                        Fid = model.Fid,
+                        UserIcon = ImageHelper.ConvertToByte($"{basePath}{imagePath}{model.ImageUrl}")
+                    };
+                    if (db.IsExist<UserImageModel>(model.Fid))
+                    {
+                        UserImageModel temp = db.GetEntity<UserImageModel>(model.Fid);
+                        temp.ImageUrl = img.ImageUrl;
+                        temp.UserIcon = img.UserIcon;
+                        temp.ModifyPerson = OperatorProvider.Provider.GetCurrent().UserName;
+                        temp.ModifyTime = DateTime.Now;
+                        db.Update<UserImageModel>(temp);
+                    }
+                    else
+                    {
+                        img.CreatePerson = OperatorProvider.Provider.GetCurrent().UserName;
+                        img.CreateTime = DateTime.Now;
+                        db.Insert(img);
+                    }
+                }
             });
             int i = _context.UsingTransaction(action);
             if (i > 0)
@@ -414,7 +478,42 @@ namespace NL.Framework.BLL
                 return result;
             }
         }
-        
+
+        public UploadFileEnt UploadImage(HttpFileCollectionBase fileInfo)
+        {
+            UploadFileEnt resData = new UploadFileEnt();
+            HttpPostedFileBase _file = fileInfo["File"];
+            string file = _file.FileName;
+            string fileFormat = file.Split('.')[file.Split('.').Length - 1]; // 以“.”截取，获取“.”后面的文件后缀
+            Regex imageFormat = new Regex(@"^(bmp)|(png)|(gif)|(jpg)|(jpeg)"); // 验证文件后缀的表达式（自己写的，不规范别介意哈）
+            if (string.IsNullOrEmpty(file) || !imageFormat.IsMatch(fileFormat)) // 验证后缀，判断文件是否是所要上传的格式
+            {
+                resData.ResultState = 503;
+                resData.ResultMsg = "error";
+            }
+            else
+            {
+                string timeStamp = DateTime.Now.Ticks.ToString(); // 获取当前时间的string类型
+                //string firstFileName = timeStamp.Substring(0, timeStamp.Length - 4); // 通过截取获得文件名
+                string firstFileName = Md5.MD5Encrypt(OperatorProvider.Provider.GetCurrent().UserCode);
+                string imageStr = Configs.GetValue(SystemParameters.NLFRAME_SYSTEM_CONFIG_UPLOAD_USER); // 获取保存图片的项目文件夹
+                string uploadPath = $"{AppDomain.CurrentDomain.BaseDirectory}{imageStr}"; // 将项目路径与文件夹合并
+                if (!Directory.Exists(uploadPath))
+                    Directory.CreateDirectory(uploadPath);
+                string pictureFormat = file.Split('.')[file.Split('.').Length - 1];// 设置文件格式
+                string fileName = firstFileName + "." + fileFormat;// 设置完整（文件名+文件格式） 
+                string saveFile = uploadPath + fileName;//文件路径
+                if (File.Exists(saveFile))
+                    File.Delete(saveFile);
+                _file.SaveAs(saveFile);// 保存文件
+                // 如果单单是上传，不用保存路径的话，下面这行代码就不需要写了！
+                resData.ResultPath = fileName;// 设置数据库保存的路径
+                resData.ResultState = 200;
+                resData.ResultMsg = "success";
+            }
+            return resData;
+        }
+
         #endregion
 
         #region Methods

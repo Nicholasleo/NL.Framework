@@ -54,7 +54,7 @@ namespace NL.Framework.Web.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetUserList(int page, int limit, string UserCode = "",string UserName = "",int Gender = 3,string Email="")
+        public JsonResult GetUserList(int page, int limit, string UserCode = "", string UserName = "", int Gender = 3, string Email = "")
         {
             AjaxResultData<UserModel> result = new AjaxResultData<UserModel>();
             UserPageEnt pageEnt = new UserPageEnt
@@ -100,6 +100,14 @@ namespace NL.Framework.Web.Controllers
         {
             resData = _IUserBll.UpdateUserRole(data);
             return Json(resData);
+        }
+
+        [HttpPost]
+        public JsonResult UploadImage()
+        {
+            UploadFileEnt ent = new UploadFileEnt();
+            ent = _IUserBll.UploadImage(Request.Files);
+            return Json(ent);
         }
     }
 }

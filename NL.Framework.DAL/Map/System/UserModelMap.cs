@@ -45,7 +45,6 @@ namespace NL.Framework.DAL.Map
             Property(t => t.State);
             Property(t => t.Description).HasColumnType("NVARCHAR").HasMaxLength(300);
             HasMany(t => t.UserRoleModels).WithRequired(t => t.UserModel).HasForeignKey(t => t.UserId);
-            HasOptional(t => t.UserImage).WithRequired(t => t.UserModel);
         }
     }
 }

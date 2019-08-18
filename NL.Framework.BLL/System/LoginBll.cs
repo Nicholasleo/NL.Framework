@@ -8,6 +8,7 @@
 //***********************************************************
 using Newtonsoft.Json;
 using NL.Framework.Common;
+using NL.Framework.Common.Config;
 using NL.Framework.Common.Log;
 using NL.Framework.IBLL;
 using NL.Framework.IDAL;
@@ -15,6 +16,7 @@ using NL.Framework.Model;
 using NL.Framework.Model.System;
 using System;
 using System.Linq;
+using System.Web;
 
 namespace NL.Framework.BLL
 {
@@ -79,18 +81,27 @@ namespace NL.Framework.BLL
                     }
                     else
                     {
-                        foreach (var item in result.AsQueryable())
+                        var item = result.FirstOrDefault();
+                        LoginUserEnt ent = new LoginUserEnt();
+                        ent.RoleId = item.RoleId;
+                        ent.RoleCode = item.RoleCode;
+                        ent.RoleName = item.RoleName;
+                        ent.UserId = item.UserId;
+                        ent.UserName = item.UserName;
+                        ent.UserCode = item.UserCode;
+                        ent.UserPwd = item.UserPwd;
+                        SystemConfigEnt conf = new SystemConfigEnt();
+                        conf.UserImagePath = $"\\{Configs.GetValue(SystemParameters.NLFRAME_SYSTEM_CONFIG_UPLOAD_USER)}";
+
+                        UserImageModel img = db.GetEntity<UserImageModel>(item.UserId);
+                        ent.UserImg = "~/favicon.ico";
+                        if (img != null)
                         {
-                            LoginUserEnt ent = new LoginUserEnt();
-                            ent.RoleId = item.RoleId;
-                            ent.RoleCode = item.RoleCode;
-                            ent.RoleName = item.RoleName;
-                            ent.UserId = item.UserId;
-                            ent.UserName = item.UserName;
-                            ent.UserCode = item.UserCode;
-                            ent.UserPwd = item.UserPwd;
-                            res.LoginUserEnt = ent;
+                            ent.UserImg = $"~\\{Configs.GetValue(SystemParameters.NLFRAME_SYSTEM_CONFIG_UPLOAD_USER)}{img.ImageUrl}";
                         }
+                        res.SystemConfigEnt = conf;
+                        res.LoginUserEnt = ent;
+
                         if (userModel.FirstLoginTime.Equals(DateTime.MinValue))
                             userModel.FirstLoginTime = DateTime.Now;
                         userModel.LastLoginTime = DateTime.Now;

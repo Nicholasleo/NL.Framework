@@ -2,28 +2,31 @@
 //    作者：Nicholas Leo
 //    E-Mail:nicholasleo1030@163.com
 //    GitHub:https://github.com/nicholasleo
-//    时间：2019-08-15 12:24:05
+//    时间：2019-08-17 16:52:19
 //    说明：
 //    版权所有：个人
 //***********************************************************
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NL.Framework.Model.System
+namespace NL.Framework.Model
 {
-    public class UserImageModel : SystemBaseModel
+    public class UploadFileEnt
     {
-        public byte[] UserIcon { get; set; }
         /// <summary>
-        /// 用户头像地址
+        /// 返回状态 200 404 503
         /// </summary>
-        public string ImageUrl { get; set; }
-
-        [JsonIgnore]
-        public virtual UserModel UserModel { get; set; }
+        public int ResultState { get; set; }
+        /// <summary>
+        /// 返回信息
+        /// </summary>
+        public string ResultMsg { get; set; }
+        /// <summary>
+        /// 返回存储路径
+        /// </summary>
+        public string ResultPath { get; set; }
     }
 }

@@ -153,8 +153,14 @@ layui.define('view', function(exports){
     }
     
     //弹出面板
-    ,popup: view.popup
-    
+    , popup: view.popup
+
+      , setConfig: function (key, value) {
+          window.sessionStorage.setItem(key, value);
+    }
+      , getConfig: function (key) {
+          return window.sessionStorage.getItem(key);
+    }
     //右侧面板
     ,popupRight: function(options){
       //layer.close(admin.popup.index);

@@ -29,6 +29,7 @@ namespace NL.Framework.Web.Controllers
             ViewBag.SystemName = Configs.GetValue(SystemParameters.NLFRAME_SYSTEM_NAME);
             ViewBag.Version = Configs.GetValue(SystemParameters.NLFRAME_SYSTEM_VERSION);
             ViewBag.UserName = ent.UserName;
+            ViewBag.UserIcon = ent.UserImg;
             return View(menuList);
         }
 

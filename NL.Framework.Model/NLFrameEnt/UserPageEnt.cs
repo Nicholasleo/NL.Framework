@@ -99,5 +99,9 @@ namespace NL.Framework.Model.NLFrameEnt
         /// 描述
         /// </summary>
         public string Description { get; set; }
+        /// <summary>
+        /// 用户头像路径
+        /// </summary>
+        public string ImageUrl { get; set; }
     }
 }

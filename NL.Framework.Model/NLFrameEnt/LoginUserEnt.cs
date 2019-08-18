@@ -30,6 +30,13 @@ namespace NL.Framework.Model
     public class LoginStatusEnt : AjaxResultEnt
     {
         public LoginUserEnt LoginUserEnt { get; set; }
+
+        public SystemConfigEnt SystemConfigEnt { get; set; } 
+    }
+
+    public class SystemConfigEnt
+    {
+        public string UserImagePath { get; set; }
     }
 
     public class LoginUserEnt
@@ -41,5 +48,6 @@ namespace NL.Framework.Model
         public string UserName { get; set; }
         public string UserCode { get; set; }
         public string UserPwd { get; set; }
+        public string UserImg { get; set; }
     }
 }

@@ -6,6 +6,7 @@
     var $ = layui.$
         , nAjax = layui.NLFrameAjax
         , setter = layui.setter
+        , admin = layui.admin
         , form = layui.form;
 
     $(document).keydown(function (e) {
@@ -39,6 +40,7 @@
                         key: res.LoginUserEnt.UserId
                         , value: JSON.stringify(res.LoginUserEnt)
                     });
+                    admin.setConfig(setter.NLFRAME_CONFIG_USER_IMAGE,res.SystemConfigEnt.UserImagePath);
                     if (remember) {
                         //该处可改用加密的方式进行存储
                         layui.data('loginInfo', {

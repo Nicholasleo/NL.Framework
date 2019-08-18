@@ -14,6 +14,7 @@ namespace NL.Framework.Web.Controllers
         public ActionResult RightIndex(Guid id)
         {
             List<FunctionModel> right = _IMenuBll.GetMenuFunction(id, ent.RoleId);
+            ViewBag.RoleCode = ent.RoleCode.ToLower();
             return View(right);
         }
 

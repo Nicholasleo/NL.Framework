@@ -26,7 +26,7 @@
                     <div class="layui-card">
                         <div class="layui-form layui-card-header layuiadmin-card-header-auto">
                             @{
-                                if (Model.Where(t => t.FunctionEvent.ToLower().Equals("add")).ToList().Count == 1)
+                                if (base.ViewBag.RoleCode=="superadmin" || Model.Where(t => t.FunctionEvent.ToLower().Equals("add")).ToList().Count == 1)
                                 {
                                     <button class="layui-btn layui-nicholas-leo" data-type="save">保存</button>
                                 }
