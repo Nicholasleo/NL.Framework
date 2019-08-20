@@ -8,6 +8,7 @@
 //***********************************************************
 using NL.Framework.Common.Log;
 using NL.Framework.DAL.Map;
+using NL.Framework.DAL.Map.Order;
 using NL.Framework.IDAL;
 using NL.Framework.Model;
 using System;
@@ -49,7 +50,9 @@ namespace NL.Framework.DAL
         {
             var typesToRegister = Assembly.GetExecutingAssembly().GetTypes()
                 .Where(type => !string.IsNullOrEmpty(type.Namespace))
-                .Where(type => type.BaseType != null && type.BaseType.IsGenericType && type.BaseType.GetGenericTypeDefinition() == typeof(BaseModelMap<>));
+                .Where(type => type.BaseType != null)
+                .Where(type => type.BaseType.IsGenericType)
+                .Where(type => type.BaseType.GetGenericTypeDefinition() == typeof(BaseModelMap<>) || type.BaseType.GetGenericTypeDefinition() == typeof(OrderBaseModelMap<>));
 
             foreach (var item in typesToRegister)
             {
@@ -63,8 +66,8 @@ namespace NL.Framework.DAL
         {
             try
             {
-                TEntity t = this.Set<TEntity>().Find(fid);
-                this.Set<TEntity>().Remove(t);
+                TEntity t = this.Set<TEntity>()?.Find(fid);
+                this.Set<TEntity>()?.Remove(t);
                 return this.SaveChanges();
             }
             catch (DbEntityValidationException ex)
@@ -83,7 +86,7 @@ namespace NL.Framework.DAL
         {
             try
             {
-                List<TEntity> t = this.Set<TEntity>().Where(whereLambda).ToList();
+                List<TEntity> t = this.Set<TEntity>()?.Where(whereLambda).ToList();
                 t.ForEach(m => this.Entry<TEntity>(m).State = EntityState.Deleted);
                 //this.Set<TEntity>().Remove(t);
                 return this.SaveChanges();
@@ -105,7 +108,7 @@ namespace NL.Framework.DAL
             TEntity t;
             try
             {
-                return this.Set<TEntity>().Find(fid);
+                return this.Set<TEntity>()?.Find(fid);
             }
             catch (DbEntityValidationException ex)
             {
@@ -123,7 +126,7 @@ namespace NL.Framework.DAL
         {
             try
             {
-                return this.Set<TEntity>().Where(where).FirstOrDefault();
+                return this.Set<TEntity>()?.Where(where).FirstOrDefault();
             }
             catch (DbEntityValidationException ex)
             {
@@ -159,7 +162,7 @@ namespace NL.Framework.DAL
         {
             try
             {
-                return this.Set<TEntity>().Where(whereLambda);
+                return this.Set<TEntity>()?.Where(whereLambda);
             }
             catch (DbEntityValidationException ex)
             {
@@ -207,22 +210,22 @@ namespace NL.Framework.DAL
                 if (whereLambda == null)
                 {
                     totalCount = this.Set<TEntity>().Count();
-                    return this.Set<TEntity>().OrderBy(t => t.Fid).Skip(pageSize * (pageIndex - 1)).Take(pageSize).AsQueryable();
+                    return this.Set<TEntity>()?.OrderBy(t => t.Fid)?.Skip(pageSize * (pageIndex - 1))?.Take(pageSize).AsQueryable();
                 }
                 else
                 {
                     if (orderByLambda == null)
                     {
                         totalCount = this.Set<TEntity>().Where(whereLambda).Count();
-                        return this.Set<TEntity>().OrderBy(t => t.Fid).Where(whereLambda).OrderBy(t => t.Fid).Skip(pageSize * (pageIndex - 1)).Take(pageSize).AsQueryable();
+                        return this.Set<TEntity>()?.OrderBy(t => t.Fid).Where(whereLambda)?.OrderBy(t => t.Fid)?.Skip(pageSize * (pageIndex - 1))?.Take(pageSize).AsQueryable();
                     }
                     else
                     {
                         totalCount = this.Set<TEntity>().Where(whereLambda).Count();
                         if (isAsc)
-                            return this.Set<TEntity>().Where(whereLambda).OrderBy(orderByLambda).Skip(pageSize * (pageIndex - 1)).Take(pageSize).AsQueryable();
+                            return this.Set<TEntity>()?.Where(whereLambda)?.OrderBy(orderByLambda)?.Skip(pageSize * (pageIndex - 1))?.Take(pageSize).AsQueryable();
                         else
-                            return this.Set<TEntity>().Where(whereLambda).OrderByDescending(orderByLambda).Skip(pageSize * (pageIndex - 1)).Take(pageSize).AsQueryable();
+                            return this.Set<TEntity>()?.Where(whereLambda)?.OrderByDescending(orderByLambda)?.Skip(pageSize * (pageIndex - 1))?.Take(pageSize).AsQueryable();
                     }
                 }
             }
@@ -301,7 +304,7 @@ namespace NL.Framework.DAL
         {
             try
             {
-                return this.Set<TEntity>().Find(fid) != null;
+                return this.Set<TEntity>()?.Find(fid) != null;
             }
             catch (DbEntityValidationException ex)
             {
@@ -319,7 +322,7 @@ namespace NL.Framework.DAL
         {
             try
             {
-                this.Set<TEntity>().Attach(ent);
+                this.Set<TEntity>()?.Attach(ent);
                 this.Entry<TEntity>(ent).State = EntityState.Modified;
                 return this.SaveChanges();
             }
@@ -345,7 +348,7 @@ namespace NL.Framework.DAL
         {
             try
             {
-                return this.Set<TEntity>().Find(fid);
+                return this.Set<TEntity>()?.Find(fid);
             }
             catch (DbEntityValidationException ex)
             {
@@ -363,7 +366,7 @@ namespace NL.Framework.DAL
         {
             try
             {
-                return this.Set<TEntity>().Where(where).FirstOrDefault();
+                return this.Set<TEntity>()?.Where(where).FirstOrDefault();
             }
             catch (DbEntityValidationException ex)
             {
@@ -381,7 +384,7 @@ namespace NL.Framework.DAL
         {
             try
             {
-                return this.Database.SqlQuery<TEntity>(sql).ToList();
+                return this.Database.SqlQuery<TEntity>(sql)?.ToList();
             }
             catch (DbEntityValidationException ex)
             {
@@ -399,7 +402,7 @@ namespace NL.Framework.DAL
         {
             try
             {
-                return this.Database.SqlQuery<TEntity>(sql).ToList();
+                return this.Database.SqlQuery<TEntity>(sql)?.ToList();
             }
             catch (DbEntityValidationException ex)
             {
@@ -488,7 +491,7 @@ namespace NL.Framework.DAL
             {
                 try
                 {
-                    action.Invoke(this);
+                    action?.Invoke(this);
                     tran.Commit();
                     return 1;
                 }
@@ -515,7 +518,7 @@ namespace NL.Framework.DAL
             {
                 try
                 {
-                    func.Invoke(this);
+                    func?.Invoke(this);
                     tran.Commit();
                     return 1;
                 }

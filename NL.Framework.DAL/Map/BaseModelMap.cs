@@ -25,13 +25,13 @@ namespace NL.Framework.DAL.Map
 
             Property(t => t.Fid).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            Property(t => t.CreateTime).HasColumnType("DATETIME2");
+            Property(t => t.CreateTime).HasColumnType(SqlDataType.DATETIME2);
 
-            Property(t => t.CreatePerson).HasColumnType("NVARCHAR").HasMaxLength(30);
+            Property(t => t.CreatePerson).HasColumnType(SqlDataType.CSTRING).HasMaxLength(30);
 
-            Property(t => t.ModifyPerson).HasColumnType("NVARCHAR").HasMaxLength(30);
+            Property(t => t.ModifyPerson).HasColumnType(SqlDataType.CSTRING).HasMaxLength(30);
 
-            Property(t => t.ModifyTime).HasColumnType("DATETIME2");
+            Property(t => t.ModifyTime).HasColumnType(SqlDataType.DATETIME2);
         }
     }
 }

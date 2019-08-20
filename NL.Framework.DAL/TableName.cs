@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace NL.Framework.DAL
 {
-    public static class TableName
+    public static partial class TableName
     {
         /// <summary>
         /// 系统菜单表

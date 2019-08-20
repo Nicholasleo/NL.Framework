@@ -49,6 +49,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Map\BaseModelMap.cs" />
+    <Compile Include="Map\Order\ClientModelMap.cs" />
+    <Compile Include="Map\Order\OrderBaseModelMap.cs" />
+    <Compile Include="Map\Order\OrganClientModelMap.cs" />
+    <Compile Include="Map\Order\OrganModelMap.cs" />
     <Compile Include="Map\System\DropDownOptionsModelMap.cs" />
     <Compile Include="Map\System\RoleMenuFunctionModelMap.cs" />
     <Compile Include="Map\System\RoleMenuModelMap.cs" />
@@ -59,7 +63,9 @@
     <Compile Include="Map\System\MenuModelMap.cs" />
     <Compile Include="Map\System\UserRoleModelMap.cs" />
     <Compile Include="NLFrameContext.cs" />
+    <Compile Include="OrderTableName.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqlDataType.cs" />
     <Compile Include="TableName.cs" />
   </ItemGroup>
   <ItemGroup>

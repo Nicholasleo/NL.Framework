@@ -53,6 +53,10 @@
     <Compile Include="NLFrameEnt\UploadFileEnt.cs" />
     <Compile Include="NLFrameEnt\UserPageEnt.cs" />
     <Compile Include="NvaMenus.cs" />
+    <Compile Include="Order\ClientModel.cs" />
+    <Compile Include="Order\OrderBaseModel.cs" />
+    <Compile Include="Order\OrganClientModel.cs" />
+    <Compile Include="Order\OrganModel.cs" />
     <Compile Include="Pagination.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultData.cs" />
