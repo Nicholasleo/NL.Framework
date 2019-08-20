@@ -16,3 +16,4 @@
 /NL.Framework.Common/obj
 /NL.Framework.BLL/obj
 /.vs
+/\NL.Framework.Web/Configs/database.config
